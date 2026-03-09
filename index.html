@@ -1671,9 +1671,15 @@
                     <div class="ring-proposal" id="ringProposal" style="margin-top:0;">
                         <div class="ring-title" id="ringTitle" style="color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.4);">Perfectly Imperfect</div>
                         <p class="ring-subtitle" id="ringSubtitle" style="color:rgba(255,255,255,0.85);">"แต่งงานกับพี่นะ"</p>
-                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="acceptRing()">
+                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showRingPhone()">
                             💍 รับ
                         </button>
+                        <div id="ringPhoneBox" style="display:none;margin-top:18px;animation:fadeIn 0.5s ease;">
+                            <p style="color:rgba(255,255,255,0.8);font-family:'Prompt',sans-serif;font-size:0.95rem;margin-bottom:12px;">ใส่เบอร์โทรของเบน เพื่อยืนยัน</p>
+                            <input type="tel" id="ringPhoneInput" placeholder="0xx-xxx-xxxx" maxlength="12" style="width:100%;max-width:250px;padding:12px 18px;background:rgba(255,255,255,0.15);border:2px solid rgba(232,184,136,0.5);border-radius:50px;color:#fff;font-size:1.1rem;text-align:center;letter-spacing:2px;outline:none;">
+                            <br><button class="ring-accept-btn" onclick="acceptRing()" style="margin-top:12px;animation:none;font-size:1rem;padding:12px 36px;">✅ ยืนยัน</button>
+                            <p id="ringPhoneStatus" style="color:#ff8888;font-size:0.85rem;margin-top:8px;"></p>
+                        </div>
                     </div>
                     <div class="ring-accepted" id="ringAccepted">
                         <div class="ring-accepted-text" style="color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.4);font-size:1.4rem;">เบนรับแหวนแล้ว!</div>
@@ -1742,13 +1748,13 @@
     <div class="fullchat-overlay" id="adminFullChatOverlay">
         <div class="fullchat-header">
             <button class="fullchat-back" onclick="closeAdminFullChat()">&#8592;</button>
-            <span class="fullchat-title">💬 Chat with Bennie</span>
+            <span class="fullchat-title">💬 รายการแชท</span>
         </div>
         <div class="fullchat-messages admin-chat-messages" id="adminFullChatMessages">
-            <div class="fullchat-empty">Waiting for messages...</div>
+            <div class="fullchat-empty">ยังไม่มีแชท</div>
         </div>
-        <div class="fullchat-input-area">
-            <textarea class="chat-input" id="adminFullChatInput" placeholder="Reply to Bennie..." rows="1"></textarea>
+        <div class="fullchat-input-area" id="adminInputArea">
+            <textarea class="chat-input" id="adminFullChatInput" placeholder="พิมพ์ข้อความ..." rows="1"></textarea>
             <button class="chat-send-btn" id="adminFullSendBtn" onclick="sendAdminFullMessage()">➤</button>
         </div>
     </div>
@@ -2240,19 +2246,45 @@
             startFlowers();
         }
 
-        // Accept ring: send "แต่งค่ะ" + ring image in chat, then open chat
+        // Helper: get user's chat collection
+        function getUserChatRef() {
+            var phone = localStorage.getItem('benPhone');
+            if (!phone) return null;
+            return db.collection('chats').doc(phone).collection('messages');
+        }
+
+        // Show phone input on ring accept
+        function showRingPhone() {
+            document.getElementById('ringAcceptBtn').style.display = 'none';
+            document.getElementById('ringPhoneBox').style.display = 'block';
+            document.getElementById('ringPhoneInput').focus();
+        }
+
+        // Accept ring: validate phone, save, send messages to chats/{phone}/messages
         function acceptRing() {
-            var btn = document.getElementById('ringAcceptBtn');
-            btn.disabled = true;
-            btn.textContent = '💍 กำลังส่ง...';
-            // Send text message first
-            db.collection('messages').add({
-                text: 'แต่งค่ะ 💍',
-                from: 'ben',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            var phone = document.getElementById('ringPhoneInput').value.trim().replace(/[^0-9]/g, '');
+            if (!phone || phone.length < 9) {
+                document.getElementById('ringPhoneStatus').textContent = 'กรุณาใส่เบอร์โทรให้ถูกต้อง';
+                return;
+            }
+            localStorage.setItem('benPhone', phone);
+            var chatRef = db.collection('chats').doc(phone).collection('messages');
+            document.getElementById('ringPhoneStatus').textContent = '';
+            var confirmBtn = document.getElementById('ringPhoneBox').querySelector('button');
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = '💍 กำลังส่ง...';
+            // Save phone info to chat doc
+            db.collection('chats').doc(phone).set({
+                phone: phone,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true }).then(function() {
+                return chatRef.add({
+                    text: 'แต่งค่ะ 💍',
+                    from: 'ben',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
             }).then(function() {
-                // Then send ring image
-                return db.collection('messages').add({
+                return chatRef.add({
                     text: '',
                     image: 'Wear the wedding ring.png',
                     from: 'ben',
@@ -2271,12 +2303,14 @@
 
         // Bennie sends message from fullscreen chat
         function sendFullChatMessage() {
+            var ref = getUserChatRef();
+            if (!ref) return;
             const input = document.getElementById('fullChatInput');
             const text = input.value.trim();
             if (!text) return;
             const btn = document.getElementById('fullChatSendBtn');
             btn.disabled = true;
-            db.collection('messages').add({
+            ref.add({
                 text: text,
                 from: 'ben',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -2288,14 +2322,16 @@
             }).catch(() => { btn.disabled = false; });
         }
 
-        // Admin sends message (fullscreen chat)
+        // Admin sends message (fullscreen chat) — to selected phone's chat
+        var adminSelectedPhone = null;
         function sendAdminFullMessage() {
+            if (!adminSelectedPhone) return;
             const input = document.getElementById('adminFullChatInput');
             const text = input.value.trim();
             if (!text) return;
             const btn = document.getElementById('adminFullSendBtn');
             btn.disabled = true;
-            db.collection('messages').add({
+            db.collection('chats').doc(adminSelectedPhone).collection('messages').add({
                 text: text,
                 from: 'admin',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -2343,8 +2379,10 @@
         let fullChatStarted = false;
         function startFullChatListener() {
             if (fullChatStarted) return;
+            var ref = getUserChatRef();
+            if (!ref) return;
             fullChatStarted = true;
-            db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(function(snap) {
+            ref.orderBy('timestamp', 'asc').onSnapshot(function(snap) {
                 var el = document.getElementById('fullChatMessages');
                 if (snap.empty) {
                     el.innerHTML = '<div class="fullchat-empty">เริ่มแชทกับพี่โจ้...</div>';
@@ -2394,65 +2432,103 @@
             }
         }
 
-        function openAdminFullChat() {
-            adminChatIsOpen = true;
-            document.getElementById('adminFullChatOverlay').classList.add('show');
-            // Mark all Bennie messages as read
-            sessionStorage.setItem('adminLastReadBen', String(adminBenMsgCount));
-            updateAdminBadge(0);
-            startAdminFullChatListener();
-            setTimeout(() => {
-                const el = document.getElementById('adminFullChatMessages');
-                el.scrollTop = el.scrollHeight;
-            }, 100);
-        }
-
         function closeAdminFullChat() {
             adminChatIsOpen = false;
-            // Mark all as read on close
             sessionStorage.setItem('adminLastReadBen', String(adminBenMsgCount));
             updateAdminBadge(0);
             document.getElementById('adminFullChatOverlay').classList.remove('show');
         }
 
+        // Admin: load chat list (all phone numbers)
+        var adminChatUnsubscribe = null;
         function startAdminFullChatListener() {
             if (adminFullChatStarted) return;
             adminFullChatStarted = true;
-            db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(function(snap) {
-                // Update fullscreen chat messages
-                var el = document.getElementById('adminFullChatMessages');
+            // Listen for new chats
+            db.collection('chats').onSnapshot(function(snap) {
+                var totalBen = 0;
+                snap.forEach(function(doc) {
+                    // count total chats for badge
+                    totalBen++;
+                });
+                updateAdminBadge(totalBen > 0 ? totalBen : 0);
+            });
+        }
+
+        // Admin: open chat list overlay (replaces direct chat)
+        function openAdminFullChat() {
+            adminChatIsOpen = true;
+            document.getElementById('adminFullChatOverlay').classList.add('show');
+            document.getElementById('adminInputArea').style.display = 'none';
+            var header = document.querySelector('#adminFullChatOverlay .fullchat-title');
+            header.textContent = '💬 รายการแชท';
+            var backBtn = document.querySelector('#adminFullChatOverlay .fullchat-back');
+            backBtn.onclick = function() { closeAdminFullChat(); };
+            loadAdminChatList();
+        }
+
+        // Admin: load list of phone numbers
+        function loadAdminChatList() {
+            var el = document.getElementById('adminFullChatMessages');
+            el.innerHTML = '<div class="fullchat-empty">กำลังโหลด...</div>';
+            db.collection('chats').get().then(function(snap) {
                 if (snap.empty) {
-                    el.innerHTML = '<div class="fullchat-empty">Waiting for messages...</div>';
-                    adminBenMsgCount = 0;
+                    el.innerHTML = '<div class="fullchat-empty">ยังไม่มีแชท</div>';
                     return;
                 }
                 el.innerHTML = '';
-                var benCount = 0;
                 snap.forEach(function(doc) {
-                    var d = doc.data();
-                    el.appendChild(renderBubble(d));
-                    if (d.from === 'ben') benCount++;
+                    var phone = doc.id;
+                    var data = doc.data();
+                    var item = document.createElement('div');
+                    item.style.cssText = 'padding:14px 18px;margin:6px 0;background:rgba(58,123,200,0.08);border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:12px;';
+                    item.innerHTML = '<span style="font-size:1.5rem;">📱</span><div><div style="font-weight:600;color:#2D2420;">' + phone + '</div><div style="font-size:0.8rem;color:rgba(80,65,58,0.5);">กดเพื่อเปิดแชท</div></div>';
+                    item.onclick = function() { openAdminChatWith(phone); };
+                    el.appendChild(item);
+                });
+            });
+        }
+
+        // Admin: open specific chat with a phone number
+        function openAdminChatWith(phone) {
+            adminSelectedPhone = phone;
+            document.getElementById('adminInputArea').style.display = 'flex';
+            var el = document.getElementById('adminFullChatMessages');
+            var header = document.querySelector('#adminFullChatOverlay .fullchat-title');
+            header.textContent = '💬 ' + phone;
+            // Add back button behavior
+            var backBtn = document.querySelector('#adminFullChatOverlay .fullchat-back');
+            backBtn.onclick = function() {
+                // Unsubscribe from current chat
+                if (adminChatUnsubscribe) { adminChatUnsubscribe(); adminChatUnsubscribe = null; }
+                adminSelectedPhone = null;
+                document.getElementById('adminInputArea').style.display = 'none';
+                header.textContent = '💬 รายการแชท';
+                backBtn.onclick = function() { closeAdminFullChat(); };
+                loadAdminChatList();
+            };
+            // Listen to this phone's messages
+            el.innerHTML = '<div class="fullchat-empty">กำลังโหลด...</div>';
+            if (adminChatUnsubscribe) adminChatUnsubscribe();
+            adminChatUnsubscribe = db.collection('chats').doc(phone).collection('messages')
+                .orderBy('timestamp', 'asc').onSnapshot(function(snap) {
+                el.innerHTML = '';
+                if (snap.empty) {
+                    el.innerHTML = '<div class="fullchat-empty">ยังไม่มีข้อความ</div>';
+                    return;
+                }
+                snap.forEach(function(doc) {
+                    el.appendChild(renderBubble(doc.data()));
                 });
                 el.scrollTop = el.scrollHeight;
-
-                // Badge: count only Bennie's messages as unread
-                adminBenMsgCount = benCount;
-                if (adminChatIsOpen) {
-                    sessionStorage.setItem('adminLastReadBen', String(adminBenMsgCount));
-                    updateAdminBadge(0);
-                } else {
-                    var lastRead = parseInt(sessionStorage.getItem('adminLastReadBen') || '0');
-                    var unread = adminBenMsgCount - lastRead;
-                    updateAdminBadge(unread > 0 ? unread : 0);
-                }
-            }, function(err) {
-                // onSnapshot error - ignore silently
             });
         }
 
         // Check if messages already exist (returning visitor - Bennie)
         function checkExistingMessages() {
-            db.collection('messages').limit(1).get().then(snap => {
+            var ref = getUserChatRef();
+            if (!ref) return;
+            ref.limit(1).get().then(snap => {
                 if (!snap.empty) {
                     activateChatFab();
                     startFullChatListener();
@@ -2555,16 +2631,27 @@
         }
 
         function clearAllData() {
-            if (!confirm('ล้างข้อมูลทั้งหมด? (messages, visits, edits)')) return;
+            if (!confirm('ล้างข้อมูลทั้งหมด? (chats, visits, edits)')) return;
             var status = document.getElementById('clearStatus');
             status.textContent = 'กำลังลบ...';
             var batch = db.batch();
-            var collections = ['messages', 'visits', 'edits'];
-            var promises = collections.map(function(col) {
+            // Delete visits and edits
+            var promises = ['visits', 'edits'].map(function(col) {
                 return db.collection(col).get().then(function(snap) {
                     snap.forEach(function(doc) { batch.delete(doc.ref); });
                 });
             });
+            // Delete chats and their sub-collections
+            promises.push(db.collection('chats').get().then(function(snap) {
+                var subPromises = [];
+                snap.forEach(function(chatDoc) {
+                    batch.delete(chatDoc.ref);
+                    subPromises.push(chatDoc.ref.collection('messages').get().then(function(msgSnap) {
+                        msgSnap.forEach(function(msgDoc) { batch.delete(msgDoc.ref); });
+                    }));
+                });
+                return Promise.all(subPromises);
+            }));
             Promise.all(promises).then(function() {
                 return batch.commit();
             }).then(function() {
@@ -2574,13 +2661,13 @@
                 document.getElementById('ringProposal').style.display = '';
                 document.getElementById('ringAccepted').classList.remove('show');
                 var ringBtn = document.getElementById('ringAcceptBtn');
+                ringBtn.style.display = '';
                 ringBtn.disabled = false;
                 ringBtn.textContent = '💍 รับ';
+                document.getElementById('ringPhoneBox').style.display = 'none';
                 document.getElementById('chatFab').classList.remove('show');
-                // Reset slide 9 background
                 var slides = document.querySelectorAll('.slide');
                 slides[totalSlides - 1].style.backgroundImage = "url('Please Mary Me.png')";
-                // Reload admin data
                 loadAdminData();
                 setTimeout(function() { status.textContent = ''; }, 3000);
             }).catch(function(err) {
@@ -2738,38 +2825,24 @@
                 }
             });
 
-            // Step 2: Check messages for ring acceptance + phone
-            db.collection('messages').orderBy('timestamp', 'asc').get().then(function(snap) {
-                var ringAccepted = false, phoneNumber = '', ringTime = '';
-                snap.forEach(function(doc) {
-                    var d = doc.data();
-                    if (d.from === 'ben' && d.text && d.text.indexOf('รับแหวน') !== -1) {
-                        ringAccepted = true;
-                        ringTime = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }) : '';
-                        if (d.phone) phoneNumber = d.phone;
-                    }
-                });
-
-                // Chain Step 3: Ring
+            // Step 2: Check chats for ring acceptance + phone
+            db.collection('chats').get().then(function(snap) {
                 var stepRing = document.getElementById('chainRing');
                 var statusRing = document.getElementById('chainRingStatus');
-                if (ringAccepted) {
-                    stepRing.classList.add('done');
-                    statusRing.textContent = 'รับแหวนแล้ว! ' + ringTime;
-                    statusRing.classList.add('success');
-                    document.getElementById('chainLine3').classList.add('done');
-                }
-
-                // Chain Step 4: Phone
                 var stepPhone = document.getElementById('chainPhone');
                 var statusPhone = document.getElementById('chainPhoneStatus');
-                if (phoneNumber) {
+                if (!snap.empty) {
+                    var phones = [];
+                    snap.forEach(function(doc) {
+                        phones.push(doc.id);
+                    });
+                    stepRing.classList.add('done');
+                    statusRing.textContent = 'รับแหวนแล้ว! (' + phones.length + ' คน)';
+                    statusRing.classList.add('success');
+                    document.getElementById('chainLine3').classList.add('done');
                     stepPhone.classList.add('done');
-                    statusPhone.textContent = phoneNumber;
+                    statusPhone.textContent = phones.join(', ');
                     statusPhone.classList.add('success');
-                } else if (ringAccepted) {
-                    stepPhone.classList.add('active');
-                    statusPhone.textContent = 'ไม่ได้ใส่เบอร์';
                 }
             });
         }
