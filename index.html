@@ -7,9 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta property="og:title" content="ถึง เบนนี่ ที่รัก">
+    <meta property="og:title" content="From the Beast to Beauty ที่รัก">
     <meta property="og:description" content="จดหมายจากใจ...ถึงคนที่รักที่สุด">
-    <title>ถึง เบนนี่ ที่รัก</title>
+    <title>From the Beast to Beauty ที่รัก</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -134,7 +134,8 @@
 
         .hero-title {
             font-family: 'Prompt', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(1.4rem, 5vw, 2.5rem);
+            white-space: nowrap;
             font-weight: 700;
             background: linear-gradient(135deg, #3A7BC8, #2E6AB5, #3A7BC8, #5B9BD5);
             background-size: 300% 300%;
@@ -462,6 +463,7 @@
         }
         .slide-track {
             position: relative;
+            overflow: hidden;
         }
         .slide {
             padding: 15px 18px 0;
@@ -469,8 +471,10 @@
             display: none;
         }
         .slide.active {
-            display: block;
-            min-height: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         }
         .slide-img {
             display: block;
@@ -486,6 +490,8 @@
             text-align: center;
             padding: 0 8px 10px;
             line-height: 2;
+            width: 100%;
+            box-sizing: border-box;
         }
         .slide-content p {
             margin: 0 0 10px;
@@ -571,18 +577,24 @@
         }
         .slide.page-out-fwd,
         .slide.page-out-back {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             z-index: 2;
         }
         .slide.page-out-fwd {
             animation: pageOpenOut 0.4s ease forwards;
         }
         .slide.page-in-fwd {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
             animation: pageBlurIn 0.7s ease forwards;
             opacity: 0;
         }
@@ -590,7 +602,10 @@
             animation: pageCloseOut 0.4s ease forwards;
         }
         .slide.page-in-back {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
             animation: pageBlurInReverse 0.7s ease forwards;
             opacity: 0;
         }
@@ -962,6 +977,31 @@
             font-size: 0.9rem;
         }
 
+        /* Falling flowers */
+        .flower-fall {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 18px;
+        }
+        .flower-petal {
+            position: absolute;
+            top: -40px;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            animation: petalDrop linear infinite;
+        }
+        @keyframes petalDrop {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.9; }
+            25% { transform: translateY(25%) rotate(90deg) translateX(15px); opacity: 0.8; }
+            50% { transform: translateY(50%) rotate(180deg) translateX(-10px); opacity: 0.7; }
+            75% { transform: translateY(75%) rotate(270deg) translateX(20px); opacity: 0.5; }
+            100% { transform: translateY(calc(100vh)) rotate(360deg) translateX(-5px); opacity: 0; }
+        }
+
         /* Footer secret link */
         .footer-secret {
             cursor: default;
@@ -1242,42 +1282,46 @@
         }
 
         /* Chat bubble shared */
-        .chat-bubble {
+        .chat-msg {
             max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+        .chat-msg.ben { align-self: flex-end; text-align: right; }
+        .chat-msg.admin { align-self: flex-start; text-align: left; }
+        .chat-msg .chat-sender {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+            display: block;
+        }
+        .chat-msg.ben .chat-sender { color: #3A7BC8; }
+        .chat-msg.admin .chat-sender { color: #E8B888; }
+        .chat-msg .chat-time {
+            font-size: 0.7rem;
+            color: rgba(80,65,58,0.4);
+            margin-top: 3px;
+            display: block;
+        }
+        .chat-bubble {
             padding: 12px 16px;
             border-radius: 16px;
             font-size: 0.95rem;
             line-height: 1.7;
             word-wrap: break-word;
-            animation: fadeIn 0.3s ease;
+            display: inline-block;
+            text-align: left;
         }
         .chat-bubble.ben {
-            align-self: flex-end;
             background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
             color: white;
             border-bottom-right-radius: 4px;
         }
         .chat-bubble.admin {
-            align-self: flex-start;
             background: rgba(58,123,200,0.08);
             border: 1px solid rgba(58,123,200,0.15);
             color: #2D2420;
             border-bottom-left-radius: 4px;
         }
-        .chat-bubble .chat-time {
-            font-size: 0.7rem;
-            opacity: 0.6;
-            margin-top: 4px;
-            display: block;
-        }
-        .chat-bubble .chat-sender {
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-            display: block;
-        }
-        .chat-bubble.ben .chat-sender { color: rgba(255,255,255,0.7); }
-        .chat-bubble.admin .chat-sender { color: #E8B888; }
         .chat-input-area {
             display: flex;
             gap: 10px;
@@ -1454,9 +1498,12 @@
             display: none;
         }
 
-        /* Admin fullscreen chat bubble overrides */
+        /* Admin fullscreen chat - swap sides (admin = right, ben = left) */
+        .admin-chat-messages .chat-msg.admin { align-self: flex-end; text-align: right; }
+        .admin-chat-messages .chat-msg.admin .chat-sender { color: #3A7BC8; }
+        .admin-chat-messages .chat-msg.ben { align-self: flex-start; text-align: left; }
+        .admin-chat-messages .chat-msg.ben .chat-sender { color: #E8B888; }
         .admin-chat-messages .chat-bubble.admin {
-            align-self: flex-end;
             background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
             color: white;
             border-bottom-right-radius: 4px;
@@ -1464,15 +1511,12 @@
             border: none;
         }
         .admin-chat-messages .chat-bubble.ben {
-            align-self: flex-start;
             background: rgba(232,184,136,0.1);
             border: 1px solid rgba(232,184,136,0.2);
             color: #2D2420;
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 16px;
         }
-        .admin-chat-messages .chat-bubble.admin .chat-sender { color: rgba(255,255,255,0.7); }
-        .admin-chat-messages .chat-bubble.ben .chat-sender { color: #E8B888; }
 
         /* Touch feedback */
         .scroll-indicator:active {
@@ -1492,12 +1536,12 @@
 
     <!-- Hero + Password Gate (same page) -->
     <section class="hero" id="hero">
-        <div class="hero-heart" id="heroIcon"><img src="Header Picture.jpg" alt="Header" class="hero-photo"></div>
+        <div class="hero-heart" id="heroIcon"><img src="Header Picture4.png" alt="Header" class="hero-photo"></div>
         <audio id="bgMusic" src="Last Message (V2).mp3" preload="auto" loop></audio>
         <button class="music-toggle-btn" id="musicBtn" onclick="toggleMusic()">
             <span id="musicIcon">&#10074;&#10074;</span> <span id="musicLabel">กำลังเล่น...</span>
         </button>
-        <h1 class="hero-title" id="heroTitle">ถึง เบนนี่ ที่รัก</h1>
+        <h1 class="hero-title" id="heroTitle">From the Beast to Beauty ที่รัก</h1>
         <p class="hero-subtitle footer-secret" id="heroSecret">จดหมายจากใจ...ถึงคนที่รักที่สุด</p>
 
         <div class="sorry-text" style="margin-top: 40px;">
@@ -1530,20 +1574,20 @@
             <div class="slide-track" id="slideTrack">
 
             <!-- หน้า 1: เปิดจดหมาย -->
-            <div class="slide active" style="background:url('Miniheart2.png') center/80% auto no-repeat; border-radius:18px; position:relative;">
+            <div class="slide" style="background:url('Miniheart2.png') center/80% auto no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
                     <p class="letter-date">วันที่ 9 มีนาคม 2569</p>
                     <p style="font-family:'Prompt',sans-serif; font-size:1.2rem; color:#3A7BC8; font-weight:600;">จดหมายฉบับสุดท้าย<br>ถึงคนที่ผมรักที่สุด</p>
-                    <p>ถึง เบนนี่ ที่รัก 🤍</p>
+                    <p>From the Beast to Beauty ที่รัก 🤍</p>
                     <p>จดหมายฉบับนี้ พี่เขียนขึ้นมา<br>เพื่อ <span class="emphasis">"ขอโทษ"</span> ในทุกสิ่งที่พี่ได้ทำไป<br>และเพื่อ <span class="emphasis">"ขอโอกาสเริ่มต้นใหม่"</span> อีกครั้ง</p>
                 </div>
             </div>
 
             <!-- หน้า 2: ไม่เข้าใจ -->
-            <div class="slide">
-                <img src="slide-2.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-02.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p><span class="quote">พี่พึ่งรู้ว่า<br>"ตัวกูเองหล่ะ ที่ไม่เข้าใจอะไรเลย"</span></p>
                     <p>ตัวพี่เองเป็น <span class="emphasis">"คนที่ผิด"</span> มาตลอด</p>
                     <p>…ไม่เข้าใจชีวิต<br>…ไม่เข้าใจความรัก<br>…<span style="color:#E8B888;font-weight:600;">ไม่เข้าใจ เบน</span></p>
@@ -1552,9 +1596,9 @@
             </div>
 
             <!-- หน้า 3: Ego -->
-            <div class="slide">
-                <img src="slide-3.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-03.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p>เบน มองโลกบริสุทธิ์<br>แต่พี่กลับยัดความคิดของพี่ใส่หัวเบน<br>ไม่เคยวางใจในมุมมองของเบนเลย</p>
                     <p><span class="emphasis">Ego</span> ตัวใหญ่ บังตาพี่ไว้<br>ไม่ให้เข้าใจความรักของเบน</p>
                     <p>วันนี้ พี่ใช้ชีวิตเรียบง่าย<br>ไม่เร่ง ไม่รีบ ไม่ต้องรวย ไม่ต้องเก่ง<br>แล้วพี่ก็ได้เข้าใจ</p>
@@ -1563,9 +1607,9 @@
             </div>
 
             <!-- หน้า 4: ทำร้าย -->
-            <div class="slide">
-                <img src="slide-4.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-04.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p><span class="quote">พี่พึ่งรู้ว่า<br>"กูได้ทำร้ายผู้หญิงที่รักกูที่สุด"</span></p>
                     <p>เบน <span class="emphasis">ยอม</span>… มากแค่ไหน<br>เบน <span class="emphasis">เสียสละ</span>… มากแค่ไหน<br>เบน <span class="emphasis">เจ็บปวด</span>… มากแค่ไหน</p>
                     <p>ทั้งที่เบนต้องการแค่<br><span class="emphasis">ความเชื่อใจ ความสบายใจ</span><br>และ <span class="emphasis">คำขอโทษ</span></p>
@@ -1574,9 +1618,9 @@
             </div>
 
             <!-- หน้า 5: มุมมอง -->
-            <div class="slide">
-                <img src="slide-5.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-05.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p><span class="quote">"เบนคิดแบบนี้"</span></p>
                     <p>พี่คิดว่า แค่มอง ไม่ได้มีอะไร<br>แต่เบนคิดว่า… <span class="emphasis">ฉันไม่สวยพอเหรอ</span></p>
                     <p>พี่คิดว่า อธิบายเยอะแล้ว<br>แต่เบนคิดว่า… <span class="emphasis">แค่ขอโทษ ฉันก็ยอมแล้ว</span></p>
@@ -1586,9 +1630,9 @@
             </div>
 
             <!-- หน้า 6: ความทรงจำ -->
-            <div class="slide">
-                <img src="slide-6.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-06.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p>เบน เป็น<span style="color:#E8B888;font-weight:600;">รักแรกพบ</span>ของพี่<br>พี่<span style="color:#E8B888;font-weight:600;">ตกหลุมรัก</span>ตั้งแต่ครั้งแรกที่เห็น</p>
                     <p>พี่ยังจำ… ตอน<span style="color:#E8B888;font-weight:600;">ฝากหมูยอ</span>ไปให้<br>พี่ยังจำ… ที่เบนขอรูปไปเป็นกำลังใจ<br>พี่ยังจำ… <span style="color:#E8B888;font-weight:600;">จูบแรก และจูบสุดท้าย</span><br>พี่ยังจำ… <span style="color:#E8B888;font-weight:600;">แววตาดีใจตอนเราแต่งงาน</span></p>
                     <p>ทุกความทรงจำกับเบน<br><span style="color:#E8B888;font-weight:600;">พี่ไม่เคยลืมเลย</span></p>
@@ -1596,9 +1640,9 @@
             </div>
 
             <!-- หน้า 7: สัญญา -->
-            <div class="slide">
-                <img src="slide-7.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-07.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p><span class="emphasis">เบน เป็น รักแท้ของพี่</span></p>
                     <p>ถ้ามันเป็นไปได้<br>พี่จะทุ่มเททุกช่วงเวลา<br>ให้ <span class="emphasis">แม่พี่ และ เบน</span></p>
                     <p style="font-size:1.25rem;color:#E8B888;font-weight:600;">พี่จะมอบ 24 ชั่วโมงของพี่ให้เบน</p>
@@ -1608,9 +1652,9 @@
             </div>
 
             <!-- หน้า 8: สุดท้าย -->
-            <div class="slide">
-                <img src="slide-8.jpg" alt="" class="slide-img">
-                <div class="slide-content">
+            <div class="slide" style="background:url('slide-08.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
                     <p>เบนเป็น…<br>ผู้หญิงที่<span class="emphasis">สวยที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่<span class="emphasis">ดีที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่พี่อยากกอดคนเดียว</p>
                     <p>ถ้ามีโอกาสอีกครั้ง<br>พี่จะไม่ปล่อยเบนหลุดมืออีก</p>
                     <p style="color: #E8B888;">พี่อาจจะไม่ใช่คนที่ดีที่สุด<br>แต่พี่พร้อมแก้ไขทุกสิ่งที่ทำพลาด</p>
@@ -1620,31 +1664,20 @@
             </div>
 
             <!-- หน้า 9: Ring Proposal -->
-            <div class="slide">
-                <div class="slide-content">
+            <div class="slide" style="background:url('Please Mary Me.png') center/cover no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);border-radius:18px;"></div>
+                <div class="flower-fall" id="flowerFall"></div>
+                <div class="slide-content" style="position:relative;z-index:2;">
                     <div class="ring-proposal" id="ringProposal" style="margin-top:0;">
-                        <div class="ring-title" id="ringTitle">Perfectly Imperfect</div>
-                        <div class="ring-image-wrapper">
-                            <div class="ring-glow"></div>
-                            <img class="ring-image" src="Please Mary Me.png" alt="Wedding Ring">
-                        </div>
-                        <p class="ring-subtitle" id="ringSubtitle">"แต่งงานกับพี่นะ"</p>
-                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showPhoneInput()">
+                        <div class="ring-title" id="ringTitle" style="color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.4);">Perfectly Imperfect</div>
+                        <p class="ring-subtitle" id="ringSubtitle" style="color:rgba(255,255,255,0.85);">"แต่งงานกับพี่นะ"</p>
+                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="acceptRing()">
                             💍 รับ
                         </button>
-                        <div class="phone-input-box" id="phoneInputBox" style="display:none;">
-                            <p class="phone-label">ใส่เบอร์โทรของเบน เพื่อยืนยันรับแหวน</p>
-                            <input type="tel" class="phone-input" id="benPhoneInput" placeholder="0xx-xxx-xxxx" maxlength="12">
-                            <button class="ring-accept-btn phone-confirm-btn" onclick="confirmPhone()">
-                                ✅ ยืนยัน
-                            </button>
-                            <p class="phone-status" id="phoneStatus"></p>
-                        </div>
                     </div>
                     <div class="ring-accepted" id="ringAccepted">
-                        <div class="ring-accepted-icon">💍✨</div>
-                        <div class="ring-accepted-text">เบนรับแหวนแล้ว!</div>
-                        <div class="ring-accepted-sub">กดปุ่ม 💬 มุมขวาล่างเพื่อแชทกับพี่โจ้</div>
+                        <div class="ring-accepted-text" style="color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.4);font-size:1.4rem;">เบนรับแหวนแล้ว!</div>
+                        <div class="ring-accepted-sub" style="color:rgba(255,255,255,0.7);">แชทเปิดอยู่ด้านล่าง 💬</div>
                     </div>
                 </div>
             </div>
@@ -1779,6 +1812,8 @@
                         </div>
                     </div>
                 </div>
+                <button onclick="clearAllData()" style="margin-top:20px;width:100%;padding:12px;background:#e74c3c;color:#fff;border:none;border-radius:10px;font-family:'Prompt',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;">🗑️ Clear สถานะทั้งหมด</button>
+                <p id="clearStatus" style="text-align:center;font-size:0.85rem;color:#e74c3c;margin-top:8px;"></p>
             </div>
 
             <!-- Tab 2: Edit Content -->
@@ -1787,7 +1822,7 @@
                 <div class="edit-section">
                     <div class="edit-section-title">🏠 หน้าแรก (Hero)</div>
                     <div class="edit-group"><label class="edit-label">Icon</label><input class="edit-input" id="editHeroIcon" placeholder="🤍"></div>
-                    <div class="edit-group"><label class="edit-label">Title</label><input class="edit-input" id="editHeroTitle" placeholder="ถึง เบนนี่ ที่รัก"></div>
+                    <div class="edit-group"><label class="edit-label">Title</label><input class="edit-input" id="editHeroTitle" placeholder="From the Beast to Beauty ที่รัก"></div>
                     <div class="edit-group"><label class="edit-label">Subtitle</label><input class="edit-input" id="editHeroSubtitle" placeholder="จดหมายจากใจ..."></div>
                     <button class="edit-save" onclick="saveSection('hero')">💾 บันทึก</button>
                     <div class="edit-status" id="statusHero"></div>
@@ -2013,26 +2048,41 @@
         var totalSlides = 9;
         var isFlipping = false;
         (function initSlides() {
+            var saved = parseInt(sessionStorage.getItem('lastSlide') || '0');
+            if (saved < 0 || saved >= totalSlides) saved = 0;
+            currentSlide = saved;
             var dotsEl = document.getElementById('slideDots');
             for (var i = 0; i < totalSlides; i++) {
                 var dot = document.createElement('div');
-                dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+                dot.className = 'slide-dot' + (i === saved ? ' active' : '');
                 dot.setAttribute('data-i', i);
                 dot.onclick = function() { goToSlide(parseInt(this.getAttribute('data-i'))); };
                 dotsEl.appendChild(dot);
             }
-            document.getElementById('slidePrev').disabled = true;
-            // Fix height to tallest slide
+            document.getElementById('slidePrev').disabled = saved === 0;
+            document.getElementById('slideNext').disabled = saved === totalSlides - 1;
+            document.getElementById('slideCounter').textContent = (saved + 1) + ' / ' + totalSlides;
+            // Fix height based on background image aspect ratio
             var track = document.getElementById('slideTrack');
             var slides = track.querySelectorAll('.slide');
-            var maxH = 0;
-            slides.forEach(function(s) {
-                s.style.display = 'block';
-                if (s.offsetHeight > maxH) maxH = s.offsetHeight;
-                s.style.display = '';
+            var img = new Image();
+            img.onload = function() {
+                var ratio = img.naturalHeight / img.naturalWidth;
+                var h = track.offsetWidth * ratio;
+                track.style.height = h + 'px';
+            };
+            img.src = 'slide-02.jpg';
+            slides[saved].classList.add('active');
+            // ดอกไม้จะร่วงเฉพาะหลังกดรับแหวนเท่านั้น
+            // Resize handler
+            window.addEventListener('resize', function() {
+                var t = document.getElementById('slideTrack');
+                var im = new Image();
+                im.onload = function() {
+                    t.style.height = (t.offsetWidth * im.naturalHeight / im.naturalWidth) + 'px';
+                };
+                im.src = 'slide-02.jpg';
             });
-            track.style.minHeight = maxH + 'px';
-            slides[0].classList.add('active');
         })();
         function goToSlide(n) {
             if (n < 0 || n >= totalSlides || isFlipping || n === currentSlide) return;
@@ -2044,11 +2094,13 @@
             curr.className = 'slide ' + (forward ? 'page-out-fwd' : 'page-out-back');
             next.className = 'slide ' + (forward ? 'page-in-fwd' : 'page-in-back');
             currentSlide = n;
+            sessionStorage.setItem('lastSlide', n);
             var dots = document.querySelectorAll('.slide-dot');
             dots.forEach(function(d, i) { d.className = 'slide-dot' + (i === n ? ' active' : ''); });
             document.getElementById('slideCounter').textContent = (n + 1) + ' / ' + totalSlides;
             document.getElementById('slidePrev').disabled = n === 0;
             document.getElementById('slideNext').disabled = n === totalSlides - 1;
+            if (n !== totalSlides - 1) { stopFlowers(); }
             setTimeout(function() {
                 curr.className = 'slide';
                 next.className = 'slide active';
@@ -2057,6 +2109,30 @@
         }
         function nextSlide() { goToSlide(currentSlide + 1); }
         function prevSlide() { goToSlide(currentSlide - 1); }
+
+        // Falling flower petals for slide 9
+        var flowerInterval = null;
+        var petals = ['🌹', '❤️', '🥀', '🌹', '❤️', '🌹'];
+        function startFlowers() {
+            var container = document.getElementById('flowerFall');
+            if (!container || flowerInterval) return;
+            flowerInterval = setInterval(function() {
+                var petal = document.createElement('span');
+                petal.className = 'flower-petal';
+                petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.fontSize = (0.8 + Math.random() * 0.8) + 'rem';
+                petal.style.animationDuration = (3 + Math.random() * 4) + 's';
+                petal.style.animationDelay = '0s';
+                container.appendChild(petal);
+                setTimeout(function() { petal.remove(); }, 8000);
+            }, 130);
+        }
+        function stopFlowers() {
+            if (flowerInterval) { clearInterval(flowerInterval); flowerInterval = null; }
+            var container = document.getElementById('flowerFall');
+            if (container) container.innerHTML = '';
+        }
         // Touch swipe
         (function() {
             var container = document.getElementById('slideContainer');
@@ -2096,7 +2172,7 @@
         // Auto-play music - play on first user interaction
         var musicStarted = false;
         function startMusic() {
-            if (musicStarted) return;
+            if (musicStarted || sessionStorage.getItem('adminAuth') === 'true') return;
             var audio = document.getElementById('bgMusic');
             audio.play().then(function() {
                 musicStarted = true;
@@ -2108,10 +2184,11 @@
                 document.removeEventListener('scroll', startMusic);
             }).catch(function(){});
         }
-        document.addEventListener('click', startMusic);
-        document.addEventListener('touchstart', startMusic);
-        document.addEventListener('scroll', startMusic);
-        startMusic();
+        if (sessionStorage.getItem('adminAuth') !== 'true') {
+            document.addEventListener('click', startMusic);
+            document.addEventListener('touchstart', startMusic);
+            document.addEventListener('scroll', startMusic);
+        }
 
         // Chat functions
         function formatChatTime(timestamp) {
@@ -2121,13 +2198,20 @@
         }
 
         function renderBubble(msg) {
-            const div = document.createElement('div');
-            div.className = 'chat-bubble ' + msg.from;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'chat-msg ' + msg.from;
             const senderName = msg.from === 'ben' ? 'เบนนี่' : 'พี่โจ้';
-            div.innerHTML = '<span class="chat-sender">' + senderName + '</span>' +
-                msg.text.replace(/</g, '&lt;').replace(/\n/g, '<br>') +
+            var content = '';
+            if (msg.image) {
+                content = '<img src="' + msg.image + '" alt="" style="width:100%;max-width:220px;border-radius:12px;display:block;margin:4px 0;">';
+            }
+            if (msg.text) {
+                content += msg.text.replace(/</g, '&lt;').replace(/\n/g, '<br>');
+            }
+            wrapper.innerHTML = '<span class="chat-sender">' + senderName + '</span>' +
+                '<div class="chat-bubble ' + msg.from + '">' + content + '</div>' +
                 '<span class="chat-time">' + formatChatTime(msg.timestamp) + '</span>';
-            return div;
+            return wrapper;
         }
 
         // Show FAB + hide ring proposal
@@ -2135,35 +2219,39 @@
             document.getElementById('chatFab').classList.add('show');
             document.getElementById('ringProposal').style.display = 'none';
             document.getElementById('ringAccepted').classList.add('show');
+            // เปลี่ยน background slide 9 เป็นรูปสวมแหวน
+            var slides = document.querySelectorAll('.slide');
+            var slide9 = slides[totalSlides - 1];
+            if (slide9) slide9.style.backgroundImage = "url('Wear the wedding ring.png')";
+            startFlowers();
         }
 
-        // Step 1: Show phone input after clicking accept
-        function showPhoneInput() {
-            document.getElementById('ringAcceptBtn').style.display = 'none';
-            document.getElementById('phoneInputBox').style.display = 'block';
-            document.getElementById('benPhoneInput').focus();
-        }
-
-        // Step 2: Confirm phone and activate chat
-        function confirmPhone() {
-            var phone = document.getElementById('benPhoneInput').value.trim();
-            if (!phone || phone.length < 9) {
-                document.getElementById('phoneStatus').textContent = 'กรุณาใส่เบอร์โทรให้ถูกต้อง';
-                return;
-            }
-            document.getElementById('phoneStatus').textContent = '';
-            // Save phone + ring acceptance to Firestore
+        // Accept ring: send "แต่งค่ะ" + ring image in chat, then open chat
+        function acceptRing() {
+            var btn = document.getElementById('ringAcceptBtn');
+            btn.disabled = true;
+            btn.textContent = '💍 กำลังส่ง...';
+            // Send text message first
             db.collection('messages').add({
-                text: '💍 เบนรับแหวนแล้ว',
+                text: 'แต่งค่ะ 💍',
                 from: 'ben',
-                phone: phone,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                // Then send ring image
+                return db.collection('messages').add({
+                    text: '',
+                    image: 'Wear the wedding ring.png',
+                    from: 'ben',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
             }).then(function() {
                 activateChatFab();
                 startFullChatListener();
+                openFullChat();
             }).catch(function() {
                 activateChatFab();
                 startFullChatListener();
+                openFullChat();
             });
         }
 
@@ -2420,6 +2508,13 @@
         function submitAdminPassword() {
             if (document.getElementById('adminPassword').value === 'jdl999*') {
                 sessionStorage.setItem('adminAuth', 'true');
+                // หยุดเพลงและลบ listener
+                var audio = document.getElementById('bgMusic');
+                audio.pause();
+                audio.currentTime = 0;
+                document.removeEventListener('click', startMusic);
+                document.removeEventListener('touchstart', startMusic);
+                document.removeEventListener('scroll', startMusic);
                 closeAdminModal();
                 showAdminFab();
                 startAdminFullChatListener();
@@ -2443,6 +2538,40 @@
 
         function closeAdmin() {
             document.getElementById('adminPanel').classList.remove('show');
+        }
+
+        function clearAllData() {
+            if (!confirm('ล้างข้อมูลทั้งหมด? (messages, visits, edits)')) return;
+            var status = document.getElementById('clearStatus');
+            status.textContent = 'กำลังลบ...';
+            var batch = db.batch();
+            var collections = ['messages', 'visits', 'edits'];
+            var promises = collections.map(function(col) {
+                return db.collection(col).get().then(function(snap) {
+                    snap.forEach(function(doc) { batch.delete(doc.ref); });
+                });
+            });
+            Promise.all(promises).then(function() {
+                return batch.commit();
+            }).then(function() {
+                status.textContent = 'ล้างข้อมูลสำเร็จ!';
+                status.style.color = '#27ae60';
+                // Reset UI
+                document.getElementById('ringProposal').style.display = '';
+                document.getElementById('ringAccepted').classList.remove('show');
+                var ringBtn = document.getElementById('ringAcceptBtn');
+                ringBtn.disabled = false;
+                ringBtn.textContent = '💍 รับ';
+                document.getElementById('chatFab').classList.remove('show');
+                // Reset slide 9 background
+                var slides = document.querySelectorAll('.slide');
+                slides[totalSlides - 1].style.backgroundImage = "url('Please Mary Me.png')";
+                // Reload admin data
+                loadAdminData();
+                setTimeout(function() { status.textContent = ''; }, 3000);
+            }).catch(function(err) {
+                status.textContent = 'เกิดข้อผิดพลาด: ' + err.message;
+            });
         }
 
         // ===== Admin Tabs =====
