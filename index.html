@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFF8F0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta property="og:title" content="ถึง เบนนี่ ที่รัก">
+    <meta property="og:description" content="จดหมายจากใจ...ถึงคนที่รักที่สุด">
+    <title>ถึง เบนนี่ ที่รัก</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', 'Prompt', sans-serif;
+            background: #FFF8F0;
+            color: #2D2420;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('Background.jpg') 75% center/cover no-repeat;
+            opacity: 0.12;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Floating Hearts Animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-family: 'Sarabun', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #fff;
+            background: var(--balloon-color, #F4B8D4);
+            padding: 10px 18px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.3;
+            animation: balloonFloat linear infinite;
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: inset -8px -6px 12px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .heart::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid var(--balloon-color, #F4B8D4);
+        }
+
+        @keyframes balloonFloat {
+            0% {
+                transform: translateY(0) scale(0.3) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.85;
+                transform: translateY(-8vh) scale(1) rotate(-3deg);
+            }
+            50% {
+                transform: translateY(-55vh) scale(0.95) rotate(3deg);
+            }
+            85% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-115vh) scale(0.8) rotate(-2deg);
+                opacity: 0;
+            }
+        }
+
+        /* Sparkle particles */
+        .sparkle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #3A7BC8;
+            border-radius: 50;
+            pointer-events: none;
+            z-index: 0;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px 20px 60px;
+            background: radial-gradient(ellipse at center, rgba(58, 123, 200, 0.15) 0%, transparent 70%);
+        }
+
+        .hero-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #3A7BC8, #2E6AB5, #3A7BC8, #5B9BD5);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite, fadeInDown 1.5s ease-out;
+            text-shadow: none;
+            filter: drop-shadow(0 0 30px rgba(58, 123, 200, 0.3));
+            margin-bottom: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-heart {
+            animation: fadeIn 2s ease-out;
+            margin-bottom: 30px;
+        }
+        .hero-photo {
+            width: clamp(120px, 35vw, 180px);
+            height: clamp(120px, 35vw, 180px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(58, 123, 200, 0.3);
+            box-shadow: 0 8px 30px rgba(46, 106, 181, 0.2);
+        }
+        .music-toggle-btn {
+            background: rgba(58, 123, 200, 0.1);
+            border: 1px solid rgba(58, 123, 200, 0.25);
+            color: #3A7BC8;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            animation: fadeIn 2.5s ease-out;
+        }
+        .music-toggle-btn:hover {
+            background: rgba(58, 123, 200, 0.2);
+        }
+        .music-toggle-btn.playing {
+            background: rgba(58, 123, 200, 0.15);
+            box-shadow: 0 0 15px rgba(58, 123, 200, 0.2);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            color: rgba(60, 50, 45, 0.8);
+            font-weight: 300;
+            animation: fadeIn 2.5s ease-out;
+            letter-spacing: 2px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Video Section */
+        .video-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, transparent, rgba(58, 123, 200, 0.08), transparent);
+        }
+
+        .section-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: #3A7BC8;
+            margin-bottom: 30px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            text-decoration: none;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(46, 106, 181, 0.35);
+            transition: all 0.3s ease;
+        }
+        .youtube-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(46, 106, 181, 0.5);
+        }
+        .yt-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        /* Letter Section */
+        .letter-section {
+            position: relative;
+            z-index: 1;
+            padding: 80px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .letter {
+            max-width: 700px;
+            width: 100%;
+            background: linear-gradient(135deg, #FFFFFF, #FFF5F0, #FFFFFF);
+            border: 1px solid rgba(58, 123, 200, 0.15);
+            border-radius: 20px;
+            padding: clamp(30px, 6vw, 60px);
+            position: relative;
+            box-shadow: 0 30px 80px rgba(46, 106, 181, 0.15), inset 0 1px 0 rgba(58, 123, 200, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .letter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid rgba(58, 123, 200, 0.08);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .letter-date {
+            text-align: center;
+            color: rgba(80, 65, 58, 0.5);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .letter-header {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            color: #3A7BC8;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .letter-to {
+            text-align: center;
+            color: #E8B888;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .letter-purpose {
+            background: rgba(46, 106, 181, 0.08);
+            border-left: 3px solid #2E6AB5;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .letter-purpose p {
+            margin: 5px 0;
+            font-weight: 400;
+        }
+
+        .letter p {
+            line-height: 2;
+            margin-bottom: 15px;
+            font-weight: 300;
+            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+            color: #3D3230;
+        }
+
+        .letter .emphasis {
+            color: #3A7BC8;
+            font-weight: 600;
+        }
+
+        .letter .quote {
+            color: #E8B888;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .letter .dots {
+            color: rgba(80, 65, 58, 0.5);
+        }
+
+        .letter .section-break {
+            text-align: center;
+            margin: 40px 0;
+            color: rgba(58, 123, 200, 0.3);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        .comparison-block {
+            background: rgba(58, 123, 200, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-block .topic {
+            font-family: 'Prompt', sans-serif;
+            color: #3A7BC8;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .comparison-row {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(58, 123, 200, 0.1);
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-row .label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .comparison-row .label.pi {
+            color: #7EB8E8;
+        }
+
+        .comparison-row .label.ben {
+            color: #E0A0C0;
+        }
+
+        .plan-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .plan-list li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            line-height: 1.8;
+            color: #3D3230;
+        }
+
+        .plan-list li::before {
+            content: '🌟';
+            position: absolute;
+            left: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(46, 106, 181, 0.1), rgba(232, 184, 136, 0.05));
+            border: 1px solid rgba(58, 123, 200, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .highlight-box p {
+            font-size: 1.1rem !important;
+            color: #E8B888 !important;
+            font-weight: 400 !important;
+            line-height: 2.2 !important;
+        }
+
+        .slide-container {
+            position: relative;
+            width: 100%;
+            border: 1.5px solid rgba(58, 123, 200, 0.15);
+            border-radius: 20px;
+            background: rgba(255, 248, 240, 0.65);
+            backdrop-filter: blur(8px);
+            padding-bottom: 55px;
+            box-shadow: 0 4px 24px rgba(58, 123, 200, 0.08);
+            overflow: hidden;
+        }
+        .slide-track {
+            position: relative;
+        }
+        .slide {
+            padding: 15px 18px 0;
+            box-sizing: border-box;
+            display: none;
+        }
+        .slide.active {
+            display: block;
+            min-height: inherit;
+        }
+        .slide-img {
+            display: block;
+            width: 40%;
+            max-width: 150px;
+            max-height: 140px;
+            object-fit: cover;
+            border-radius: 14px;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 15px rgba(46, 106, 181, 0.12);
+        }
+        .slide-content {
+            text-align: center;
+            padding: 0 8px 10px;
+            line-height: 2;
+        }
+        .slide-content p {
+            margin: 0 0 10px;
+        }
+        .slide-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 0 5px;
+        }
+        .slide-arrow {
+            position: absolute;
+            bottom: 10px;
+            background: rgba(58, 123, 200, 0.1);
+            border: 1px solid rgba(58, 123, 200, 0.25);
+            color: #3A7BC8;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .slide-arrow.arrow-left {
+            left: 15px;
+        }
+        .slide-arrow.arrow-right {
+            right: 15px;
+        }
+        .slide-arrow:hover {
+            background: rgba(58, 123, 200, 0.25);
+        }
+        .slide-arrow:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+        .slide-dots {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .slide-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(58, 123, 200, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .slide-dot.active {
+            background: #3A7BC8;
+            width: 22px;
+            border-radius: 4px;
+        }
+        .slide-counter {
+            color: rgba(60, 50, 45, 0.5);
+            font-size: 0.85rem;
+            text-align: center;
+            padding-bottom: 8px;
+        }
+        @keyframes pageOpenOut {
+            0% { opacity: 1; filter: blur(0); }
+            100% { opacity: 0; filter: blur(6px); }
+        }
+        @keyframes pageBlurIn {
+            0% { opacity: 0; filter: blur(12px); }
+            40% { opacity: 1; filter: blur(6px); }
+            100% { opacity: 1; filter: blur(0); }
+        }
+        @keyframes pageCloseOut {
+            0% { opacity: 1; filter: blur(0); }
+            100% { opacity: 0; filter: blur(6px); }
+        }
+        @keyframes pageBlurInReverse {
+            0% { opacity: 0; filter: blur(12px); }
+            40% { opacity: 1; filter: blur(6px); }
+            100% { opacity: 1; filter: blur(0); }
+        }
+        .slide.page-out-fwd,
+        .slide.page-out-back {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+        }
+        .slide.page-out-fwd {
+            animation: pageOpenOut 0.4s ease forwards;
+        }
+        .slide.page-in-fwd {
+            display: block;
+            animation: pageBlurIn 0.7s ease forwards;
+            opacity: 0;
+        }
+        .slide.page-out-back {
+            animation: pageCloseOut 0.4s ease forwards;
+        }
+        .slide.page-in-back {
+            display: block;
+            animation: pageBlurInReverse 0.7s ease forwards;
+            opacity: 0;
+        }
+
+        .final-message {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(58, 123, 200, 0.15);
+        }
+
+        .final-message p {
+            font-size: 1.1rem !important;
+            line-height: 2.2 !important;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, transparent, rgba(58, 123, 200, 0.1));
+        }
+
+        .footer-heart {
+            font-size: 40px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        .footer p {
+            color: rgba(80, 65, 58, 0.5);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* Mobile-first responsive */
+        @media (max-width: 480px) {
+            .hero-heart {
+                font-size: 60px;
+            }
+            .letter {
+                padding: 25px 18px;
+                border-radius: 16px;
+            }
+            .letter::before {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+            }
+            .comparison-block {
+                padding: 12px;
+            }
+            .video-section {
+                padding: 40px 15px;
+            }
+            .letter-section {
+                padding: 40px 12px;
+            }
+            .highlight-box {
+                padding: 18px 15px;
+            }
+            .section-break {
+                margin: 25px 0 !important;
+            }
+        }
+
+        /* Safe area for notch phones */
+        @supports (padding: env(safe-area-inset-top)) {
+            .hero {
+                padding-top: calc(20px + env(safe-area-inset-top));
+            }
+            .footer {
+                padding-bottom: calc(60px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Choice Gate (inside hero) */
+        .gate-lock {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(46, 106, 181, 0.4));
+        }
+
+        .gate-subtitle {
+            color: rgba(60, 50, 45, 0.7);
+            font-size: clamp(1rem, 3vw, 1.15rem);
+            font-weight: 300;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .choice-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .choice-btn {
+            padding: 18px 30px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .choice-love {
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            box-shadow: 0 8px 30px rgba(46, 106, 181, 0.35);
+        }
+
+        .choice-love:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(46, 106, 181, 0.5);
+        }
+
+        .choice-love:active {
+            transform: translateY(0);
+        }
+
+        .choice-goodbye {
+            background: rgba(58, 123, 200, 0.08);
+            color: rgba(60, 50, 45, 0.5);
+            border: 1px solid rgba(58, 123, 200, 0.15);
+            box-shadow: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        .choice-goodbye:hover {
+            background: rgba(58, 123, 200, 0.12);
+            color: rgba(60, 50, 45, 0.7);
+        }
+
+        /* Goodbye page */
+        .goodbye-content {
+            display: none;
+            opacity: 0;
+        }
+
+        .goodbye-content.show {
+            display: block;
+            animation: revealContent 1.5s ease forwards;
+        }
+
+        .goodbye-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .goodbye-heart {
+            font-size: 80px;
+            margin-bottom: 30px;
+            opacity: 0.6;
+        }
+
+        .goodbye-text {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: rgba(60, 50, 45, 0.6);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .goodbye-sub {
+            color: rgba(60, 50, 45, 0.3);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .undo-btn {
+            margin-top: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: rgba(58, 123, 200, 0.06);
+            border: 1px solid rgba(58, 123, 200, 0.2);
+            border-radius: 50px;
+            color: rgba(60, 50, 45, 0.5);
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .undo-btn:hover {
+            background: rgba(46, 106, 181, 0.15);
+            border-color: rgba(58, 123, 200, 0.4);
+            color: #3A7BC8;
+        }
+
+        .undo-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Ring Proposal */
+        .ring-proposal {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(58, 123, 200, 0.15);
+            text-align: center;
+        }
+
+        .ring-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.3rem;
+            color: #E8B888;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .ring-image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .ring-image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            background: linear-gradient(135deg, #E8B888, #3A7BC8, #E8B888);
+            border-radius: 20px;
+            z-index: -1;
+            animation: gradientShift 4s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        .ring-image {
+            width: 100%;
+            max-width: 360px;
+            border-radius: 16px;
+            display: block;
+            box-shadow: 0 15px 40px rgba(46, 106, 181, 0.2);
+        }
+
+        .ring-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(232, 184, 136, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .ring-subtitle {
+            color: rgba(80, 65, 58, 0.6);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .ring-accept-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #E8B888, #D4A070);
+            color: white;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(232, 184, 136, 0.4);
+            animation: acceptPulse 2s ease-in-out infinite;
+        }
+
+        .ring-accept-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 14px 40px rgba(232, 184, 136, 0.55);
+        }
+
+        @keyframes acceptPulse {
+            0%, 100% { box-shadow: 0 8px 30px rgba(232, 184, 136, 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(232, 184, 136, 0.6), 0 0 0 8px rgba(232, 184, 136, 0.1); }
+        }
+
+        .phone-input-box {
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+        .phone-label {
+            font-family: 'Prompt', sans-serif;
+            color: rgba(80, 65, 58, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        .phone-input {
+            width: 100%;
+            max-width: 280px;
+            padding: 14px 20px;
+            background: rgba(58, 123, 200, 0.06);
+            border: 2px solid rgba(232, 184, 136, 0.3);
+            border-radius: 50px;
+            color: #2D2420;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 1.2rem;
+            text-align: center;
+            letter-spacing: 2px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .phone-input:focus {
+            border-color: #E8B888;
+            box-shadow: 0 0 15px rgba(232, 184, 136, 0.2);
+        }
+        .phone-input::placeholder {
+            color: rgba(60, 50, 45, 0.3);
+            letter-spacing: 1px;
+        }
+        .phone-confirm-btn {
+            animation: none;
+        }
+        .phone-status {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #E88080;
+        }
+
+        .ring-accepted {
+            display: none;
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(58, 123, 200, 0.15);
+            animation: fadeIn 1s ease;
+        }
+        .ring-accepted.show { display: block; }
+        .ring-accepted-icon { font-size: 3rem; margin-bottom: 15px; }
+        .ring-accepted-text {
+            font-family: 'Prompt', sans-serif;
+            color: #E8B888;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .ring-accepted-sub {
+            color: rgba(80, 65, 58, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Footer secret link */
+        .footer-secret {
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Admin overlay */
+        .admin-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-overlay.show { display: flex; }
+        .admin-modal {
+            background: #FFFFFF;
+            border: 1px solid rgba(58,123,200,0.2);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+        }
+        .admin-modal-title {
+            color: #3A7BC8;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .admin-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(58,123,200,0.06);
+            border: 1px solid rgba(58,123,200,0.25);
+            border-radius: 8px;
+            color: #2D2420;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        .admin-input:focus { border-color: #3A7BC8; }
+        .admin-modal-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+        }
+        .admin-cancel {
+            background: rgba(58,123,200,0.1);
+            color: rgba(60,50,45,0.6);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #FFF8F0;
+            z-index: 10000;
+            overflow-y: auto;
+        }
+        .admin-panel.show { display: block; }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(58,123,200,0.15);
+        }
+        .admin-header h2 {
+            font-family: 'Prompt', sans-serif;
+            color: #3A7BC8;
+            font-size: 1.3rem;
+        }
+        .admin-close {
+            background: none;
+            border: 1px solid rgba(60,50,45,0.2);
+            color: rgba(60,50,45,0.6);
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .admin-body { padding: 25px; }
+
+        /* Decision Chain */
+        .chain-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+        .chain-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(58,123,200,0.05);
+            border: 2px solid rgba(58,123,200,0.12);
+            border-radius: 14px;
+            transition: all 0.5s ease;
+        }
+        .chain-step.active {
+            border-color: #3A7BC8;
+            background: rgba(58,123,200,0.1);
+        }
+        .chain-step.done {
+            border-color: #88C8A0;
+            background: rgba(136,200,160,0.08);
+        }
+        .chain-step.fail {
+            border-color: #E88080;
+            background: rgba(232,128,128,0.06);
+        }
+        .chain-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+        .chain-info {
+            flex: 1;
+        }
+        .chain-label {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2D2420;
+            margin-bottom: 2px;
+        }
+        .chain-status {
+            font-size: 0.85rem;
+            color: rgba(60,50,45,0.4);
+        }
+        .chain-status.success { color: #5DA87A; font-weight: 600; }
+        .chain-status.fail { color: #E88080; font-weight: 600; }
+        .chain-phone-number.success {
+            font-size: 1.3rem;
+            color: #3A7BC8;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .chain-line {
+            width: 3px;
+            height: 24px;
+            background: rgba(58,123,200,0.15);
+            transition: background 0.5s ease;
+        }
+        .chain-line.done {
+            background: #88C8A0;
+        }
+        .chain-line.fail {
+            background: #E88080;
+        }
+
+        /* Admin Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(58,123,200,0.15);
+        }
+        .admin-tab {
+            flex: 1;
+            padding: 12px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            background: none;
+            border: none;
+            color: rgba(60,50,45,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        .admin-tab.active {
+            color: #3A7BC8;
+            border-bottom-color: #3A7BC8;
+        }
+        .admin-tab-content { display: none; }
+        .admin-tab-content.active { display: block; }
+
+        /* Edit Forms */
+        .edit-section {
+            background: rgba(58,123,200,0.05);
+            border: 1px solid rgba(58,123,200,0.12);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .edit-section-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #3A7BC8;
+            margin-bottom: 14px;
+        }
+        .edit-group {
+            margin-bottom: 12px;
+        }
+        .edit-label {
+            font-size: 0.8rem;
+            color: rgba(60,50,45,0.5);
+            margin-bottom: 4px;
+            display: block;
+        }
+        .edit-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(58,123,200,0.06);
+            border: 1px solid rgba(58,123,200,0.2);
+            border-radius: 10px;
+            color: #2D2420;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .edit-input:focus {
+            border-color: #3A7BC8;
+        }
+        .edit-save {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            float: right;
+            transition: all 0.3s ease;
+        }
+        .edit-save:hover {
+            transform: translateY(-2px);
+        }
+        .edit-save:disabled {
+            opacity: 0.5;
+            cursor: default;
+            transform: none;
+        }
+        .edit-status {
+            font-size: 0.8rem;
+            color: #5DA87A;
+            margin-top: 8px;
+            clear: both;
+            text-align: right;
+        }
+
+        /* Hidden content (revealed after password) */
+        .locked-content {
+            display: none;
+            opacity: 0;
+        }
+
+        .locked-content.unlocked {
+            display: block;
+            animation: revealContent 1.5s ease forwards;
+        }
+
+        @keyframes revealContent {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chat bubble shared */
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        .chat-bubble.ben {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-bubble.admin {
+            align-self: flex-start;
+            background: rgba(58,123,200,0.08);
+            border: 1px solid rgba(58,123,200,0.15);
+            color: #2D2420;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-bubble .chat-time {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            display: block;
+        }
+        .chat-bubble .chat-sender {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+            display: block;
+        }
+        .chat-bubble.ben .chat-sender { color: rgba(255,255,255,0.7); }
+        .chat-bubble.admin .chat-sender { color: #E8B888; }
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            align-items: flex-end;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(58,123,200,0.06);
+            border: 1px solid rgba(58,123,200,0.2);
+            border-radius: 20px;
+            color: #2D2420;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            line-height: 1.5;
+            transition: border-color 0.3s ease;
+        }
+        .chat-input::placeholder { color: rgba(60,50,45,0.3); }
+        .chat-input:focus { border-color: #3A7BC8; box-shadow: 0 0 15px rgba(46,106,181,0.1); }
+        .chat-send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(46,106,181,0.25);
+        }
+        .chat-send-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46,106,181,0.35); }
+        .chat-send-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+        /* Floating Action Button (Chat) */
+        .chat-fab {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            font-size: 1.6rem;
+            cursor: pointer;
+            z-index: 8000;
+            box-shadow: 0 6px 25px rgba(46,106,181,0.4);
+            transition: all 0.3s ease;
+            animation: fabPulse 2s ease-in-out infinite;
+            overflow: visible;
+        }
+        .chat-fab:hover { transform: scale(1.1); box-shadow: 0 8px 35px rgba(46,106,181,0.5); }
+        .chat-fab.show { display: flex; align-items: center; justify-content: center; }
+        @keyframes fabPulse {
+            0%, 100% { box-shadow: 0 6px 25px rgba(46,106,181,0.4); }
+            50% { box-shadow: 0 6px 35px rgba(46,106,181,0.6), 0 0 0 8px rgba(46,106,181,0.1); }
+        }
+        .fab-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 6px;
+            background: #E88080;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 2px solid #FFF8F0;
+            z-index: 10002;
+            pointer-events: none;
+        }
+        .fab-badge.show { display: flex; }
+        .admin-chat-fab {
+            bottom: 30px;
+            right: 30px;
+            z-index: 10001;
+            background: linear-gradient(135deg, #E8B888, #D4A070);
+            box-shadow: 0 6px 25px rgba(232,184,136,0.4);
+        }
+        .admin-chat-fab:hover { box-shadow: 0 8px 35px rgba(232,184,136,0.5); }
+        @keyframes adminFabPulse {
+            0%, 100% { box-shadow: 0 6px 25px rgba(232,184,136,0.4); }
+            50% { box-shadow: 0 6px 35px rgba(232,184,136,0.6), 0 0 0 8px rgba(232,184,136,0.1); }
+        }
+        .admin-chat-fab { animation: adminFabPulse 2s ease-in-out infinite; }
+        #adminFullChatOverlay { z-index: 10002; }
+
+        /* Fullscreen Chat Overlay */
+        .fullchat-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #FFF8F0;
+            z-index: 9000;
+            flex-direction: column;
+        }
+        .fullchat-overlay.show { display: flex; }
+        .fullchat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(58,123,200,0.15);
+            background: rgba(255,248,240,0.95);
+        }
+        .fullchat-back {
+            background: none;
+            border: 1px solid rgba(60,50,45,0.2);
+            color: #3A7BC8;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .fullchat-back:hover { background: rgba(46,106,181,0.15); }
+        .fullchat-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.1rem;
+            color: #E8B888;
+            font-weight: 600;
+        }
+        .fullchat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .fullchat-empty {
+            color: rgba(60,50,45,0.3);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.95rem;
+        }
+        .fullchat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px;
+            border-top: 1px solid rgba(58,123,200,0.15);
+            background: rgba(255,248,240,0.95);
+            align-items: flex-end;
+        }
+        @supports (padding: env(safe-area-inset-bottom)) {
+            .fullchat-input-area {
+                padding-bottom: calc(12px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* (ring-accepted CSS is above in ring-proposal section) */
+        .ring-accepted-placeholder {
+            display: none;
+        }
+
+        /* Admin fullscreen chat bubble overrides */
+        .admin-chat-messages .chat-bubble.admin {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            color: white;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 16px;
+            border: none;
+        }
+        .admin-chat-messages .chat-bubble.ben {
+            align-self: flex-start;
+            background: rgba(232,184,136,0.1);
+            border: 1px solid rgba(232,184,136,0.2);
+            color: #2D2420;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 16px;
+        }
+        .admin-chat-messages .chat-bubble.admin .chat-sender { color: rgba(255,255,255,0.7); }
+        .admin-chat-messages .chat-bubble.ben .chat-sender { color: #E8B888; }
+
+        /* Touch feedback */
+        .scroll-indicator:active {
+            transform: scale(0.9);
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Hero + Password Gate (same page) -->
+    <section class="hero" id="hero">
+        <div class="hero-heart" id="heroIcon"><img src="Header Picture.jpg" alt="Header" class="hero-photo"></div>
+        <audio id="bgMusic" src="Last Message (V2).mp3" preload="auto" loop></audio>
+        <button class="music-toggle-btn" id="musicBtn" onclick="toggleMusic()">
+            <span id="musicIcon">&#10074;&#10074;</span> <span id="musicLabel">กำลังเล่น...</span>
+        </button>
+        <h1 class="hero-title" id="heroTitle">ถึง เบนนี่ ที่รัก</h1>
+        <p class="hero-subtitle footer-secret" id="heroSecret">จดหมายจากใจ...ถึงคนที่รักที่สุด</p>
+
+        <div class="sorry-text" style="margin-top: 40px;">
+            <p style="font-family:'Prompt',sans-serif; font-size:clamp(1.8rem,5vw,2.5rem); font-weight:700; color:#3A7BC8; margin:0; line-height:1.3;">I'm so Sorry</p>
+            <p style="font-family:'Prompt',sans-serif; font-size:clamp(1.2rem,3.5vw,1.6rem); font-weight:400; color:rgba(60,50,45,0.6); margin:8px 0 0; letter-spacing:2px;">pleasesssssssss...</p>
+        </div>
+        <p class="gate-subtitle" style="margin-top: 30px;">โปรด <span style="color:#E8B888;">"เลือก"</span> คำตอบเดียวในใจ</p>
+        <div class="choice-buttons">
+            <button class="choice-btn choice-love" id="btnLove" onclick="chooseLove()">เบนยังรักพี่โจ้อยู่</button>
+            <button class="choice-btn choice-goodbye" id="btnGoodbye" onclick="chooseGoodbye()">เบนสบายดี คนใหม่เข้าใจเบนทุกอย่าง<br>ไม่ต้องเป็นห่วง</button>
+        </div>
+    </section>
+
+    <!-- Locked Content: Video + Letter (hidden until password correct) -->
+    <div class="locked-content" id="lockedContent">
+
+    <!-- Music Section removed - moved to Hero -->
+
+    <!-- Letter Section -->
+    <section class="letter-section" id="letter">
+        <div class="letter visible">
+        <div class="slide-container" id="slideContainer">
+            <!-- Navigation -->
+            <button class="slide-arrow arrow-left" id="slidePrev" onclick="prevSlide()">&#9664;</button>
+            <button class="slide-arrow arrow-right" id="slideNext" onclick="nextSlide()">&#9654;</button>
+            <div class="slide-nav">
+                <div class="slide-dots" id="slideDots"></div>
+            </div>
+            <div class="slide-counter" id="slideCounter">1 / 9</div>
+            <div class="slide-track" id="slideTrack">
+
+            <!-- หน้า 1: เปิดจดหมาย -->
+            <div class="slide active" style="background:url('Miniheart2.png') center/80% auto no-repeat; border-radius:18px; position:relative;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div class="slide-content" style="position:relative;z-index:1;">
+                    <p class="letter-date">วันที่ 9 มีนาคม 2569</p>
+                    <p style="font-family:'Prompt',sans-serif; font-size:1.2rem; color:#3A7BC8; font-weight:600;">จดหมายฉบับสุดท้าย<br>ถึงคนที่ผมรักที่สุด</p>
+                    <p>ถึง เบนนี่ ที่รัก 🤍</p>
+                    <p>จดหมายฉบับนี้ พี่เขียนขึ้นมา<br>เพื่อ <span class="emphasis">"ขอโทษ"</span> ในทุกสิ่งที่พี่ได้ทำไป<br>และเพื่อ <span class="emphasis">"ขอโอกาสเริ่มต้นใหม่"</span> อีกครั้ง</p>
+                </div>
+            </div>
+
+            <!-- หน้า 2: ไม่เข้าใจ -->
+            <div class="slide">
+                <img src="slide-2.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p><span class="quote">พี่พึ่งรู้ว่า<br>"ตัวกูเองหล่ะ ที่ไม่เข้าใจอะไรเลย"</span></p>
+                    <p>ตัวพี่เองเป็น <span class="emphasis">"คนที่ผิด"</span> มาตลอด</p>
+                    <p>…ไม่เข้าใจชีวิต<br>…ไม่เข้าใจความรัก<br>…<span style="color:#E8B888;font-weight:600;">ไม่เข้าใจ เบน</span></p>
+                    <p>มองแต่เป้าหมาย ไม่มองคนข้างกาย<br><span style="color:#E8B888;font-weight:600;">สนใจแต่หลักการงี่เง่า</span><br>เอาแต่ใจตัวเอง</p>
+                </div>
+            </div>
+
+            <!-- หน้า 3: Ego -->
+            <div class="slide">
+                <img src="slide-3.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p>เบน มองโลกบริสุทธิ์<br>แต่พี่กลับยัดความคิดของพี่ใส่หัวเบน<br>ไม่เคยวางใจในมุมมองของเบนเลย</p>
+                    <p><span class="emphasis">Ego</span> ตัวใหญ่ บังตาพี่ไว้<br>ไม่ให้เข้าใจความรักของเบน</p>
+                    <p>วันนี้ พี่ใช้ชีวิตเรียบง่าย<br>ไม่เร่ง ไม่รีบ ไม่ต้องรวย ไม่ต้องเก่ง<br>แล้วพี่ก็ได้เข้าใจ</p>
+                    <p><span class="emphasis">…แต่มันคงสายไป</span></p>
+                </div>
+            </div>
+
+            <!-- หน้า 4: ทำร้าย -->
+            <div class="slide">
+                <img src="slide-4.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p><span class="quote">พี่พึ่งรู้ว่า<br>"กูได้ทำร้ายผู้หญิงที่รักกูที่สุด"</span></p>
+                    <p>เบน <span class="emphasis">ยอม</span>… มากแค่ไหน<br>เบน <span class="emphasis">เสียสละ</span>… มากแค่ไหน<br>เบน <span class="emphasis">เจ็บปวด</span>… มากแค่ไหน</p>
+                    <p>ทั้งที่เบนต้องการแค่<br><span class="emphasis">ความเชื่อใจ ความสบายใจ</span><br>และ <span class="emphasis">คำขอโทษ</span></p>
+                    <p>แค่การทำให้เบนรู้สึกว่าแฟนคือ <span class="emphasis">"Safe Zone"</span><br>พี่ยังทำไม่ได้</p>
+                </div>
+            </div>
+
+            <!-- หน้า 5: มุมมอง -->
+            <div class="slide">
+                <img src="slide-5.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p><span class="quote">"เบนคิดแบบนี้"</span></p>
+                    <p>พี่คิดว่า แค่มอง ไม่ได้มีอะไร<br>แต่เบนคิดว่า… <span class="emphasis">ฉันไม่สวยพอเหรอ</span></p>
+                    <p>พี่คิดว่า อธิบายเยอะแล้ว<br>แต่เบนคิดว่า… <span class="emphasis">แค่ขอโทษ ฉันก็ยอมแล้ว</span></p>
+                    <p>พี่คิดว่า ต้องทำงานเพื่ออนาคต<br>แต่เบนคิดว่า… <span class="emphasis">แค่อยากอยู่กับคนที่รัก</span></p>
+                    <p>เบนต้องการแค่<br><span class="emphasis">ความใส่ใจจากคนรัก เท่านั้นเอง</span></p>
+                </div>
+            </div>
+
+            <!-- หน้า 6: ความทรงจำ -->
+            <div class="slide">
+                <img src="slide-6.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p>เบน เป็น<span style="color:#E8B888;font-weight:600;">รักแรกพบ</span>ของพี่<br>พี่<span style="color:#E8B888;font-weight:600;">ตกหลุมรัก</span>ตั้งแต่ครั้งแรกที่เห็น</p>
+                    <p>พี่ยังจำ… ตอน<span style="color:#E8B888;font-weight:600;">ฝากหมูยอ</span>ไปให้<br>พี่ยังจำ… ที่เบนขอรูปไปเป็นกำลังใจ<br>พี่ยังจำ… <span style="color:#E8B888;font-weight:600;">จูบแรก และจูบสุดท้าย</span><br>พี่ยังจำ… <span style="color:#E8B888;font-weight:600;">แววตาดีใจตอนเราแต่งงาน</span></p>
+                    <p>ทุกความทรงจำกับเบน<br><span style="color:#E8B888;font-weight:600;">พี่ไม่เคยลืมเลย</span></p>
+                </div>
+            </div>
+
+            <!-- หน้า 7: สัญญา -->
+            <div class="slide">
+                <img src="slide-7.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p><span class="emphasis">เบน เป็น รักแท้ของพี่</span></p>
+                    <p>ถ้ามันเป็นไปได้<br>พี่จะทุ่มเททุกช่วงเวลา<br>ให้ <span class="emphasis">แม่พี่ และ เบน</span></p>
+                    <p style="font-size:1.25rem;color:#E8B888;font-weight:600;">พี่จะมอบ 24 ชั่วโมงของพี่ให้เบน</p>
+                    <p>พี่เขียนโปรแกรม เบนขายเสื้อผ้า<br>เงินที่ได้ เบนถือทั้งหมด<br>ปิด Social ทั้งหมด<br>ไม่ไปไหน ถ้าไม่มีเบน<br>เที่ยวด้วยกัน ทุก 3 เดือน</p>
+                    <p><span class="emphasis">พี่พร้อมมอบทุกช่วงเวลา<br>แชร์ความสุขกับเบนจนวันตาย</span></p>
+                </div>
+            </div>
+
+            <!-- หน้า 8: สุดท้าย -->
+            <div class="slide">
+                <img src="slide-8.jpg" alt="" class="slide-img">
+                <div class="slide-content">
+                    <p>เบนเป็น…<br>ผู้หญิงที่<span class="emphasis">สวยที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่<span class="emphasis">ดีที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่พี่อยากกอดคนเดียว</p>
+                    <p>ถ้ามีโอกาสอีกครั้ง<br>พี่จะไม่ปล่อยเบนหลุดมืออีก</p>
+                    <p style="color: #E8B888;">พี่อาจจะไม่ใช่คนที่ดีที่สุด<br>แต่พี่พร้อมแก้ไขทุกสิ่งที่ทำพลาด</p>
+                    <p><span class="emphasis">"พี่อยากได้เบนคืนมา<br>เป็นของพี่คนเดียว"</span></p>
+                    <p style="font-size: 1.2rem;">รักเบนที่สุด 🤍<br><span style="color: #3A7BC8; font-family: 'Prompt', sans-serif; font-weight: 600;">พี่โจ้</span></p>
+                </div>
+            </div>
+
+            <!-- หน้า 9: Ring Proposal -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="ring-proposal" id="ringProposal" style="margin-top:0;">
+                        <div class="ring-title" id="ringTitle">Perfectly Imperfect</div>
+                        <div class="ring-image-wrapper">
+                            <div class="ring-glow"></div>
+                            <img class="ring-image" src="Please Mary Me.png" alt="Wedding Ring">
+                        </div>
+                        <p class="ring-subtitle" id="ringSubtitle">"แต่งงานกับพี่นะ"</p>
+                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showPhoneInput()">
+                            💍 รับ
+                        </button>
+                        <div class="phone-input-box" id="phoneInputBox" style="display:none;">
+                            <p class="phone-label">ใส่เบอร์โทรของเบน เพื่อยืนยันรับแหวน</p>
+                            <input type="tel" class="phone-input" id="benPhoneInput" placeholder="0xx-xxx-xxxx" maxlength="12">
+                            <button class="ring-accept-btn phone-confirm-btn" onclick="confirmPhone()">
+                                ✅ ยืนยัน
+                            </button>
+                            <p class="phone-status" id="phoneStatus"></p>
+                        </div>
+                    </div>
+                    <div class="ring-accepted" id="ringAccepted">
+                        <div class="ring-accepted-icon">💍✨</div>
+                        <div class="ring-accepted-text">เบนรับแหวนแล้ว!</div>
+                        <div class="ring-accepted-sub">กดปุ่ม 💬 มุมขวาล่างเพื่อแชทกับพี่โจ้</div>
+                    </div>
+                </div>
+            </div>
+
+            </div><!-- /slide-track -->
+        </div><!-- /slide-container -->
+        </div>
+    </section>
+
+    </div><!-- end locked-content -->
+
+    <!-- Goodbye Section (shown when choosing goodbye) -->
+    <div class="goodbye-content" id="goodbyeContent">
+        <section class="goodbye-section">
+            <div class="goodbye-heart">💔</div>
+            <h2 class="goodbye-text" id="goodbyeText">ขอให้โชคดี</h2>
+            <p class="goodbye-sub" id="goodbyeSub">พี่จะไม่ลืมเบน...ตลอดไป</p>
+            <button class="undo-btn" onclick="undoChoice()">
+                <svg class="undo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                Undo
+            </button>
+            <a href="https://www.youtube.com/watch?v=tm2N4gntigI" target="_blank" rel="noopener" style="display:inline-block;margin-top:30px;color:rgba(60,50,45,0.4);font-size:0.9rem;text-decoration:none;transition:all 0.3s ease;">
+                <span id="goodbyeLink">🎵 ฟังเพลงสุดท้ายที่พี่อยากให้ฟัง</span>
+            </a>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-heart">🤍</div>
+        <p class="footer-secret" id="footerSecret">From my heart to yours, forever</p>
+    </div>
+
+    <!-- Floating Chat Button (FAB) - Bennie -->
+    <button class="chat-fab" id="chatFab" onclick="openFullChat()">
+        💬
+        <span class="fab-badge" id="benFabBadge"></span>
+    </button>
+
+    <!-- Floating Chat Button (FAB) - Admin -->
+    <button class="chat-fab admin-chat-fab" id="adminChatFab" onclick="openAdminFullChat()">
+        💬
+        <span class="fab-badge" id="adminFabBadge"></span>
+    </button>
+
+    <!-- Fullscreen Chat Overlay - Bennie -->
+    <div class="fullchat-overlay" id="fullChatOverlay">
+        <div class="fullchat-header">
+            <button class="fullchat-back" onclick="closeFullChat()">&#8592;</button>
+            <span class="fullchat-title">💬 แชทกับพี่โจ้</span>
+        </div>
+        <div class="fullchat-messages" id="fullChatMessages">
+            <div class="fullchat-empty">เริ่มแชทกับพี่โจ้...</div>
+        </div>
+        <div class="fullchat-input-area">
+            <textarea class="chat-input" id="fullChatInput" placeholder="พิมพ์ข้อความ..." rows="1"></textarea>
+            <button class="chat-send-btn" id="fullChatSendBtn" onclick="sendFullChatMessage()">➤</button>
+        </div>
+    </div>
+
+    <!-- Fullscreen Chat Overlay - Admin -->
+    <div class="fullchat-overlay" id="adminFullChatOverlay">
+        <div class="fullchat-header">
+            <button class="fullchat-back" onclick="closeAdminFullChat()">&#8592;</button>
+            <span class="fullchat-title">💬 Chat with Bennie</span>
+        </div>
+        <div class="fullchat-messages admin-chat-messages" id="adminFullChatMessages">
+            <div class="fullchat-empty">Waiting for messages...</div>
+        </div>
+        <div class="fullchat-input-area">
+            <textarea class="chat-input" id="adminFullChatInput" placeholder="Reply to Bennie..." rows="1"></textarea>
+            <button class="chat-send-btn" id="adminFullSendBtn" onclick="sendAdminFullMessage()">➤</button>
+        </div>
+    </div>
+
+    <!-- Admin Password Modal -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-modal">
+            <p class="admin-modal-title">Admin Access</p>
+            <input type="password" class="admin-input" id="adminPassword" placeholder="Enter password...">
+            <div style="display:flex;gap:10px;margin-top:15px;">
+                <button class="admin-modal-btn" onclick="submitAdminPassword()">Enter</button>
+                <button class="admin-modal-btn admin-cancel" onclick="closeAdminModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2>Admin Dashboard</h2>
+            <button class="admin-close" onclick="closeAdmin()">x</button>
+        </div>
+        <div class="admin-body">
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchTab('status')">📊 สถานะ</button>
+                <button class="admin-tab" onclick="switchTab('edit')">✏️ แก้ไข</button>
+            </div>
+
+            <!-- Tab 1: Status (Decision Chain) -->
+            <div class="admin-tab-content active" id="tabStatus">
+                <div class="chain-container" id="chainContainer">
+                    <div class="chain-step" id="chainOpen">
+                        <div class="chain-icon">📱</div>
+                        <div class="chain-info">
+                            <div class="chain-label">เปิดหน้าเว็บ</div>
+                            <div class="chain-status" id="chainOpenStatus">รอ...</div>
+                        </div>
+                    </div>
+                    <div class="chain-line" id="chainLine1"></div>
+                    <div class="chain-step" id="chainChoice">
+                        <div class="chain-icon">💌</div>
+                        <div class="chain-info">
+                            <div class="chain-label">เลือกคำตอบ</div>
+                            <div class="chain-status" id="chainChoiceStatus">รอ...</div>
+                        </div>
+                    </div>
+                    <div class="chain-line" id="chainLine2"></div>
+                    <div class="chain-step" id="chainRing">
+                        <div class="chain-icon">💍</div>
+                        <div class="chain-info">
+                            <div class="chain-label">รับแหวน</div>
+                            <div class="chain-status" id="chainRingStatus">รอ...</div>
+                        </div>
+                    </div>
+                    <div class="chain-line" id="chainLine3"></div>
+                    <div class="chain-step" id="chainPhone">
+                        <div class="chain-icon">📞</div>
+                        <div class="chain-info">
+                            <div class="chain-label">เบอร์โทร</div>
+                            <div class="chain-status chain-phone-number" id="chainPhoneStatus">รอ...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Edit Content -->
+            <div class="admin-tab-content" id="tabEdit">
+                <!-- Hero -->
+                <div class="edit-section">
+                    <div class="edit-section-title">🏠 หน้าแรก (Hero)</div>
+                    <div class="edit-group"><label class="edit-label">Icon</label><input class="edit-input" id="editHeroIcon" placeholder="🤍"></div>
+                    <div class="edit-group"><label class="edit-label">Title</label><input class="edit-input" id="editHeroTitle" placeholder="ถึง เบนนี่ ที่รัก"></div>
+                    <div class="edit-group"><label class="edit-label">Subtitle</label><input class="edit-input" id="editHeroSubtitle" placeholder="จดหมายจากใจ..."></div>
+                    <button class="edit-save" onclick="saveSection('hero')">💾 บันทึก</button>
+                    <div class="edit-status" id="statusHero"></div>
+                </div>
+                <!-- Choice -->
+                <div class="edit-section">
+                    <div class="edit-section-title">💌 ปุ่มเลือก</div>
+                    <div class="edit-group"><label class="edit-label">ปุ่มรัก</label><input class="edit-input" id="editLoveText" placeholder="เบนยังรักพี่โจ้อยู่"></div>
+                    <div class="edit-group"><label class="edit-label">ปุ่ม Goodbye</label><input class="edit-input" id="editGoodbyeText" placeholder="เบนสบายดี..."></div>
+                    <button class="edit-save" onclick="saveSection('choice')">💾 บันทึก</button>
+                    <div class="edit-status" id="statusChoice"></div>
+                </div>
+                <!-- Music -->
+                <div class="edit-section">
+                    <div class="edit-section-title">🎵 เพลง</div>
+                    <div class="edit-group"><label class="edit-label">Title</label><input class="edit-input" id="editMusicTitle" placeholder="เพลงนี้...พี่อยากให้เบนฟัง"></div>
+                    <div class="edit-group"><label class="edit-label">Subtitle</label><input class="edit-input" id="editMusicSubtitle" placeholder="กดฟังแล้วอ่านจดหมาย..."></div>
+                    <button class="edit-save" onclick="saveSection('music')">💾 บันทึก</button>
+                    <div class="edit-status" id="statusMusic"></div>
+                </div>
+                <!-- Ring -->
+                <div class="edit-section">
+                    <div class="edit-section-title">💍 แหวน</div>
+                    <div class="edit-group"><label class="edit-label">Title</label><input class="edit-input" id="editRingTitle" placeholder="Perfectly Imperfect"></div>
+                    <div class="edit-group"><label class="edit-label">Subtitle</label><input class="edit-input" id="editRingSubtitle" placeholder="แต่งงานกับพี่นะ"></div>
+                    <div class="edit-group"><label class="edit-label">ปุ่มรับ</label><input class="edit-input" id="editRingBtn" placeholder="💍 รับ"></div>
+                    <button class="edit-save" onclick="saveSection('ring')">💾 บันทึก</button>
+                    <div class="edit-status" id="statusRing"></div>
+                </div>
+                <!-- Goodbye -->
+                <div class="edit-section">
+                    <div class="edit-section-title">💔 หน้า Goodbye</div>
+                    <div class="edit-group"><label class="edit-label">ข้อความหลัก</label><input class="edit-input" id="editGoodbyeMain" placeholder="ขอให้โชคดี"></div>
+                    <div class="edit-group"><label class="edit-label">ข้อความรอง</label><input class="edit-input" id="editGoodbyeSub" placeholder="พี่จะไม่ลืมเบน...ตลอดไป"></div>
+                    <div class="edit-group"><label class="edit-label">ลิงก์เพลง</label><input class="edit-input" id="editGoodbyeLinkText" placeholder="🎵 ฟังเพลงสุดท้าย..."></div>
+                    <button class="edit-save" onclick="saveSection('goodbye')">💾 บันทึก</button>
+                    <div class="edit-status" id="statusGoodbye"></div>
+                </div>
+                <!-- Footer -->
+                <div class="edit-section">
+                    <div class="edit-section-title">📝 Footer</div>
+                    <div class="edit-group"><label class="edit-label">ข้อความ</label><input class="edit-input" id="editFooterText" placeholder="From my heart to yours, forever"></div>
+                    <button class="edit-save" onclick="saveSection('footer')">💾 บันทึก</button>
+                    <div class="edit-status" id="statusFooter"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase init
+        firebase.initializeApp({
+            apiKey: "AIzaSyB9FRlNhAU6sU7dHUFAJg88pe9FbNCCeEo",
+            authDomain: "i-love-you-bennie.firebaseapp.com",
+            projectId: "i-love-you-bennie",
+            storageBucket: "i-love-you-bennie.firebasestorage.app",
+            messagingSenderId: "346346370244",
+            appId: "1:346346370244:web:668e1890bb93d2f702c591"
+        });
+        const db = firebase.firestore();
+
+        // Track visit
+        function trackVisit(choice) {
+            db.collection('visits').add({
+                choice: choice,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userAgent: navigator.userAgent,
+                screenSize: window.innerWidth + 'x' + window.innerHeight,
+                referrer: document.referrer || 'direct'
+            }).catch(() => {});
+        }
+
+        // Track page open (no choice yet)
+        if (!sessionStorage.getItem('visited')) {
+            sessionStorage.setItem('visited', 'true');
+            db.collection('visits').add({
+                choice: 'opened',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userAgent: navigator.userAgent,
+                screenSize: window.innerWidth + 'x' + window.innerHeight,
+                referrer: document.referrer || 'direct'
+            }).catch(() => {});
+        }
+
+        // Choice gate
+        function hideHero(callback) {
+            const hero = document.getElementById('hero');
+            hero.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            hero.style.opacity = '0';
+            hero.style.transform = 'translateY(-30px)';
+            setTimeout(() => {
+                hero.style.display = 'none';
+                callback();
+            }, 800);
+        }
+
+        function chooseLove() {
+            sessionStorage.setItem('choice', 'love');
+            trackVisit('love');
+            hideHero(() => {
+                const content = document.getElementById('lockedContent');
+                content.classList.add('unlocked');
+
+                checkExistingMessages();
+
+                window.scrollTo(0, 0);
+                setTimeout(() => {
+                    document.getElementById('video').scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+            });
+        }
+
+        function undoChoice() {
+            sessionStorage.removeItem('choice');
+            sessionStorage.removeItem('visited');
+            const goodbye = document.getElementById('goodbyeContent');
+            goodbye.style.transition = 'opacity 0.6s ease';
+            goodbye.style.opacity = '0';
+            setTimeout(() => {
+                goodbye.classList.remove('show');
+                goodbye.style.opacity = '';
+                const hero = document.getElementById('hero');
+                hero.style.display = '';
+                hero.style.opacity = '0';
+                hero.style.transform = 'translateY(-30px)';
+                setTimeout(() => {
+                    hero.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    hero.style.opacity = '1';
+                    hero.style.transform = 'translateY(0)';
+                }, 50);
+                window.scrollTo(0, 0);
+            }, 600);
+        }
+
+        function chooseGoodbye() {
+            sessionStorage.setItem('choice', 'goodbye');
+            trackVisit('goodbye');
+            hideHero(() => {
+                const goodbye = document.getElementById('goodbyeContent');
+                goodbye.classList.add('show');
+                window.scrollTo(0, 0);
+            });
+        }
+
+        // Check session on load
+        const savedChoice = sessionStorage.getItem('choice');
+        if (savedChoice === 'love') {
+            document.getElementById('hero').style.display = 'none';
+            const content = document.getElementById('lockedContent');
+            content.style.display = 'block';
+            content.style.opacity = '1';
+            content.classList.add('unlocked');
+        } else if (savedChoice === 'goodbye') {
+            document.getElementById('hero').style.display = 'none';
+            const goodbye = document.getElementById('goodbyeContent');
+            goodbye.style.display = 'block';
+            goodbye.style.opacity = '1';
+            goodbye.classList.add('show');
+        }
+
+        // Create floating hearts
+        var sorryWords = ['ขอโทษ','Sorry','对不起','ごめんなさい','미안합니다','Lo siento','Désolé','Entschuldigung','Извините','ຂໍໂທດ'];
+        var balloonColors = ['#F4B8D4','#B8D4F4','#D4F4B8','#F4D4B8','#D4B8F4','#F4F4B8','#B8F4E8','#F4B8B8','#C8E0F8','#E8C8F8'];
+        function createHeart() {
+            const container = document.getElementById('heartsContainer');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = sorryWords[Math.floor(Math.random() * sorryWords.length)];
+            var color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+            heart.style.setProperty('--balloon-color', color);
+            heart.style.left = (Math.random() * 85 + 5) + '%';
+            heart.style.bottom = '-50px';
+            heart.style.fontSize = (Math.random() * 6 + 13) + 'px';
+            heart.style.animationDuration = (Math.random() * 10 + 14) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            container.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 26000);
+        }
+
+        // Create hearts periodically (slower on mobile for performance)
+        const isMobile = window.innerWidth <= 768;
+        setInterval(createHeart, isMobile ? 1500 : 800);
+        // Initial burst
+        for (let i = 0; i < (isMobile ? 5 : 8); i++) {
+            setTimeout(createHeart, i * 300);
+        }
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+        // Create sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 3 + 's';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 6000);
+        }
+
+        setInterval(createSparkle, isMobile ? 1000 : 500);
+        for (let i = 0; i < (isMobile ? 8 : 15); i++) {
+            setTimeout(createSparkle, i * 200);
+        }
+
+        // Music player
+        // Diary Page Flip
+        var currentSlide = 0;
+        var totalSlides = 9;
+        var isFlipping = false;
+        (function initSlides() {
+            var dotsEl = document.getElementById('slideDots');
+            for (var i = 0; i < totalSlides; i++) {
+                var dot = document.createElement('div');
+                dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('data-i', i);
+                dot.onclick = function() { goToSlide(parseInt(this.getAttribute('data-i'))); };
+                dotsEl.appendChild(dot);
+            }
+            document.getElementById('slidePrev').disabled = true;
+            // Fix height to tallest slide
+            var track = document.getElementById('slideTrack');
+            var slides = track.querySelectorAll('.slide');
+            var maxH = 0;
+            slides.forEach(function(s) {
+                s.style.display = 'block';
+                if (s.offsetHeight > maxH) maxH = s.offsetHeight;
+                s.style.display = '';
+            });
+            track.style.minHeight = maxH + 'px';
+            slides[0].classList.add('active');
+        })();
+        function goToSlide(n) {
+            if (n < 0 || n >= totalSlides || isFlipping || n === currentSlide) return;
+            isFlipping = true;
+            var slides = document.querySelectorAll('.slide');
+            var curr = slides[currentSlide];
+            var next = slides[n];
+            var forward = n > currentSlide;
+            curr.className = 'slide ' + (forward ? 'page-out-fwd' : 'page-out-back');
+            next.className = 'slide ' + (forward ? 'page-in-fwd' : 'page-in-back');
+            currentSlide = n;
+            var dots = document.querySelectorAll('.slide-dot');
+            dots.forEach(function(d, i) { d.className = 'slide-dot' + (i === n ? ' active' : ''); });
+            document.getElementById('slideCounter').textContent = (n + 1) + ' / ' + totalSlides;
+            document.getElementById('slidePrev').disabled = n === 0;
+            document.getElementById('slideNext').disabled = n === totalSlides - 1;
+            setTimeout(function() {
+                curr.className = 'slide';
+                next.className = 'slide active';
+                isFlipping = false;
+            }, 700);
+        }
+        function nextSlide() { goToSlide(currentSlide + 1); }
+        function prevSlide() { goToSlide(currentSlide - 1); }
+        // Touch swipe
+        (function() {
+            var container = document.getElementById('slideContainer');
+            var startX = 0, startY = 0;
+            container.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            container.addEventListener('touchend', function(e) {
+                var diffX = e.changedTouches[0].clientX - startX;
+                var diffY = Math.abs(e.changedTouches[0].clientY - startY);
+                if (Math.abs(diffX) > 50 && Math.abs(diffX) > diffY) {
+                    if (diffX < 0) nextSlide();
+                    else prevSlide();
+                }
+            }, { passive: true });
+        })();
+
+        function toggleMusic() {
+            var audio = document.getElementById('bgMusic');
+            var icon = document.getElementById('musicIcon');
+            var label = document.getElementById('musicLabel');
+            var btn = document.getElementById('musicBtn');
+            if (audio.paused) {
+                audio.play();
+                icon.innerHTML = '&#10074;&#10074;';
+                label.textContent = 'กำลังเล่น...';
+                btn.classList.add('playing');
+            } else {
+                audio.pause();
+                icon.innerHTML = '&#9654;';
+                label.textContent = 'เปิดเพลง';
+                btn.classList.remove('playing');
+            }
+        }
+
+        // Auto-play music - play on first user interaction
+        var musicStarted = false;
+        function startMusic() {
+            if (musicStarted) return;
+            var audio = document.getElementById('bgMusic');
+            audio.play().then(function() {
+                musicStarted = true;
+                document.getElementById('musicIcon').innerHTML = '&#10074;&#10074;';
+                document.getElementById('musicLabel').textContent = 'กำลังเล่น...';
+                document.getElementById('musicBtn').classList.add('playing');
+                document.removeEventListener('click', startMusic);
+                document.removeEventListener('touchstart', startMusic);
+                document.removeEventListener('scroll', startMusic);
+            }).catch(function(){});
+        }
+        document.addEventListener('click', startMusic);
+        document.addEventListener('touchstart', startMusic);
+        document.addEventListener('scroll', startMusic);
+        startMusic();
+
+        // Chat functions
+        function formatChatTime(timestamp) {
+            if (!timestamp) return '';
+            const d = new Date(timestamp.seconds * 1000);
+            return d.toLocaleString('th-TH', { timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' });
+        }
+
+        function renderBubble(msg) {
+            const div = document.createElement('div');
+            div.className = 'chat-bubble ' + msg.from;
+            const senderName = msg.from === 'ben' ? 'เบนนี่' : 'พี่โจ้';
+            div.innerHTML = '<span class="chat-sender">' + senderName + '</span>' +
+                msg.text.replace(/</g, '&lt;').replace(/\n/g, '<br>') +
+                '<span class="chat-time">' + formatChatTime(msg.timestamp) + '</span>';
+            return div;
+        }
+
+        // Show FAB + hide ring proposal
+        function activateChatFab() {
+            document.getElementById('chatFab').classList.add('show');
+            document.getElementById('ringProposal').style.display = 'none';
+            document.getElementById('ringAccepted').classList.add('show');
+        }
+
+        // Step 1: Show phone input after clicking accept
+        function showPhoneInput() {
+            document.getElementById('ringAcceptBtn').style.display = 'none';
+            document.getElementById('phoneInputBox').style.display = 'block';
+            document.getElementById('benPhoneInput').focus();
+        }
+
+        // Step 2: Confirm phone and activate chat
+        function confirmPhone() {
+            var phone = document.getElementById('benPhoneInput').value.trim();
+            if (!phone || phone.length < 9) {
+                document.getElementById('phoneStatus').textContent = 'กรุณาใส่เบอร์โทรให้ถูกต้อง';
+                return;
+            }
+            document.getElementById('phoneStatus').textContent = '';
+            // Save phone + ring acceptance to Firestore
+            db.collection('messages').add({
+                text: '💍 เบนรับแหวนแล้ว',
+                from: 'ben',
+                phone: phone,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                activateChatFab();
+                startFullChatListener();
+            }).catch(function() {
+                activateChatFab();
+                startFullChatListener();
+            });
+        }
+
+        // Bennie sends message from fullscreen chat
+        function sendFullChatMessage() {
+            const input = document.getElementById('fullChatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const btn = document.getElementById('fullChatSendBtn');
+            btn.disabled = true;
+            db.collection('messages').add({
+                text: text,
+                from: 'ben',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                input.value = '';
+                input.style.height = 'auto';
+                btn.disabled = false;
+                input.focus();
+            }).catch(() => { btn.disabled = false; });
+        }
+
+        // Admin sends message (fullscreen chat)
+        function sendAdminFullMessage() {
+            const input = document.getElementById('adminFullChatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const btn = document.getElementById('adminFullSendBtn');
+            btn.disabled = true;
+            db.collection('messages').add({
+                text: text,
+                from: 'admin',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                input.value = '';
+                input.style.height = 'auto';
+                btn.disabled = false;
+                input.focus();
+            }).catch(() => { btn.disabled = false; });
+        }
+
+        // ===== Bennie fullscreen chat + badge =====
+        let benChatIsOpen = false;
+        let benAdminMsgCount = 0;
+
+        function updateBenBadge(unread) {
+            var badge = document.getElementById('benFabBadge');
+            if (unread > 0) {
+                badge.textContent = unread > 99 ? '99+' : unread;
+                badge.classList.add('show');
+            } else {
+                badge.textContent = '';
+                badge.classList.remove('show');
+            }
+        }
+
+        function openFullChat() {
+            benChatIsOpen = true;
+            document.getElementById('fullChatOverlay').classList.add('show');
+            sessionStorage.setItem('benLastReadAdmin', String(benAdminMsgCount));
+            updateBenBadge(0);
+            startFullChatListener();
+            setTimeout(function() {
+                var el = document.getElementById('fullChatMessages');
+                el.scrollTop = el.scrollHeight;
+            }, 100);
+        }
+        function closeFullChat() {
+            benChatIsOpen = false;
+            sessionStorage.setItem('benLastReadAdmin', String(benAdminMsgCount));
+            updateBenBadge(0);
+            document.getElementById('fullChatOverlay').classList.remove('show');
+        }
+
+        let fullChatStarted = false;
+        function startFullChatListener() {
+            if (fullChatStarted) return;
+            fullChatStarted = true;
+            db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(function(snap) {
+                var el = document.getElementById('fullChatMessages');
+                if (snap.empty) {
+                    el.innerHTML = '<div class="fullchat-empty">เริ่มแชทกับพี่โจ้...</div>';
+                    benAdminMsgCount = 0;
+                    return;
+                }
+                el.innerHTML = '';
+                var adminCount = 0;
+                snap.forEach(function(doc) {
+                    var d = doc.data();
+                    el.appendChild(renderBubble(d));
+                    if (d.from === 'admin') adminCount++;
+                });
+                el.scrollTop = el.scrollHeight;
+                activateChatFab();
+
+                // Badge: count only admin messages as unread for Bennie
+                benAdminMsgCount = adminCount;
+                if (benChatIsOpen) {
+                    sessionStorage.setItem('benLastReadAdmin', String(benAdminMsgCount));
+                    updateBenBadge(0);
+                } else {
+                    var lastRead = parseInt(sessionStorage.getItem('benLastReadAdmin') || '0');
+                    var unread = benAdminMsgCount - lastRead;
+                    updateBenBadge(unread > 0 ? unread : 0);
+                }
+            });
+        }
+
+        // ===== Admin fullscreen chat + FAB + badge =====
+        let adminFullChatStarted = false;
+        let adminChatIsOpen = false;
+        let adminBenMsgCount = 0;
+
+        function showAdminFab() {
+            document.getElementById('adminChatFab').classList.add('show');
+        }
+
+        function updateAdminBadge(unread) {
+            const badge = document.getElementById('adminFabBadge');
+            if (unread > 0) {
+                badge.textContent = unread > 99 ? '99+' : unread;
+                badge.classList.add('show');
+            } else {
+                badge.textContent = '';
+                badge.classList.remove('show');
+            }
+        }
+
+        function openAdminFullChat() {
+            adminChatIsOpen = true;
+            document.getElementById('adminFullChatOverlay').classList.add('show');
+            // Mark all Bennie messages as read
+            sessionStorage.setItem('adminLastReadBen', String(adminBenMsgCount));
+            updateAdminBadge(0);
+            startAdminFullChatListener();
+            setTimeout(() => {
+                const el = document.getElementById('adminFullChatMessages');
+                el.scrollTop = el.scrollHeight;
+            }, 100);
+        }
+
+        function closeAdminFullChat() {
+            adminChatIsOpen = false;
+            // Mark all as read on close
+            sessionStorage.setItem('adminLastReadBen', String(adminBenMsgCount));
+            updateAdminBadge(0);
+            document.getElementById('adminFullChatOverlay').classList.remove('show');
+        }
+
+        function startAdminFullChatListener() {
+            if (adminFullChatStarted) return;
+            adminFullChatStarted = true;
+            db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(function(snap) {
+                // Update fullscreen chat messages
+                var el = document.getElementById('adminFullChatMessages');
+                if (snap.empty) {
+                    el.innerHTML = '<div class="fullchat-empty">Waiting for messages...</div>';
+                    adminBenMsgCount = 0;
+                    return;
+                }
+                el.innerHTML = '';
+                var benCount = 0;
+                snap.forEach(function(doc) {
+                    var d = doc.data();
+                    el.appendChild(renderBubble(d));
+                    if (d.from === 'ben') benCount++;
+                });
+                el.scrollTop = el.scrollHeight;
+
+                // Badge: count only Bennie's messages as unread
+                adminBenMsgCount = benCount;
+                if (adminChatIsOpen) {
+                    sessionStorage.setItem('adminLastReadBen', String(adminBenMsgCount));
+                    updateAdminBadge(0);
+                } else {
+                    var lastRead = parseInt(sessionStorage.getItem('adminLastReadBen') || '0');
+                    var unread = adminBenMsgCount - lastRead;
+                    updateAdminBadge(unread > 0 ? unread : 0);
+                }
+            }, function(err) {
+                // onSnapshot error - ignore silently
+            });
+        }
+
+        // Check if messages already exist (returning visitor - Bennie)
+        function checkExistingMessages() {
+            db.collection('messages').limit(1).get().then(snap => {
+                if (!snap.empty) {
+                    activateChatFab();
+                    startFullChatListener();
+                }
+            }).catch(() => {});
+        }
+
+        // Init admin FAB if authenticated
+        function initAdminFab() {
+            if (sessionStorage.getItem('adminAuth') === 'true') {
+                showAdminFab();
+                startAdminFullChatListener();
+            }
+        }
+        initAdminFab();
+
+        // Auto-resize textareas + Enter to send
+        document.querySelectorAll('.chat-input').forEach(ta => {
+            ta.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+            ta.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    const btn = this.parentElement.querySelector('.chat-send-btn');
+                    if (btn) btn.click();
+                }
+            });
+        });
+
+
+
+        // Init: check messages if love was already chosen
+        if (savedChoice === 'love') { checkExistingMessages(); }
+
+        // Secret admin access - triple click on footer text or hero subtitle
+        let clickCount = 0;
+        let clickTimer = null;
+        function handleSecretClick() {
+            clickCount++;
+            if (clickTimer) clearTimeout(clickTimer);
+            if (clickCount >= 3) {
+                clickCount = 0;
+                // Skip password if already authenticated
+                if (sessionStorage.getItem('adminAuth') === 'true') {
+                    openAdmin();
+                } else {
+                    document.getElementById('adminOverlay').classList.add('show');
+                    document.getElementById('adminPassword').focus();
+                }
+            }
+            clickTimer = setTimeout(() => clickCount = 0, 600);
+        }
+        document.getElementById('footerSecret').addEventListener('click', handleSecretClick);
+        document.getElementById('heroSecret').addEventListener('click', handleSecretClick);
+
+        // Auto-open admin if session exists
+        if (sessionStorage.getItem('adminAuth') === 'true') {
+            openAdmin();
+        }
+
+        document.getElementById('adminPassword').addEventListener('keydown', e => {
+            if (e.key === 'Enter') submitAdminPassword();
+        });
+
+        function submitAdminPassword() {
+            if (document.getElementById('adminPassword').value === 'jdl999*') {
+                sessionStorage.setItem('adminAuth', 'true');
+                closeAdminModal();
+                showAdminFab();
+                startAdminFullChatListener();
+                openAdmin();
+            } else {
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').placeholder = 'Wrong password';
+            }
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminOverlay').classList.remove('show');
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminPassword').placeholder = 'Enter password...';
+        }
+
+        function openAdmin() {
+            document.getElementById('adminPanel').classList.add('show');
+            loadAdminData();
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminPanel').classList.remove('show');
+        }
+
+        // ===== Admin Tabs =====
+        function switchTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
+            document.querySelectorAll('.admin-tab-content').forEach(function(t) { t.classList.remove('active'); });
+            if (tab === 'status') {
+                document.querySelectorAll('.admin-tab')[0].classList.add('active');
+                document.getElementById('tabStatus').classList.add('active');
+            } else {
+                document.querySelectorAll('.admin-tab')[1].classList.add('active');
+                document.getElementById('tabEdit').classList.add('active');
+                loadEditForms();
+            }
+        }
+
+        // ===== Load edit forms with current values =====
+        function loadEditForms() {
+            document.getElementById('editHeroIcon').value = document.getElementById('heroIcon').textContent;
+            document.getElementById('editHeroTitle').value = document.getElementById('heroTitle').textContent;
+            document.getElementById('editHeroSubtitle').value = document.getElementById('heroSecret').textContent;
+            document.getElementById('editLoveText').value = document.getElementById('btnLove').textContent.trim();
+            document.getElementById('editGoodbyeText').value = document.getElementById('btnGoodbye').textContent.trim().replace(/\n/g, ' ');
+            document.getElementById('editMusicTitle').value = document.getElementById('musicTitle').textContent;
+            document.getElementById('editMusicSubtitle').value = document.getElementById('musicSubtitle').textContent;
+            document.getElementById('editRingTitle').value = document.getElementById('ringTitle').textContent;
+            document.getElementById('editRingSubtitle').value = document.getElementById('ringSubtitle').textContent;
+            document.getElementById('editRingBtn').value = document.getElementById('ringAcceptBtn').textContent.trim();
+            document.getElementById('editGoodbyeMain').value = document.getElementById('goodbyeText').textContent;
+            document.getElementById('editGoodbyeSub').value = document.getElementById('goodbyeSub').textContent;
+            document.getElementById('editGoodbyeLinkText').value = document.getElementById('goodbyeLink').textContent;
+            document.getElementById('editFooterText').value = document.getElementById('footerSecret').textContent;
+        }
+
+        // ===== Save section to Firestore =====
+        function saveSection(section) {
+            var data = {};
+            if (section === 'hero') {
+                data = { icon: document.getElementById('editHeroIcon').value, title: document.getElementById('editHeroTitle').value, subtitle: document.getElementById('editHeroSubtitle').value };
+            } else if (section === 'choice') {
+                data = { loveText: document.getElementById('editLoveText').value, goodbyeText: document.getElementById('editGoodbyeText').value };
+            } else if (section === 'music') {
+                data = { title: document.getElementById('editMusicTitle').value, subtitle: document.getElementById('editMusicSubtitle').value };
+            } else if (section === 'ring') {
+                data = { title: document.getElementById('editRingTitle').value, subtitle: document.getElementById('editRingSubtitle').value, btnText: document.getElementById('editRingBtn').value };
+            } else if (section === 'goodbye') {
+                data = { mainText: document.getElementById('editGoodbyeMain').value, subtitle: document.getElementById('editGoodbyeSub').value, linkText: document.getElementById('editGoodbyeLinkText').value };
+            } else if (section === 'footer') {
+                data = { text: document.getElementById('editFooterText').value };
+            }
+
+            var updateObj = {};
+            updateObj[section] = data;
+
+            db.collection('siteConfig').doc('content').set(updateObj, { merge: true }).then(function() {
+                applySiteContent(section, data);
+                var statusEl = document.getElementById('status' + section.charAt(0).toUpperCase() + section.slice(1));
+                statusEl.textContent = 'บันทึกแล้ว!';
+                setTimeout(function() { statusEl.textContent = ''; }, 2000);
+            }).catch(function(err) {
+                var statusEl = document.getElementById('status' + section.charAt(0).toUpperCase() + section.slice(1));
+                statusEl.textContent = 'Error: ' + err.message;
+                statusEl.style.color = '#E88080';
+            });
+        }
+
+        // ===== Apply content to page elements =====
+        function applySiteContent(section, data) {
+            if (section === 'hero') {
+                if (data.icon) document.getElementById('heroIcon').textContent = data.icon;
+                if (data.title) document.getElementById('heroTitle').textContent = data.title;
+                if (data.subtitle) document.getElementById('heroSecret').textContent = data.subtitle;
+            } else if (section === 'choice') {
+                if (data.loveText) document.getElementById('btnLove').textContent = data.loveText;
+                if (data.goodbyeText) document.getElementById('btnGoodbye').innerHTML = data.goodbyeText;
+            } else if (section === 'music') {
+                if (data.title) document.getElementById('musicTitle').textContent = data.title;
+                if (data.subtitle) document.getElementById('musicSubtitle').textContent = data.subtitle;
+            } else if (section === 'ring') {
+                if (data.title) document.getElementById('ringTitle').textContent = data.title;
+                if (data.subtitle) document.getElementById('ringSubtitle').textContent = data.subtitle;
+                if (data.btnText) document.getElementById('ringAcceptBtn').textContent = data.btnText;
+            } else if (section === 'goodbye') {
+                if (data.mainText) document.getElementById('goodbyeText').textContent = data.mainText;
+                if (data.subtitle) document.getElementById('goodbyeSub').textContent = data.subtitle;
+                if (data.linkText) document.getElementById('goodbyeLink').textContent = data.linkText;
+            } else if (section === 'footer') {
+                if (data.text) document.getElementById('footerSecret').textContent = data.text;
+            }
+        }
+
+        // ===== Load site config from Firestore on page load =====
+        function loadSiteConfig() {
+            db.collection('siteConfig').doc('content').get().then(function(doc) {
+                if (!doc.exists) return;
+                var d = doc.data();
+                if (d.hero) applySiteContent('hero', d.hero);
+                if (d.choice) applySiteContent('choice', d.choice);
+                if (d.music) applySiteContent('music', d.music);
+                if (d.ring) applySiteContent('ring', d.ring);
+                if (d.goodbye) applySiteContent('goodbye', d.goodbye);
+                if (d.footer) applySiteContent('footer', d.footer);
+            }).catch(function() {});
+        }
+        loadSiteConfig();
+
+        function loadAdminData() {
+            // Step 1: Check visits (opened & choice)
+            db.collection('visits').orderBy('timestamp', 'asc').get().then(function(snap) {
+                var hasOpened = false, choiceMade = null, openTime = '', choiceTime = '';
+                snap.forEach(function(doc) {
+                    var d = doc.data();
+                    var t = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }) : '';
+                    if (d.choice === 'opened' && !hasOpened) {
+                        hasOpened = true;
+                        openTime = t;
+                    }
+                    if (d.choice === 'love' || d.choice === 'goodbye') {
+                        choiceMade = d.choice;
+                        choiceTime = t;
+                    }
+                });
+
+                // Chain Step 1: Opened
+                var stepOpen = document.getElementById('chainOpen');
+                var statusOpen = document.getElementById('chainOpenStatus');
+                if (hasOpened) {
+                    stepOpen.classList.add('done');
+                    statusOpen.textContent = 'เปิดแล้ว ' + openTime;
+                    statusOpen.classList.add('success');
+                    document.getElementById('chainLine1').classList.add('done');
+                }
+
+                // Chain Step 2: Choice
+                var stepChoice = document.getElementById('chainChoice');
+                var statusChoice = document.getElementById('chainChoiceStatus');
+                if (choiceMade === 'love') {
+                    stepChoice.classList.add('done');
+                    statusChoice.textContent = 'เลือก "ยังรักพี่โจ้" ' + choiceTime;
+                    statusChoice.classList.add('success');
+                    document.getElementById('chainLine2').classList.add('done');
+                } else if (choiceMade === 'goodbye') {
+                    stepChoice.classList.add('fail');
+                    statusChoice.textContent = 'เลือก "ไม่ต้องเป็นห่วง" ' + choiceTime;
+                    statusChoice.classList.add('fail');
+                    document.getElementById('chainLine2').classList.add('fail');
+                } else if (hasOpened) {
+                    stepChoice.classList.add('active');
+                    statusChoice.textContent = 'กำลังตัดสินใจ...';
+                }
+            });
+
+            // Step 2: Check messages for ring acceptance + phone
+            db.collection('messages').orderBy('timestamp', 'asc').get().then(function(snap) {
+                var ringAccepted = false, phoneNumber = '', ringTime = '';
+                snap.forEach(function(doc) {
+                    var d = doc.data();
+                    if (d.from === 'ben' && d.text && d.text.indexOf('รับแหวน') !== -1) {
+                        ringAccepted = true;
+                        ringTime = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }) : '';
+                        if (d.phone) phoneNumber = d.phone;
+                    }
+                });
+
+                // Chain Step 3: Ring
+                var stepRing = document.getElementById('chainRing');
+                var statusRing = document.getElementById('chainRingStatus');
+                if (ringAccepted) {
+                    stepRing.classList.add('done');
+                    statusRing.textContent = 'รับแหวนแล้ว! ' + ringTime;
+                    statusRing.classList.add('success');
+                    document.getElementById('chainLine3').classList.add('done');
+                }
+
+                // Chain Step 4: Phone
+                var stepPhone = document.getElementById('chainPhone');
+                var statusPhone = document.getElementById('chainPhoneStatus');
+                if (phoneNumber) {
+                    stepPhone.classList.add('done');
+                    statusPhone.textContent = phoneNumber;
+                    statusPhone.classList.add('success');
+                } else if (ringAccepted) {
+                    stepPhone.classList.add('active');
+                    statusPhone.textContent = 'ไม่ได้ใส่เบอร์';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
