@@ -12,7 +12,7 @@
     <title>From the Beast to Beauty ที่รัก</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sarabun:wght@300;400;600;700&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -104,18 +104,15 @@
         /* Sparkle particles */
         .sparkle {
             position: fixed;
-            width: 4px;
-            height: 4px;
-            background: #3A7BC8;
-            border-radius: 50;
             pointer-events: none;
             z-index: 0;
-            animation: sparkle 3s ease-in-out infinite;
+            font-size: 10px;
+            animation: sparkle 1.5s ease-in-out infinite;
         }
 
         @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
         }
 
         /* Hero Section */
@@ -825,13 +822,14 @@
             padding-top: 40px;
             border-top: 1px solid rgba(58, 123, 200, 0.15);
             text-align: center;
+            position: relative;
         }
 
         .ring-title {
             font-family: 'Prompt', sans-serif;
-            font-size: 1.3rem;
+            font-size: 2rem;
             color: #E8B888;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 25px;
         }
 
@@ -878,9 +876,9 @@
 
         .ring-subtitle {
             color: rgba(80, 65, 58, 0.6);
-            font-size: 0.95rem;
+            font-size: 1.4rem;
             margin-bottom: 30px;
-            font-weight: 300;
+            font-weight: 400;
             font-style: italic;
         }
 
@@ -907,9 +905,14 @@
             box-shadow: 0 14px 40px rgba(232, 184, 136, 0.55);
         }
 
+        @keyframes goldGlow {
+            0% { text-shadow: 0 0 10px rgba(232,184,136,0.6), 0 0 20px rgba(232,184,136,0.4), 0 0 40px rgba(232,184,136,0.2), 0 2px 12px rgba(0,0,0,0.4); }
+            100% { text-shadow: 0 0 15px rgba(232,184,136,0.8), 0 0 30px rgba(232,184,136,0.6), 0 0 60px rgba(232,184,136,0.3), 0 2px 12px rgba(0,0,0,0.4); }
+        }
+
         @keyframes acceptPulse {
-            0%, 100% { box-shadow: 0 8px 30px rgba(232, 184, 136, 0.4); }
-            50% { box-shadow: 0 8px 40px rgba(232, 184, 136, 0.6), 0 0 0 8px rgba(232, 184, 136, 0.1); }
+            0%, 100% { box-shadow: 0 8px 30px rgba(212, 87, 122, 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(212, 87, 122, 0.6), 0 0 0 8px rgba(212, 87, 122, 0.15); }
         }
 
         .phone-input-box {
@@ -1536,7 +1539,7 @@
 
     <!-- Hero + Password Gate (same page) -->
     <section class="hero" id="hero">
-        <div class="hero-heart" id="heroIcon"><img src="Header Picture4.png" alt="Header" class="hero-photo"></div>
+        <div class="hero-heart" id="heroIcon"><img src="Header Picture5.png" alt="Header" class="hero-photo"></div>
         <audio id="bgMusic" src="Last Message (V2).mp3" preload="auto" loop></audio>
         <button class="music-toggle-btn" id="musicBtn" onclick="toggleMusic()">
             <span id="musicIcon">&#10074;&#10074;</span> <span id="musicLabel">กำลังเล่น...</span>
@@ -1588,10 +1591,10 @@
             <div class="slide" style="background:url('slide-02.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p><span class="quote">พี่พึ่งรู้ว่า<br>"ตัวกูเองหล่ะ ที่ไม่เข้าใจอะไรเลย"</span></p>
+                    <p><span class="quote">พี่พึ่งรู้ว่า<br><span style="color:#E07070;font-weight:600;">"ตัวกูเองหล่ะ ที่ไม่เข้าใจอะไรเลย"</span></span></p>
                     <p>ตัวพี่เองเป็น <span class="emphasis">"คนที่ผิด"</span> มาตลอด</p>
-                    <p>…ไม่เข้าใจชีวิต<br>…ไม่เข้าใจความรัก<br>…<span style="color:#E8B888;font-weight:600;">ไม่เข้าใจ เบน</span></p>
-                    <p>มองแต่เป้าหมาย ไม่มองคนข้างกาย<br><span style="color:#E8B888;font-weight:600;">สนใจแต่หลักการงี่เง่า</span><br>เอาแต่ใจตัวเอง</p>
+                    <p>…ไม่เข้าใจชีวิต<br>…ไม่เข้าใจความรัก<br>…<span style="color:#E07070;font-weight:600;">ไม่เข้าใจ เบน</span></p>
+                    <p>มองแต่เป้าหมาย ไม่มองคนข้างกาย<br><span style="color:#E07070;font-weight:600;">สนใจแต่หลักการงี่เง่า</span><br>เอาแต่ใจตัวเอง</p>
                 </div>
             </div>
 
@@ -1599,10 +1602,10 @@
             <div class="slide" style="background:url('slide-03.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p>เบน มองโลกบริสุทธิ์<br>แต่พี่กลับยัดความคิดของพี่ใส่หัวเบน<br>ไม่เคยวางใจในมุมมองของเบนเลย</p>
-                    <p><span class="emphasis">Ego</span> ตัวใหญ่ บังตาพี่ไว้<br>ไม่ให้เข้าใจความรักของเบน</p>
+                    <p><span style="color:#1a5276;font-size:1.15em;font-weight:700;">เบนมองความรักด้วยใจที่บริสุทธิ์</span><br>แต่พี่กลับยัดความคิดของพี่ใส่หัวเบน<br>ไม่เคยวางใจในมุมมองของเบนเลย</p>
+                    <p><span style="color:#E07070;font-size:1.3em;font-weight:700;">Ego</span> ตัวใหญ่ บังตาพี่ไว้<br>ไม่ให้เข้าใจความรักของเบน</p>
                     <p>วันนี้ พี่ใช้ชีวิตเรียบง่าย<br>ไม่เร่ง ไม่รีบ ไม่ต้องรวย ไม่ต้องเก่ง<br>แล้วพี่ก็ได้เข้าใจ</p>
-                    <p><span class="emphasis">…แต่มันคงสายไป</span></p>
+                    <p><span style="color:#1a3c6e;font-weight:600;">แต่พี่กลัวว่า วันนี้มันอาจจะสายเกินไป</span></p>
                 </div>
             </div>
 
@@ -1610,7 +1613,7 @@
             <div class="slide" style="background:url('slide-04.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p><span class="quote">พี่พึ่งรู้ว่า<br>"กูได้ทำร้ายผู้หญิงที่รักกูที่สุด"</span></p>
+                    <p><span class="quote">พี่พึ่งรู้ว่า<br><span style="color:#E07070;font-size:1.2em;font-weight:700;">"กูได้ทำร้ายผู้หญิงที่รักกูที่สุด"</span></span></p>
                     <p>เบน <span class="emphasis">ยอม</span>… มากแค่ไหน<br>เบน <span class="emphasis">เสียสละ</span>… มากแค่ไหน<br>เบน <span class="emphasis">เจ็บปวด</span>… มากแค่ไหน</p>
                     <p>ทั้งที่เบนต้องการแค่<br><span class="emphasis">ความเชื่อใจ ความสบายใจ</span><br>และ <span class="emphasis">คำขอโทษ</span></p>
                     <p>แค่การทำให้เบนรู้สึกว่าแฟนคือ <span class="emphasis">"Safe Zone"</span><br>พี่ยังทำไม่ได้</p>
@@ -1621,7 +1624,7 @@
             <div class="slide" style="background:url('slide-05.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p><span class="quote">"เบนคิดแบบนี้"</span></p>
+                    <p><span class="quote">พี่พึ่งรู้ว่า<br><span style="color:#E8829B;font-size:1.2em;font-weight:700;">"เบนคิดแบบนี้"</span></span></p>
                     <p>พี่คิดว่า แค่มอง ไม่ได้มีอะไร<br>แต่เบนคิดว่า… <span class="emphasis">ฉันไม่สวยพอเหรอ</span></p>
                     <p>พี่คิดว่า อธิบายเยอะแล้ว<br>แต่เบนคิดว่า… <span class="emphasis">แค่ขอโทษ ฉันก็ยอมแล้ว</span></p>
                     <p>พี่คิดว่า ต้องทำงานเพื่ออนาคต<br>แต่เบนคิดว่า… <span class="emphasis">แค่อยากอยู่กับคนที่รัก</span></p>
@@ -1633,9 +1636,9 @@
             <div class="slide" style="background:url('slide-06.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p>เบน เป็น<span style="color:#E8B888;font-weight:600;">รักแรกพบ</span>ของพี่<br>พี่<span style="color:#E8B888;font-weight:600;">ตกหลุมรัก</span>ตั้งแต่ครั้งแรกที่เห็น</p>
-                    <p>พี่ยังจำ… ตอน<span style="color:#E8B888;font-weight:600;">ฝากหมูยอ</span>ไปให้<br>พี่ยังจำ… ที่เบนขอรูปไปเป็นกำลังใจ<br>พี่ยังจำ… <span style="color:#E8B888;font-weight:600;">จูบแรก และจูบสุดท้าย</span><br>พี่ยังจำ… <span style="color:#E8B888;font-weight:600;">แววตาดีใจตอนเราแต่งงาน</span></p>
-                    <p>ทุกความทรงจำกับเบน<br><span style="color:#E8B888;font-weight:600;">พี่ไม่เคยลืมเลย</span></p>
+                    <p>เบน เป็น<span style="color:#D4577A;font-weight:600;">รักแรกพบ</span>ของพี่<br>พี่<span style="color:#D4577A;font-weight:600;">ตกหลุมรัก</span>ตั้งแต่ครั้งแรกที่เห็น</p>
+                    <p>พี่ยังจำ… ตอน<span style="color:#D4577A;font-weight:600;">ฝากหมูยอ</span>ไปให้<br>พี่ยังจำ… ที่เบนขอรูปไปเป็นกำลังใจ<br>พี่ยังจำ… <span style="color:#D4577A;font-weight:600;">จูบแรก และจูบสุดท้าย</span><br>พี่ยังจำ… <span style="color:#D4577A;font-weight:600;">แววตาดีใจตอนเราแต่งงาน</span></p>
+                    <p>ทุกความทรงจำกับเบน<br><span style="color:#D4577A;font-weight:600;">พี่ไม่เคยลืมเลย</span></p>
                 </div>
             </div>
 
@@ -1643,11 +1646,11 @@
             <div class="slide" style="background:url('slide-07.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p><span class="emphasis">เบน เป็น รักแท้ของพี่</span></p>
+                    <p><span style="color:#D4577A;font-size:1.2em;font-weight:700;">เบน เป็น รักแท้ของพี่</span></p>
                     <p>ถ้ามันเป็นไปได้<br>พี่จะทุ่มเททุกช่วงเวลา<br>ให้ <span class="emphasis">แม่พี่ และ เบน</span></p>
-                    <p style="font-size:1.25rem;color:#E8B888;font-weight:600;">พี่จะมอบ 24 ชั่วโมงของพี่ให้เบน</p>
+                    <p style="font-size:1.25rem;color:#D4577A;font-weight:700;">พี่จะมอบ 24 ชั่วโมงของพี่ให้เบน</p>
                     <p>พี่เขียนโปรแกรม เบนขายเสื้อผ้า<br>เงินที่ได้ เบนถือทั้งหมด<br>ปิด Social ทั้งหมด<br>ไม่ไปไหน ถ้าไม่มีเบน<br>เที่ยวด้วยกัน ทุก 3 เดือน</p>
-                    <p><span class="emphasis">พี่พร้อมมอบทุกช่วงเวลา<br>แชร์ความสุขกับเบนจนวันตาย</span></p>
+                    <p><span style="color:#D4577A;font-size:1.15em;font-weight:700;">พี่พร้อมมอบทุกช่วงเวลา<br>แชร์ความสุขกับเบนจนวันตาย</span></p>
                 </div>
             </div>
 
@@ -1655,10 +1658,10 @@
             <div class="slide" style="background:url('slide-08.jpg') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
-                    <p>เบนเป็น…<br>ผู้หญิงที่<span class="emphasis">สวยที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่<span class="emphasis">ดีที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่พี่อยากกอดคนเดียว</p>
+                    <p>เบนเป็น…<br>ผู้หญิงที่<span style="color:#5BA3D9;font-size:1.5em;font-weight:700;">สวยที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่<span style="color:#5BA3D9;font-size:1.5em;font-weight:700;">ดีที่สุด</span>ในสายตาพี่<br>ผู้หญิงที่พี่อยากกอดคนเดียว</p>
                     <p>ถ้ามีโอกาสอีกครั้ง<br>พี่จะไม่ปล่อยเบนหลุดมืออีก</p>
-                    <p style="color: #E8B888;">พี่อาจจะไม่ใช่คนที่ดีที่สุด<br>แต่พี่พร้อมแก้ไขทุกสิ่งที่ทำพลาด</p>
-                    <p><span class="emphasis">"พี่อยากได้เบนคืนมา<br>เป็นของพี่คนเดียว"</span></p>
+                    <p style="color:#D4577A;font-weight:600;">พี่อาจจะไม่ใช่คนที่ดีที่สุด<br>แต่พี่พร้อมแก้ไขทุกสิ่งที่ทำพลาด</p>
+                    <p><span style="color:#5BA3D9;font-size:1.5em;font-weight:700;">"พี่อยากได้เบนคืนมา<br>เป็นของพี่คนเดียว"</span></p>
                     <p style="font-size: 1.2rem;">รักเบนที่สุด 🤍<br><span style="color: #3A7BC8; font-family: 'Prompt', sans-serif; font-weight: 600;">พี่โจ้</span></p>
                 </div>
             </div>
@@ -1667,12 +1670,12 @@
             <div class="slide" style="background:url('Please Mary Me.png') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);border-radius:18px;"></div>
                 <div class="flower-fall" id="flowerFall"></div>
-                <div class="slide-content" style="position:relative;z-index:2;">
-                    <div class="ring-proposal" id="ringProposal" style="margin-top:0;">
-                        <div class="ring-title" id="ringTitle" style="color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.4);">Perfectly Imperfect</div>
-                        <p class="ring-subtitle" id="ringSubtitle" style="color:rgba(255,255,255,0.85);">"แต่งงานกับพี่นะ"</p>
-                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showRingPhone()">
-                            💍 รับ
+                <div class="ring-title" id="ringTitle" style="color:#E8B888;text-shadow:0 0 10px rgba(232,184,136,0.6),0 0 20px rgba(232,184,136,0.4),0 0 40px rgba(232,184,136,0.2),0 2px 12px rgba(0,0,0,0.4);font-size:2.75rem;font-weight:300;font-family:'Great Vibes',cursive;font-style:normal;letter-spacing:2px;position:absolute;top:62px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:3;animation:goldGlow 2s ease-in-out infinite alternate;">Perfectly Imperfect</div>
+                <div class="slide-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:calc(35% + 100px);">
+                    <div class="ring-proposal" id="ringProposal" style="margin-top:0;padding-top:0;border-top:none;">
+                        <p class="ring-subtitle" id="ringSubtitle" style="color:#fff;font-size:clamp(1.5rem,6.25vw,2.5rem);font-weight:600;text-shadow:0 3px 15px rgba(0,0,0,0.5);">"แต่งงานกับพี่<u>อีกครั้ง</u>นะ"</p>
+                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showRingPhone()" style="background:rgba(0,0,0,0.7);border:2px solid #E8B888;color:#E8B888;box-shadow:0 8px 30px rgba(232,184,136,0.3);">
+                            💍 แต่งค่ะ
                         </button>
                         <div id="ringPhoneBox" style="display:none;margin-top:18px;animation:fadeIn 0.5s ease;">
                             <p style="color:rgba(255,255,255,0.8);font-family:'Prompt',sans-serif;font-size:0.95rem;margin-bottom:12px;">ใส่เบอร์โทรของเบน เพื่อยืนยัน</p>
@@ -2035,20 +2038,25 @@
 
         document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
 
-        // Create sparkles
+        // Create golden star sparkles
+        var starChars = ['✦', '✧', '⭐', '✨', '·'];
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
+            sparkle.textContent = starChars[Math.floor(Math.random() * starChars.length)];
             sparkle.style.left = Math.random() * 100 + '%';
             sparkle.style.top = Math.random() * 100 + '%';
-            sparkle.style.animationDelay = Math.random() * 3 + 's';
+            sparkle.style.fontSize = (6 + Math.random() * 10) + 'px';
+            sparkle.style.color = Math.random() > 0.3 ? '#E8B888' : '#FFD700';
+            sparkle.style.animationDuration = (0.8 + Math.random() * 1.5) + 's';
+            sparkle.style.animationDelay = Math.random() * 0.5 + 's';
             document.body.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 6000);
+            setTimeout(() => sparkle.remove(), 4000);
         }
 
-        setInterval(createSparkle, isMobile ? 1000 : 500);
-        for (let i = 0; i < (isMobile ? 8 : 15); i++) {
-            setTimeout(createSparkle, i * 200);
+        setInterval(createSparkle, isMobile ? 200 : 100);
+        for (let i = 0; i < (isMobile ? 30 : 60); i++) {
+            setTimeout(createSparkle, i * 50);
         }
 
         // Music player
