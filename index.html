@@ -1931,10 +1931,12 @@
                 content.classList.add('unlocked');
 
                 checkExistingMessages();
+                setTimeout(recalcSlideHeight, 100);
 
                 window.scrollTo(0, 0);
                 setTimeout(() => {
-                    document.getElementById('video').scrollIntoView({ behavior: 'smooth' });
+                    var letterEl = document.getElementById('letter');
+                    if (letterEl) letterEl.scrollIntoView({ behavior: 'smooth' });
                 }, 300);
             });
         }
@@ -1979,6 +1981,7 @@
             content.style.display = 'block';
             content.style.opacity = '1';
             content.classList.add('unlocked');
+            setTimeout(recalcSlideHeight, 50);
         } else if (savedChoice === 'goodbye') {
             document.getElementById('hero').style.display = 'none';
             const goodbye = document.getElementById('goodbyeContent');
@@ -2043,6 +2046,31 @@
         }
 
         // Music player
+        // Recalculate slide height
+        function recalcSlideHeight() {
+            var track = document.getElementById('slideTrack');
+            if (!track) return;
+            var slides = track.querySelectorAll('.slide');
+            // วัดจาก content
+            var maxH = 0;
+            slides.forEach(function(s) {
+                s.style.display = 'block';
+                s.style.height = 'auto';
+                if (s.offsetHeight > maxH) maxH = s.offsetHeight;
+                s.style.display = '';
+                s.style.height = '';
+            });
+            if (maxH > 0) track.style.height = maxH + 'px';
+            // อัพเดทตามรูป
+            var img = new Image();
+            img.onload = function() {
+                var ratio = img.naturalHeight / img.naturalWidth;
+                var h = track.offsetWidth * ratio;
+                if (h > maxH) track.style.height = h + 'px';
+            };
+            img.src = 'slide-02.jpg';
+        }
+
         // Diary Page Flip
         var currentSlide = 0;
         var totalSlides = 9;
@@ -2062,27 +2090,13 @@
             document.getElementById('slidePrev').disabled = saved === 0;
             document.getElementById('slideNext').disabled = saved === totalSlides - 1;
             document.getElementById('slideCounter').textContent = (saved + 1) + ' / ' + totalSlides;
-            // Fix height based on background image aspect ratio
             var track = document.getElementById('slideTrack');
             var slides = track.querySelectorAll('.slide');
-            var img = new Image();
-            img.onload = function() {
-                var ratio = img.naturalHeight / img.naturalWidth;
-                var h = track.offsetWidth * ratio;
-                track.style.height = h + 'px';
-            };
-            img.src = 'slide-02.jpg';
             slides[saved].classList.add('active');
+            recalcSlideHeight();
             // ดอกไม้จะร่วงเฉพาะหลังกดรับแหวนเท่านั้น
             // Resize handler
-            window.addEventListener('resize', function() {
-                var t = document.getElementById('slideTrack');
-                var im = new Image();
-                im.onload = function() {
-                    t.style.height = (t.offsetWidth * im.naturalHeight / im.naturalWidth) + 'px';
-                };
-                im.src = 'slide-02.jpg';
-            });
+            window.addEventListener('resize', recalcSlideHeight);
         })();
         function goToSlide(n) {
             if (n < 0 || n >= totalSlides || isFlipping || n === currentSlide) return;
