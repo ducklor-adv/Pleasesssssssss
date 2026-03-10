@@ -2987,25 +2987,30 @@
         var heroLyricsPos = 0;
         var heroLyricsSpeed = 0.32; // pixels per frame (~19px/sec at 60fps)
 
-        function startLyricsScroll() {
+        function startLyricsScroll(delay) {
             var container = document.getElementById('heroLyricsScroll');
             var inner = document.getElementById('heroLyricsInner');
             if (!container || !inner) return;
             var containerH = container.clientHeight;
-            if (heroLyricsPos === 0) heroLyricsPos = containerH; // start from bottom of container
+            if (heroLyricsPos === 0) heroLyricsPos = containerH;
             function step() {
                 heroLyricsPos -= heroLyricsSpeed;
                 var innerH = inner.scrollHeight;
-                if (heroLyricsPos < -innerH) heroLyricsPos = containerH; // loop back
+                if (heroLyricsPos < -innerH) heroLyricsPos = containerH;
                 inner.style.transform = 'translateY(' + heroLyricsPos + 'px)';
                 heroLyricsAnim = requestAnimationFrame(step);
             }
             if (heroLyricsAnim) cancelAnimationFrame(heroLyricsAnim);
-            heroLyricsAnim = requestAnimationFrame(step);
+            var wait = delay || 0;
+            if (wait > 0) {
+                heroLyricsAnim = setTimeout(function() { heroLyricsAnim = requestAnimationFrame(step); }, wait);
+            } else {
+                heroLyricsAnim = requestAnimationFrame(step);
+            }
         }
 
         function stopLyricsScroll() {
-            if (heroLyricsAnim) { cancelAnimationFrame(heroLyricsAnim); heroLyricsAnim = null; }
+            if (heroLyricsAnim) { clearTimeout(heroLyricsAnim); cancelAnimationFrame(heroLyricsAnim); heroLyricsAnim = null; }
         }
 
         function resetLyricsScroll() {
@@ -3079,7 +3084,7 @@
                 audio.play().then(function() {
                     heroPlaying = true;
                     if (btn) btn.innerHTML = '&#10074;&#10074;';
-                    startLyricsScroll();
+                    startLyricsScroll(5000);
                 }).catch(function() {});
             } else {
                 heroPlaying = false;
@@ -3095,7 +3100,7 @@
                 audio.play().then(function() {
                     heroPlaying = true;
                     if (btn) btn.innerHTML = '&#10074;&#10074;';
-                    startLyricsScroll();
+                    startLyricsScroll(5000);
                 }).catch(function() {});
             } else {
                 audio.pause();
