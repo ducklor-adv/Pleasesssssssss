@@ -4166,7 +4166,7 @@
 
 
         // Init: check messages if love was already chosen
-        if (savedChoice === 'love') { checkExistingMessages(); }
+        if (sessionStorage.getItem('choice') === 'love') { checkExistingMessages(); }
 
         // Secret admin access - triple click on footer text or hero subtitle
         let clickCount = 0;
