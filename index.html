@@ -2396,7 +2396,7 @@
 
         <!-- Hero Music Player (shown in minimal template) -->
         <div id="heroMusicPlayer" style="display:none;">
-            <audio id="heroVibeAudio" preload="auto"></audio>
+            <audio id="heroVibeAudio" preload="auto" src="songs/Bennie and the Beast.mp3"></audio>
             <!-- การ์ดใหญ่ now-playing -->
             <div class="hero-now-playing">
                 <div class="hero-lyrics-scroll" id="heroLyricsScroll">
@@ -3181,8 +3181,12 @@
             // Stop bgMusic to avoid 2 songs playing
             var bgMusic = document.getElementById('bgMusic');
             if (bgMusic) { bgMusic.pause(); bgMusic.currentTime = 0; }
-            audio.src = vibeSongs[index].file;
-            audio.load();
+            // Only reload if different song (skip if already preloaded)
+            var newSrc = vibeSongs[index].file;
+            if (!audio.src || decodeURIComponent(audio.src).indexOf(newSrc) === -1) {
+                audio.src = newSrc;
+                audio.load();
+            }
             // Update lyrics scroller
             var lyricsInner = document.getElementById('heroLyricsInner');
             if (lyricsInner) {
