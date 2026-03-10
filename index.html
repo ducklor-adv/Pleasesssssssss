@@ -135,33 +135,35 @@
             display: flex;
             flex-direction: column;
         }
-        .hero-now-cover {
+        .hero-lyrics-scroll {
             width: 100%;
             flex: 1;
             min-height: 0;
-            background: rgba(20,18,30,0.8) center/cover no-repeat;
+            overflow: hidden;
             position: relative;
-            display: none;
+            mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
         }
-        .hero-now-cover.show {
-            display: block;
+        .hero-lyrics-inner {
+            animation: lyricsScroll var(--lyrics-duration, 60s) linear infinite;
+            padding: 20px 16px;
         }
-        .hero-cover-toggle {
-            background: none;
-            border: 1px solid rgba(232,180,120,0.25);
-            color: rgba(232,180,120,0.6);
-            font-size: 0.6rem;
+        @keyframes lyricsScroll {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+        .hero-lyrics-inner p {
             font-family: 'Sarabun', sans-serif;
-            padding: 3px 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-left: 8px;
-            vertical-align: middle;
+            font-size: 0.8rem;
+            line-height: 2;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            margin: 0;
+            white-space: pre-line;
         }
-        .hero-cover-toggle:hover {
-            border-color: rgba(232,180,120,0.5);
+        .hero-lyrics-inner .lyrics-highlight {
             color: rgba(232,180,120,0.9);
+            font-weight: 500;
         }
         .hero-now-info {
             padding: 8px 16px 4px;
@@ -2273,10 +2275,14 @@
             <audio id="heroVibeAudio" preload="auto"></audio>
             <!-- การ์ดใหญ่ now-playing -->
             <div class="hero-now-playing">
-                <div class="hero-now-cover" id="heroNowCover"></div>
+                <div class="hero-lyrics-scroll" id="heroLyricsScroll">
+                    <div class="hero-lyrics-inner" id="heroLyricsInner">
+                        <p>...</p>
+                    </div>
+                </div>
                 <div class="hero-now-info">
                     <h3 class="hero-now-title" id="heroNowTitle"></h3>
-                    <p class="hero-now-artist">by P' Joe <button class="hero-cover-toggle" id="heroCoverToggle" onclick="toggleHeroCover()">&#9650; ปก</button></p>
+                    <p class="hero-now-artist">by P' Joe</p>
                 </div>
                 <div class="hero-now-controls">
                     <button class="hero-prev-btn" onclick="heroChangeTrack(-1)">&#9664;&#9664;</button>
@@ -3017,9 +3023,20 @@
             if (bgMusic) { bgMusic.pause(); bgMusic.currentTime = 0; }
             audio.src = vibeSongs[index].file;
             audio.load();
-            // Update cover
-            var cover = document.getElementById('heroNowCover');
-            if (cover) cover.style.backgroundImage = vibeSongs[index].cover ? "url('" + vibeSongs[index].cover + "')" : '';
+            // Update lyrics scroller
+            var lyricsInner = document.getElementById('heroLyricsInner');
+            if (lyricsInner) {
+                var lyricsText = vibeSongs[index].lyrics || '';
+                if (lyricsText) {
+                    lyricsInner.innerHTML = '<p>' + lyricsText.replace(/</g, '&lt;').replace(/\n/g, '<br>') + '</p>';
+                } else {
+                    lyricsInner.innerHTML = '<p style="opacity:0.3;">...</p>';
+                }
+                // Restart animation
+                lyricsInner.style.animation = 'none';
+                lyricsInner.offsetHeight;
+                lyricsInner.style.animation = '';
+            }
             // Update title
             var title = document.getElementById('heroNowTitle');
             if (title) title.textContent = vibeSongs[index].title;
@@ -3043,14 +3060,6 @@
                 heroPlaying = false;
                 if (btn) btn.innerHTML = '&#9654;';
             }
-        }
-
-        function toggleHeroCover() {
-            var cover = document.getElementById('heroNowCover');
-            var btn = document.getElementById('heroCoverToggle');
-            if (!cover) return;
-            var showing = cover.classList.toggle('show');
-            if (btn) btn.innerHTML = showing ? '&#9660; ปก' : '&#9650; ปก';
         }
 
         function heroTogglePlay() {
