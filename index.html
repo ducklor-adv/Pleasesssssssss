@@ -1050,6 +1050,29 @@
         .slide-content p {
             margin: 0 0 10px;
         }
+        .back-to-hero-btn {
+            position: absolute;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            background: rgba(10,8,18,0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(232,180,120,0.3);
+            color: rgba(232,180,120,0.9);
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.8rem;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .back-to-hero-btn:hover {
+            background: rgba(232,180,120,0.15);
+            border-color: rgba(232,180,120,0.6);
+        }
         .slide-nav {
             display: flex;
             align-items: center;
@@ -2574,6 +2597,7 @@
             </div><!-- /slide-track -->
         </div><!-- /slide-container -->
         </div>
+        <button class="back-to-hero-btn" onclick="goBackToHero()">&#9654; กลับฟังเพลง</button>
     </section>
 
     </div><!-- end locked-content -->
@@ -3105,6 +3129,22 @@
                 hero.style.display = 'none';
                 callback();
             }, 800);
+        }
+
+        function goBackToHero() {
+            var content = document.getElementById('lockedContent');
+            if (content) { content.classList.remove('unlocked'); content.style.display = 'none'; }
+            var hero = document.getElementById('hero');
+            hero.style.display = '';
+            hero.style.opacity = '0';
+            hero.style.transform = 'translateY(-30px)';
+            document.body.classList.add('minimal-template');
+            window.scrollTo(0, 0);
+            setTimeout(function() {
+                hero.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                hero.style.opacity = '1';
+                hero.style.transform = 'translateY(0)';
+            }, 50);
         }
 
         // ===== Hero Music Player (Landing Page) =====
