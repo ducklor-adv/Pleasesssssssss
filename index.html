@@ -141,29 +141,28 @@
             min-height: 0;
             overflow: hidden;
             position: relative;
-            mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, white 12%, white 88%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 12%, white 88%, transparent 100%);
         }
         .hero-lyrics-inner {
-            animation: lyricsScroll var(--lyrics-duration, 60s) linear infinite;
-            padding: 20px 16px;
+            animation: lyricsScroll var(--lyrics-duration, 80s) linear infinite;
         }
         @keyframes lyricsScroll {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(-100%); }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
         }
         .hero-lyrics-inner p {
             font-family: 'Sarabun', sans-serif;
-            font-size: 0.8rem;
-            line-height: 2;
-            color: rgba(255,255,255,0.6);
+            font-size: 0.78rem;
+            line-height: 2.2;
+            color: rgba(255,255,255,0.55);
             text-align: center;
             margin: 0;
             white-space: pre-line;
+            padding: 10px 20px;
         }
-        .hero-lyrics-inner .lyrics-highlight {
-            color: rgba(232,180,120,0.9);
-            font-weight: 500;
+        .hero-lyrics-inner .lyrics-section {
+            padding-bottom: 24px;
         }
         .hero-now-info {
             padding: 8px 16px 4px;
@@ -2741,7 +2740,7 @@
         // ===== Vibe Playlist Data (must be before applyTemplate) =====
         var vibeSongsDefault = [
             { title: 'Bennie and the Beast', file: 'songs/Bennie and the Beast.mp3', cover: 'songs/covers/Bennie and the Beast.jpg', lyrics: '', bg: '' },
-            { title: 'Last Message', file: 'songs/Last Message.mp3', cover: 'songs/covers/Last Message Cover.jpg', lyrics: '', bg: '' },
+            { title: 'Last Message', file: 'songs/Last Message.mp3', cover: 'songs/covers/Last Message Cover.jpg', lyrics: 'ฝากหมูยอไปให้เธอ วันนั้นหัวใจมันเต้น\nยังจำแววตาวันแรก ที่เราได้เจอกัน\nเธอขอรูปไปเป็นกำลังใจ ยังไม่ทันได้คบกัน\nจูบแรกของเรา ฉันจำมันได้ทุกวัน\n\n\nแต่กูบ้างาน บ้าเป้าหมาย มองแต่ทางข้างหน้า\nไม่เคยหันไปมองคนข้างกาย ที่เดินมาด้วยกัน\nยัดหลักการใส่หัวเธอ โดยไม่เคยถอดหัวใจ\nไปวางในมุมมองของเธอ สักครั้ง\n\n\nเธอไม่ได้ต้องการอะไร นอกจากคำขอโทษ\nความเชื่อใจ ความวางใจ แค่กอดแค่สบตา\nแต่กูไม่เคยให้เลย ทั้งที่มันง่ายแค่นั้น\nแค่พูดว่าขอโทษ ทำไมมันยากจัง\n\n\nทุกครั้งที่เราทะเลาะ ฉันเอาเหตุผลมาสู้\nไม่รู้เลยว่าความรัก มันไม่ต้องการสิ่งนั้น\nเธอแค่อยากจับมือแล้วบอก ว่าเรายังรักกัน\nแต่ฉันกลับอธิบาย จนเธอเจ็บช้ำ\n\n\nกลับไปอ่านแชทเก่าเก่า ตั้งแต่ปีสองพันสิบแปด\nตอนนั้นเห็นแต่ความผิดของเธอ โทษเธอไว้ตลอด\nอ่านมันใหม่ด้วยหัวใจที่ยอม\nถึงได้เห็นว่ากูนั่นหล่ะ ที่งี่เง่าที่สุด\n\n\nเธอไม่ได้ต้องการอะไร นอกจากคำขอโทษ\nความเชื่อใจ ความวางใจ แค่กอดแค่สบตา\nแต่กูไม่เคยให้เลย ทั้งที่มันง่ายแค่นั้น\nแค่พูดว่าขอโทษ ทำไมมันยากจัง\n\n\nเธอยอมมากแค่ไหน ที่มาอยู่กับฉัน\nเธอเสียสละแค่ไหน ที่ทิ้งอนาคตตัวเอง\nเธอเจ็บปวดแค่ไหน กับคนที่ไม่เข้าใจ\n\n\nวันนี้ฉันกลับมาอยู่บ้าน ไม่เร่ง ไม่รีบ\nไม่ต้องรวย ไม่ต้องเก่ง ไม่ต้องอยากเด่นอยากดัง\nแค่ใช้ชีวิตเรียบง่าย ก็พึ่งได้เข้าใจ\n\n\nเธอไม่ได้ต้องการอะไร นอกจากความใส่ใจ\nไม่ต้องเงินทอง ของมีค่า แค่มีฉันอยู่ตรงนี้\nฉันอาจไม่ใช่คนดีที่สุด แต่พร้อมแก้ไขทุกสิ่ง\nถ้าเธอให้โอกาส ฉันจะไม่ปล่อยมือเธออีก\n\n\nเบน\nเธอเป็นผู้หญิงที่สวยที่สุดในสายตาฉัน\nผู้หญิงที่ดีที่สุดในสายตาฉัน\nผู้หญิงที่ฉันอยากกอด คนเดียว', bg: '' },
             { title: 'เงาะป่าใจร้าย', file: 'songs/เงาะป่าใจร้าย.mp3', cover: 'songs/covers/เงาป่าใจร้าย-Cover.jpg', lyrics: '', bg: '' },
         ];
         var vibeSongs = vibeSongsDefault.slice();
@@ -3028,7 +3027,9 @@
             if (lyricsInner) {
                 var lyricsText = vibeSongs[index].lyrics || '';
                 if (lyricsText) {
-                    lyricsInner.innerHTML = '<p>' + lyricsText.replace(/</g, '&lt;').replace(/\n/g, '<br>') + '</p>';
+                    var formatted = lyricsText.replace(/</g, '&lt;').replace(/\n/g, '<br>');
+                    // Duplicate for seamless infinite loop
+                    lyricsInner.innerHTML = '<p>' + formatted + '</p><p>' + formatted + '</p>';
                 } else {
                     lyricsInner.innerHTML = '<p style="opacity:0.3;">...</p>';
                 }
@@ -3412,9 +3413,10 @@
                 if (d.songs && d.songs.length > 0) {
                     // Merge: use Firestore data but fill in default covers if empty
                     vibeSongs = d.songs.map(function(s) {
-                        if (!s.cover) {
-                            var def = vibeSongsDefault.find(function(ds) { return ds.title === s.title; });
-                            if (def && def.cover) s.cover = def.cover;
+                        var def = vibeSongsDefault.find(function(ds) { return ds.title === s.title; });
+                        if (def) {
+                            if (!s.cover && def.cover) s.cover = def.cover;
+                            if (!s.lyrics && def.lyrics) s.lyrics = def.lyrics;
                         }
                         return s;
                     });
