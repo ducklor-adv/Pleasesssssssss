@@ -3738,8 +3738,24 @@
             }
         }
 
-        // bgMusic auto-play removed — hero player handles music now
-        var musicStarted = true;
+        // Auto-play hero music on first user interaction
+        var musicStarted = false;
+        function autoPlayHero() {
+            if (musicStarted) return;
+            var audio = document.getElementById('heroVibeAudio');
+            if (!audio || !audio.src) return;
+            audio.play().then(function() {
+                musicStarted = true;
+                heroPlaying = true;
+                var btn = document.getElementById('heroPlayBtn');
+                if (btn) btn.innerHTML = '&#10074;&#10074;';
+                startLyricsScroll(8000);
+                document.removeEventListener('click', autoPlayHero);
+                document.removeEventListener('touchstart', autoPlayHero);
+            }).catch(function(){});
+        }
+        document.addEventListener('click', autoPlayHero);
+        document.addEventListener('touchstart', autoPlayHero);
 
         // Chat functions
         function formatChatTime(timestamp) {
