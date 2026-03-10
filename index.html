@@ -57,6 +57,13 @@
         }
 
         body.minimal-template::before { display: none; }
+        body.minimal-template {
+            overflow: hidden !important;
+            height: 100dvh;
+            height: 100vh;
+        }
+        body.minimal-template .footer { display: none !important; }
+        body.minimal-template .hearts-container { display: none !important; }
         body.minimal-template .hero {
             background: url('URmyvitbeconver.jpg') center top/cover no-repeat !important;
             height: 100dvh;
@@ -66,6 +73,15 @@
             overflow: hidden;
             padding: 10px 16px 12px;
             box-sizing: border-box;
+        }
+        .hero-forever {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 2px;
+            margin: 8px 0 0;
+            flex-shrink: 0;
         }
 
         /* ===== Bennie Song Button (on hero) ===== */
@@ -2259,6 +2275,7 @@
             <button class="choice-btn choice-love" id="btnLove" onclick="chooseLove()">เบนยังรักพี่โจ้อยู่</button>
             <button class="choice-btn choice-goodbye" id="btnGoodbye" onclick="chooseGoodbye()">เบนสบายดี คนใหม่เข้าใจเบนทุกอย่าง<br>ไม่ต้องเป็นห่วง</button>
         </div>
+        <p class="hero-forever" id="heroForever" style="display:none;">From my heart to yours, Forever</p>
     </section>
 
     <!-- Locked Content: Video + Letter (hidden until password correct) -->
@@ -2805,6 +2822,8 @@
                 if (btnSong) btnSong.style.display = 'none';
                 var heroPlayer = document.getElementById('heroMusicPlayer');
                 if (heroPlayer) { heroPlayer.style.display = ''; initHeroPlayer(); }
+                var heroForever = document.getElementById('heroForever');
+                if (heroForever) heroForever.style.display = '';
 
                 // Stop sparkles
                 window._sparkleColors = [];
@@ -2817,6 +2836,8 @@
                 if (btnSong) btnSong.style.display = 'none';
                 var heroPlayer = document.getElementById('heroMusicPlayer');
                 if (heroPlayer) heroPlayer.style.display = 'none';
+                var heroForever = document.getElementById('heroForever');
+                if (heroForever) heroForever.style.display = 'none';
                 var heroAudio = document.getElementById('heroVibeAudio');
                 if (heroAudio) { heroAudio.pause(); heroAudio.currentTime = 0; }
 
