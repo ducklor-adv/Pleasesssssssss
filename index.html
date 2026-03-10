@@ -138,9 +138,30 @@
         .hero-now-cover {
             width: 100%;
             flex: 1;
-            min-height: 80px;
+            min-height: 0;
             background: rgba(20,18,30,0.8) center/cover no-repeat;
             position: relative;
+            display: none;
+        }
+        .hero-now-cover.show {
+            display: block;
+        }
+        .hero-cover-toggle {
+            background: none;
+            border: 1px solid rgba(232,180,120,0.25);
+            color: rgba(232,180,120,0.6);
+            font-size: 0.6rem;
+            font-family: 'Sarabun', sans-serif;
+            padding: 3px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .hero-cover-toggle:hover {
+            border-color: rgba(232,180,120,0.5);
+            color: rgba(232,180,120,0.9);
         }
         .hero-now-info {
             padding: 8px 16px 4px;
@@ -2255,7 +2276,7 @@
                 <div class="hero-now-cover" id="heroNowCover"></div>
                 <div class="hero-now-info">
                     <h3 class="hero-now-title" id="heroNowTitle"></h3>
-                    <p class="hero-now-artist">by P' Joe</p>
+                    <p class="hero-now-artist">by P' Joe <button class="hero-cover-toggle" id="heroCoverToggle" onclick="toggleHeroCover()">&#9650; ปก</button></p>
                 </div>
                 <div class="hero-now-controls">
                     <button class="hero-prev-btn" onclick="heroChangeTrack(-1)">&#9664;&#9664;</button>
@@ -3022,6 +3043,14 @@
                 heroPlaying = false;
                 if (btn) btn.innerHTML = '&#9654;';
             }
+        }
+
+        function toggleHeroCover() {
+            var cover = document.getElementById('heroNowCover');
+            var btn = document.getElementById('heroCoverToggle');
+            if (!cover) return;
+            var showing = cover.classList.toggle('show');
+            if (btn) btn.innerHTML = showing ? '&#9660; ปก' : '&#9650; ปก';
         }
 
         function heroTogglePlay() {
