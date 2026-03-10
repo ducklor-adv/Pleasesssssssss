@@ -3372,10 +3372,23 @@
                 if (!doc.exists) return;
                 var d = doc.data();
                 if (d.songs && d.songs.length > 0) {
-                    vibeSongs = d.songs;
+                    // Merge: use Firestore data but fill in default covers if empty
+                    vibeSongs = d.songs.map(function(s) {
+                        if (!s.cover) {
+                            var def = vibeSongsDefault.find(function(ds) { return ds.title === s.title; });
+                            if (def && def.cover) s.cover = def.cover;
+                        }
+                        return s;
+                    });
                     if (vibeCurrentIndex >= vibeSongs.length) vibeCurrentIndex = 0;
                     renderVibeGallery();
                     renderAdminPlaylist();
+                    // Re-render hero player if visible
+                    var heroPlayer = document.getElementById('heroMusicPlayer');
+                    if (heroPlayer && heroPlayer.style.display !== 'none') {
+                        renderHeroSongList();
+                        heroLoadSong(heroVibeIndex, false);
+                    }
                 }
             }).catch(function(){});
         }
