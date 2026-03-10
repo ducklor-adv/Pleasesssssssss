@@ -145,11 +145,14 @@
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 12%, white 88%, transparent 100%);
         }
         .hero-lyrics-inner {
+            transform: translateY(100%);
+        }
+        .hero-lyrics-inner.scrolling {
             animation: lyricsScroll var(--lyrics-duration, 80s) linear infinite;
         }
         @keyframes lyricsScroll {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
         }
         .hero-lyrics-inner p {
             font-family: 'Sarabun', sans-serif;
@@ -3028,15 +3031,12 @@
                 var lyricsText = vibeSongs[index].lyrics || '';
                 if (lyricsText) {
                     var formatted = lyricsText.replace(/</g, '&lt;').replace(/\n/g, '<br>');
-                    // Duplicate for seamless infinite loop
-                    lyricsInner.innerHTML = '<p>' + formatted + '</p><p>' + formatted + '</p>';
+                    lyricsInner.innerHTML = '<p>' + formatted + '</p>';
                 } else {
                     lyricsInner.innerHTML = '<p style="opacity:0.3;">...</p>';
                 }
-                // Restart animation
-                lyricsInner.style.animation = 'none';
-                lyricsInner.offsetHeight;
-                lyricsInner.style.animation = '';
+                // Reset: stop scroll, back to bottom
+                lyricsInner.classList.remove('scrolling');
             }
             // Update title
             var title = document.getElementById('heroNowTitle');
@@ -3056,6 +3056,7 @@
                 audio.play().then(function() {
                     heroPlaying = true;
                     if (btn) btn.innerHTML = '&#10074;&#10074;';
+                    if (lyricsInner) lyricsInner.classList.add('scrolling');
                 }).catch(function() {});
             } else {
                 heroPlaying = false;
@@ -3066,16 +3067,19 @@
         function heroTogglePlay() {
             var audio = document.getElementById('heroVibeAudio');
             var btn = document.getElementById('heroPlayBtn');
+            var lyrics = document.getElementById('heroLyricsInner');
             if (!audio) return;
             if (audio.paused) {
                 audio.play().then(function() {
                     heroPlaying = true;
                     if (btn) btn.innerHTML = '&#10074;&#10074;';
+                    if (lyrics) lyrics.classList.add('scrolling');
                 }).catch(function() {});
             } else {
                 audio.pause();
                 heroPlaying = false;
                 if (btn) btn.innerHTML = '&#9654;';
+                if (lyrics) lyrics.classList.remove('scrolling');
             }
         }
 
