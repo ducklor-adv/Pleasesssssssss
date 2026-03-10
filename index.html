@@ -2355,13 +2355,8 @@
         }
     </style>
     <script>
-        // Apply cached template class BEFORE body renders to prevent flash
-        (function() {
-            var t = localStorage.getItem('templateId');
-            if (t && t !== 'love-letter') {
-                document.documentElement.className = 'minimal-preload';
-            }
-        })();
+        // Always start with minimal template
+        document.documentElement.className = 'minimal-preload';
     </script>
 </head>
 <body>
@@ -2705,8 +2700,7 @@
                     <div class="edit-group">
                         <label class="edit-label">เลือก Template</label>
                         <select class="edit-input" id="templateSelect" onchange="previewTemplate(this.value)" style="cursor:pointer;">
-                            <option value="love-letter">Love Letter (ฟ้า-ทอง)</option>
-                            <option value="you-are-my-vibe">You Are My Vibe (ม่วง-เขียว)</option>
+                            <option value="you-are-my-vibe" selected>You Are My Vibe</option>
                         </select>
                     </div>
                     <button class="edit-save" onclick="saveTemplate()">💾 บันทึก Template</button>
@@ -2871,15 +2865,7 @@
         var vibeSongs = vibeSongsDefault.slice();
         var vibeCurrentIndex = 0;
 
-        var currentTemplateId = 'love-letter';
-
-        // Apply cached template immediately (no flash)
-        (function() {
-            var cached = localStorage.getItem('templateId');
-            if (cached && TEMPLATES[cached]) {
-                currentTemplateId = cached;
-            }
-        })();
+        var currentTemplateId = 'you-are-my-vibe';
 
         function applyTemplate(id) {
             var tpl = TEMPLATES[id];
@@ -3069,10 +3055,8 @@
             }
         }
 
-        // Apply cached template on page load (instant, no waiting for Firestore)
-        if (currentTemplateId !== 'love-letter') {
-            applyTemplate(currentTemplateId);
-        }
+        // Apply template on page load
+        applyTemplate(currentTemplateId);
 
         // Track visit
         function trackVisit(choice) {
@@ -3305,21 +3289,13 @@
             sessionStorage.setItem('choice', 'love');
             trackVisit('love');
 
-            // Restore Love Letter style for slides (all templates share same slide design)
+            // Restore Love Letter CSS vars for slides
             var loveTpl = TEMPLATES['love-letter'];
             var root = document.documentElement;
             Object.keys(loveTpl.css).forEach(function(key) {
                 root.style.setProperty(key, loveTpl.css[key]);
             });
-            document.body.style.background = '';
             document.body.classList.remove('minimal-template');
-            window._stopSparkles = false;
-            window._sparkleColors = loveTpl.sparkleColors;
-            balloonColors = loveTpl.balloonColors;
-
-            // Restore balloons & sparkles visibility
-            var heartsContainer = document.getElementById('heartsContainer');
-            if (heartsContainer) heartsContainer.style.display = '';
 
             // Stop hero player audio
             var heroAudio = document.getElementById('heroVibeAudio');
