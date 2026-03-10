@@ -809,18 +809,18 @@
             width: 100%;
             max-height: 100dvh;
             max-height: 100vh;
-            background: linear-gradient(135deg, #FFFFFF, #FFF5F0, #FFFFFF);
-            border: 1px solid rgba(var(--primary-rgb), 0.15);
-            border-radius: 20px;
-            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
             position: relative;
-            box-shadow: 0 30px 80px rgba(var(--primary-dark-rgb), 0.15), inset 0 1px 0 rgba(var(--primary-rgb), 0.1);
+            box-shadow: none;
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
             overflow: hidden;
             box-sizing: border-box;
-            margin: 10px;
+            margin: 0;
         }
 
         .letter.visible {
@@ -986,13 +986,14 @@
         .slide-container {
             position: relative;
             width: 100%;
-            height: 100%;
-            border: 1.5px solid rgba(var(--primary-rgb), 0.15);
-            border-radius: 20px;
-            background: rgba(255, 248, 240, 0.65);
-            backdrop-filter: blur(8px);
+            aspect-ratio: 3 / 4;
+            max-height: 92dvh;
+            max-height: 92vh;
+            border: none;
+            border-radius: 18px;
+            background: transparent;
             padding-bottom: 50px;
-            box-shadow: 0 4px 24px rgba(var(--primary-rgb), 0.08);
+            box-shadow: none;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -2534,7 +2535,7 @@
 
             <!-- หน้า 9: Ring Proposal -->
             <div class="slide" style="background:url('Please Mary Me.png') center/cover no-repeat; border-radius:18px; position:relative;">
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);border-radius:18px;"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="flower-fall" id="flowerFall"></div>
                 <div class="ring-title" id="ringTitle" style="color:var(--accent);text-shadow:0 0 10px rgba(var(--accent-rgb),0.6),0 0 20px rgba(var(--accent-rgb),0.4),0 0 40px rgba(var(--accent-rgb),0.2),0 2px 12px rgba(0,0,0,0.4);font-size:2.75rem;font-weight:300;font-family:'Great Vibes',cursive;font-style:normal;letter-spacing:2px;position:absolute;top:62px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:3;animation:goldGlow 2s ease-in-out infinite alternate;">Perfectly Imperfect</div>
                 <div class="slide-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:calc(35% + 100px);">
@@ -3443,9 +3444,8 @@
         var totalSlides = 9;
         var isFlipping = false;
         (function initSlides() {
-            var saved = parseInt(sessionStorage.getItem('lastSlide') || '0');
-            if (saved < 0 || saved >= totalSlides) saved = 0;
-            currentSlide = saved;
+            var saved = 0;
+            currentSlide = 0;
             var dotsEl = document.getElementById('slideDots');
             for (var i = 0; i < totalSlides; i++) {
                 var dot = document.createElement('div');
