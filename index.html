@@ -92,6 +92,23 @@
             flex-shrink: 0;
         }
 
+        .hero-highlight {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2em;
+            font-weight: 400;
+            font-style: normal;
+            background: linear-gradient(135deg, #FFD700, #E8B888, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 12px rgba(255,215,0,0.4));
+            animation: heroGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes heroGlow {
+            0% { filter: drop-shadow(0 0 8px rgba(255,215,0,0.3)); }
+            100% { filter: drop-shadow(0 0 20px rgba(232,180,120,0.6)); }
+        }
+
         /* ===== Bennie Song Button (on hero) ===== */
         .bennie-song-btn {
             margin-top: 28px;
@@ -779,6 +796,7 @@
             padding: 80px 20px;
             display: flex;
             justify-content: center;
+            background: url('URmyvitbeconver.jpg') center/cover no-repeat fixed;
         }
 
         .letter {
@@ -2749,7 +2767,7 @@
                     '--text-secondary': '#3D3230'
                 },
                 hero: {
-                    title: '<span style="font-size:2em">B</span>ennie, you are my <span style="font-size:2em">V</span>ibe.........',
+                    title: '<span class="hero-highlight">Bennie</span>, you are my <span class="hero-highlight">Vibe</span>.........',
                     loveBtn: "P' Joe, I love you too"
                 },
                 sparkleColors: [],
