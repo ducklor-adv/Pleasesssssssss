@@ -14,6 +14,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sarabun:wght@300;400;600;700&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #FFF8F0;
+            --primary: #3A7BC8;
+            --primary-dark: #2E6AB5;
+            --primary-light: #5B9BD5;
+            --primary-rgb: 58, 123, 200;
+            --accent: #E8B888;
+            --accent-dark: #D4A070;
+            --accent-rgb: 232, 184, 136;
+            --pink: #D4577A;
+            --pink-rgb: 212, 87, 122;
+            --error: #E07070;
+            --text-primary: #2D2420;
+            --text-secondary: #3D3230;
+            --primary-dark-rgb: 46, 106, 181;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -22,8 +39,8 @@
 
         body {
             font-family: 'Sarabun', 'Prompt', sans-serif;
-            background: #FFF8F0;
-            color: #2D2420;
+            background: var(--bg);
+            color: var(--text-primary);
             overflow-x: hidden;
         }
         body::before {
@@ -37,6 +54,271 @@
             opacity: 0.12;
             z-index: -1;
             pointer-events: none;
+        }
+
+        body.minimal-template::before { display: none; }
+        body.minimal-template .hero { background: url('URmyvitbeconver.jpg') center top/cover no-repeat !important; }
+
+        /* ===== Bennie Song Button (on hero) ===== */
+        .bennie-song-btn {
+            margin-top: 28px;
+            padding: 12px 36px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(232,180,120,0.4);
+            border-radius: 50px;
+            color: rgba(232,180,120,0.9);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .bennie-song-btn:hover {
+            background: rgba(232,180,120,0.15);
+            border-color: rgba(232,180,120,0.7);
+            color: rgba(232,180,120,1);
+        }
+
+        /* ===== Vibe Song Gallery (Full-Screen Overlay) ===== */
+        .vibe-gallery {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background-color: rgba(5,3,12,0.92);
+            background-size: cover;
+            background-position: center;
+            overflow-y: auto;
+            padding: 60px 16px 40px;
+            box-sizing: border-box;
+            animation: vibeGalleryIn 0.4s ease-out both;
+            transition: background-image 0.8s ease;
+        }
+        .vibe-gallery::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(5,3,12,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: -1;
+            transition: background 0.8s ease;
+        }
+        .vibe-gallery.has-bg::before {
+            background: rgba(5,3,12,0.55);
+        }
+        .vibe-close-btn {
+            position: fixed;
+            top: 14px;
+            right: 16px;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(232,180,120,0.3);
+            background: rgba(10,8,18,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: rgba(232,180,120,0.8);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .vibe-close-btn:hover {
+            background: rgba(232,180,120,0.15);
+            border-color: rgba(232,180,120,0.6);
+            color: rgba(232,180,120,1);
+        }
+        .vibe-gallery-title {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin: 0 0 24px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(232,180,120,0.25);
+        }
+        .vibe-gallery-scroll {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Song Card */
+        .vibe-song-card {
+            background: rgba(10,8,18,0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(232,180,120,0.12);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+            transition: box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .vibe-song-card.playing {
+            border-color: rgba(232,180,120,0.35);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 18px rgba(232,180,120,0.12);
+        }
+
+        /* Cover Art */
+        .vibe-song-cover {
+            width: 100%;
+            height: 200px;
+            background-color: rgba(20,18,30,0.8);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vibe-song-cover-placeholder {
+            font-size: 48px;
+            opacity: 0.25;
+            color: rgba(232,180,120,0.5);
+        }
+        .vibe-card-play-btn {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid rgba(232,180,120,0.5);
+            background: rgba(10,8,18,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: rgba(232,180,120,0.9);
+            transition: all 0.25s ease;
+            opacity: 0.85;
+        }
+        .vibe-card-play-btn:hover {
+            background: rgba(232,180,120,0.2);
+            border-color: rgba(232,180,120,0.8);
+            opacity: 1;
+            transform: scale(1.08);
+        }
+        .vibe-song-card.playing .vibe-card-play-btn {
+            border-color: rgba(232,180,120,0.7);
+            background: rgba(232,180,120,0.15);
+            opacity: 1;
+        }
+
+        /* Song Body */
+        .vibe-song-body {
+            padding: 16px 18px 14px;
+        }
+        .vibe-song-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 400;
+            font-style: italic;
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.3px;
+            margin: 0;
+        }
+        .vibe-song-by {
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(232,180,120,0.55);
+            margin: 4px 0 0;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        /* Lyrics Toggle */
+        .vibe-lyrics-toggle {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 0;
+            background: none;
+            border: none;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(232,180,120,0.6);
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease;
+        }
+        .vibe-lyrics-toggle:hover {
+            color: rgba(232,180,120,0.9);
+        }
+
+        /* Lyrics Content */
+        .vibe-lyrics {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0;
+        }
+        .vibe-lyrics.open {
+            max-height: 400px;
+            padding: 10px 0 4px;
+            overflow-y: auto;
+        }
+        .vibe-lyrics p {
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.7;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        /* Card Progress Bar */
+        .vibe-card-progress {
+            height: 3px;
+            background: rgba(255,255,255,0.08);
+            position: relative;
+            cursor: pointer;
+        }
+        .vibe-card-progress-fill {
+            height: 100%;
+            background: rgba(232,180,120,0.6);
+            width: 0%;
+            transition: width 0.15s linear;
+        }
+        .vibe-card-time {
+            position: absolute;
+            right: 12px;
+            top: -18px;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.5px;
+        }
+
+        /* Hint message */
+        .vibe-hint {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            color: rgba(232,180,120,0.5);
+            margin: 20px 0 0;
+            letter-spacing: 1px;
+            font-style: italic;
+            animation: hintPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes vibeGalleryIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.45; }
+            50% { opacity: 0.8; }
         }
 
         /* Floating Hearts Animation */
@@ -126,21 +408,21 @@
             z-index: 1;
             text-align: center;
             padding: 40px 20px 60px;
-            background: radial-gradient(ellipse at center, rgba(58, 123, 200, 0.15) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(var(--primary-rgb), 0.15) 0%, transparent 70%);
         }
 
         .hero-title {
             font-family: 'Prompt', sans-serif;
             font-size: clamp(1.4rem, 5vw, 2.5rem);
             font-weight: 700;
-            background: linear-gradient(135deg, #3A7BC8, #2E6AB5, #3A7BC8, #5B9BD5);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark), var(--primary), var(--primary-light));
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: gradientShift 4s ease infinite, fadeInDown 1.5s ease-out;
             text-shadow: none;
-            filter: drop-shadow(0 0 30px rgba(58, 123, 200, 0.3));
+            filter: drop-shadow(0 0 30px rgba(var(--primary-rgb), 0.3));
             margin-bottom: 20px;
         }
 
@@ -164,13 +446,13 @@
             height: clamp(120px, 35vw, 180px);
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid rgba(58, 123, 200, 0.3);
-            box-shadow: 0 8px 30px rgba(46, 106, 181, 0.2);
+            border: 4px solid rgba(var(--primary-rgb), 0.3);
+            box-shadow: 0 8px 30px rgba(var(--primary-dark-rgb), 0.2);
         }
         .music-toggle-btn {
-            background: rgba(58, 123, 200, 0.1);
-            border: 1px solid rgba(58, 123, 200, 0.25);
-            color: #3A7BC8;
+            background: rgba(var(--primary-rgb), 0.1);
+            border: 1px solid rgba(var(--primary-rgb), 0.25);
+            color: var(--primary);
             font-family: 'Sarabun', sans-serif;
             font-size: 0.9rem;
             padding: 8px 20px;
@@ -181,11 +463,11 @@
             animation: fadeIn 2.5s ease-out;
         }
         .music-toggle-btn:hover {
-            background: rgba(58, 123, 200, 0.2);
+            background: rgba(var(--primary-rgb), 0.2);
         }
         .music-toggle-btn.playing {
-            background: rgba(58, 123, 200, 0.15);
-            box-shadow: 0 0 15px rgba(58, 123, 200, 0.2);
+            background: rgba(var(--primary-rgb), 0.15);
+            box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.2);
         }
 
         @keyframes heartbeat {
@@ -214,13 +496,13 @@
             z-index: 1;
             padding: 60px 20px;
             text-align: center;
-            background: linear-gradient(180deg, transparent, rgba(58, 123, 200, 0.08), transparent);
+            background: linear-gradient(180deg, transparent, rgba(var(--primary-rgb), 0.08), transparent);
         }
 
         .section-title {
             font-family: 'Prompt', sans-serif;
             font-size: clamp(1.5rem, 4vw, 2.2rem);
-            color: #3A7BC8;
+            color: var(--primary);
             margin-bottom: 30px;
             font-weight: 600;
             opacity: 0;
@@ -238,19 +520,19 @@
             align-items: center;
             gap: 12px;
             padding: 18px 36px;
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
             text-decoration: none;
             font-family: 'Prompt', sans-serif;
             font-size: 1.1rem;
             font-weight: 600;
             border-radius: 50px;
-            box-shadow: 0 8px 30px rgba(46, 106, 181, 0.35);
+            box-shadow: 0 8px 30px rgba(var(--primary-dark-rgb), 0.35);
             transition: all 0.3s ease;
         }
         .youtube-link:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(46, 106, 181, 0.5);
+            box-shadow: 0 12px 40px rgba(var(--primary-dark-rgb), 0.5);
         }
         .yt-icon {
             display: flex;
@@ -276,11 +558,11 @@
             max-width: 700px;
             width: 100%;
             background: linear-gradient(135deg, #FFFFFF, #FFF5F0, #FFFFFF);
-            border: 1px solid rgba(58, 123, 200, 0.15);
+            border: 1px solid rgba(var(--primary-rgb), 0.15);
             border-radius: 20px;
             padding: clamp(30px, 6vw, 60px);
             position: relative;
-            box-shadow: 0 30px 80px rgba(46, 106, 181, 0.15), inset 0 1px 0 rgba(58, 123, 200, 0.1);
+            box-shadow: 0 30px 80px rgba(var(--primary-dark-rgb), 0.15), inset 0 1px 0 rgba(var(--primary-rgb), 0.1);
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
@@ -298,7 +580,7 @@
             left: 20px;
             right: 20px;
             bottom: 20px;
-            border: 1px solid rgba(58, 123, 200, 0.08);
+            border: 1px solid rgba(var(--primary-rgb), 0.08);
             border-radius: 12px;
             pointer-events: none;
         }
@@ -314,7 +596,7 @@
         .letter-header {
             font-family: 'Prompt', sans-serif;
             font-size: clamp(1.3rem, 4vw, 1.8rem);
-            color: #3A7BC8;
+            color: var(--primary);
             text-align: center;
             margin-bottom: 10px;
             font-weight: 600;
@@ -322,15 +604,15 @@
 
         .letter-to {
             text-align: center;
-            color: #E8B888;
+            color: var(--accent);
             font-size: 1.1rem;
             margin-bottom: 30px;
             font-weight: 400;
         }
 
         .letter-purpose {
-            background: rgba(46, 106, 181, 0.08);
-            border-left: 3px solid #2E6AB5;
+            background: rgba(var(--primary-dark-rgb), 0.08);
+            border-left: 3px solid var(--primary-dark);
             padding: 15px 20px;
             margin: 25px 0;
             border-radius: 0 8px 8px 0;
@@ -346,16 +628,16 @@
             margin-bottom: 15px;
             font-weight: 300;
             font-size: clamp(0.95rem, 2.5vw, 1.05rem);
-            color: #3D3230;
+            color: var(--text-secondary);
         }
 
         .letter .emphasis {
-            color: #3A7BC8;
+            color: var(--primary);
             font-weight: 600;
         }
 
         .letter .quote {
-            color: #E8B888;
+            color: var(--accent);
             font-style: italic;
             font-weight: 400;
         }
@@ -367,13 +649,13 @@
         .letter .section-break {
             text-align: center;
             margin: 40px 0;
-            color: rgba(58, 123, 200, 0.3);
+            color: rgba(var(--primary-rgb), 0.3);
             font-size: 1.5rem;
             letter-spacing: 10px;
         }
 
         .comparison-block {
-            background: rgba(58, 123, 200, 0.08);
+            background: rgba(var(--primary-rgb), 0.08);
             border-radius: 12px;
             padding: 20px;
             margin: 20px 0;
@@ -381,7 +663,7 @@
 
         .comparison-block .topic {
             font-family: 'Prompt', sans-serif;
-            color: #3A7BC8;
+            color: var(--primary);
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 12px;
@@ -390,7 +672,7 @@
 
         .comparison-row {
             padding: 8px 0;
-            border-bottom: 1px solid rgba(58, 123, 200, 0.1);
+            border-bottom: 1px solid rgba(var(--primary-rgb), 0.1);
         }
 
         .comparison-row:last-child {
@@ -421,7 +703,7 @@
             padding: 10px 0 10px 30px;
             position: relative;
             line-height: 1.8;
-            color: #3D3230;
+            color: var(--text-secondary);
         }
 
         .plan-list li::before {
@@ -431,8 +713,8 @@
         }
 
         .highlight-box {
-            background: linear-gradient(135deg, rgba(46, 106, 181, 0.1), rgba(232, 184, 136, 0.05));
-            border: 1px solid rgba(58, 123, 200, 0.2);
+            background: linear-gradient(135deg, rgba(var(--primary-dark-rgb), 0.1), rgba(var(--accent-rgb), 0.05));
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
             border-radius: 12px;
             padding: 25px;
             margin: 30px 0;
@@ -441,7 +723,7 @@
 
         .highlight-box p {
             font-size: 1.1rem !important;
-            color: #E8B888 !important;
+            color: var(--accent) !important;
             font-weight: 400 !important;
             line-height: 2.2 !important;
         }
@@ -449,12 +731,12 @@
         .slide-container {
             position: relative;
             width: 100%;
-            border: 1.5px solid rgba(58, 123, 200, 0.15);
+            border: 1.5px solid rgba(var(--primary-rgb), 0.15);
             border-radius: 20px;
             background: rgba(255, 248, 240, 0.65);
             backdrop-filter: blur(8px);
             padding-bottom: 55px;
-            box-shadow: 0 4px 24px rgba(58, 123, 200, 0.08);
+            box-shadow: 0 4px 24px rgba(var(--primary-rgb), 0.08);
             overflow: hidden;
         }
         .slide-track {
@@ -480,7 +762,7 @@
             object-fit: cover;
             border-radius: 14px;
             margin: 0 auto 12px;
-            box-shadow: 0 4px 15px rgba(46, 106, 181, 0.12);
+            box-shadow: 0 4px 15px rgba(var(--primary-dark-rgb), 0.12);
         }
         .slide-content {
             text-align: center;
@@ -502,9 +784,9 @@
         .slide-arrow {
             position: absolute;
             bottom: 10px;
-            background: rgba(58, 123, 200, 0.1);
-            border: 1px solid rgba(58, 123, 200, 0.25);
-            color: #3A7BC8;
+            background: rgba(var(--primary-rgb), 0.1);
+            border: 1px solid rgba(var(--primary-rgb), 0.25);
+            color: var(--primary);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -523,7 +805,7 @@
             right: 15px;
         }
         .slide-arrow:hover {
-            background: rgba(58, 123, 200, 0.25);
+            background: rgba(var(--primary-rgb), 0.25);
         }
         .slide-arrow:disabled {
             opacity: 0.3;
@@ -538,12 +820,12 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(58, 123, 200, 0.2);
+            background: rgba(var(--primary-rgb), 0.2);
             transition: all 0.3s;
             cursor: pointer;
         }
         .slide-dot.active {
-            background: #3A7BC8;
+            background: var(--primary);
             width: 22px;
             border-radius: 4px;
         }
@@ -610,7 +892,7 @@
             text-align: center;
             margin-top: 40px;
             padding-top: 30px;
-            border-top: 1px solid rgba(58, 123, 200, 0.15);
+            border-top: 1px solid rgba(var(--primary-rgb), 0.15);
         }
 
         .final-message p {
@@ -624,7 +906,7 @@
             z-index: 1;
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(180deg, transparent, rgba(58, 123, 200, 0.1));
+            background: linear-gradient(180deg, transparent, rgba(var(--primary-rgb), 0.1));
         }
 
         .footer-heart {
@@ -686,7 +968,7 @@
             font-size: 60px;
             margin-bottom: 20px;
             animation: heartbeat 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(46, 106, 181, 0.4));
+            filter: drop-shadow(0 0 15px rgba(var(--primary-dark-rgb), 0.4));
         }
 
         .gate-subtitle {
@@ -718,14 +1000,14 @@
         }
 
         .choice-love {
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
-            box-shadow: 0 8px 30px rgba(46, 106, 181, 0.35);
+            box-shadow: 0 8px 30px rgba(var(--primary-dark-rgb), 0.35);
         }
 
         .choice-love:hover {
             transform: translateY(-3px);
-            box-shadow: 0 14px 40px rgba(46, 106, 181, 0.5);
+            box-shadow: 0 14px 40px rgba(var(--primary-dark-rgb), 0.5);
         }
 
         .choice-love:active {
@@ -733,16 +1015,16 @@
         }
 
         .choice-goodbye {
-            background: rgba(58, 123, 200, 0.08);
+            background: rgba(var(--primary-rgb), 0.08);
             color: rgba(60, 50, 45, 0.5);
-            border: 1px solid rgba(58, 123, 200, 0.15);
+            border: 1px solid rgba(var(--primary-rgb), 0.15);
             box-shadow: none;
             font-weight: 400;
             font-size: 0.95rem;
         }
 
         .choice-goodbye:hover {
-            background: rgba(58, 123, 200, 0.12);
+            background: rgba(var(--primary-rgb), 0.12);
             color: rgba(60, 50, 45, 0.7);
         }
 
@@ -793,8 +1075,8 @@
             align-items: center;
             gap: 8px;
             padding: 14px 32px;
-            background: rgba(58, 123, 200, 0.06);
-            border: 1px solid rgba(58, 123, 200, 0.2);
+            background: rgba(var(--primary-rgb), 0.06);
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
             border-radius: 50px;
             color: rgba(60, 50, 45, 0.5);
             font-family: 'Prompt', sans-serif;
@@ -805,9 +1087,9 @@
         }
 
         .undo-btn:hover {
-            background: rgba(46, 106, 181, 0.15);
-            border-color: rgba(58, 123, 200, 0.4);
-            color: #3A7BC8;
+            background: rgba(var(--primary-dark-rgb), 0.15);
+            border-color: rgba(var(--primary-rgb), 0.4);
+            color: var(--primary);
         }
 
         .undo-icon {
@@ -819,7 +1101,7 @@
         .ring-proposal {
             margin-top: 50px;
             padding-top: 40px;
-            border-top: 1px solid rgba(58, 123, 200, 0.15);
+            border-top: 1px solid rgba(var(--primary-rgb), 0.15);
             text-align: center;
             position: relative;
         }
@@ -827,7 +1109,7 @@
         .ring-title {
             font-family: 'Prompt', sans-serif;
             font-size: 2rem;
-            color: #E8B888;
+            color: var(--accent);
             font-weight: 700;
             margin-bottom: 25px;
         }
@@ -842,7 +1124,7 @@
             content: '';
             position: absolute;
             top: -8px; left: -8px; right: -8px; bottom: -8px;
-            background: linear-gradient(135deg, #E8B888, #3A7BC8, #E8B888);
+            background: linear-gradient(135deg, var(--accent), var(--primary), var(--accent));
             border-radius: 20px;
             z-index: -1;
             animation: gradientShift 4s ease infinite;
@@ -854,7 +1136,7 @@
             max-width: 360px;
             border-radius: 16px;
             display: block;
-            box-shadow: 0 15px 40px rgba(46, 106, 181, 0.2);
+            box-shadow: 0 15px 40px rgba(var(--primary-dark-rgb), 0.2);
         }
 
         .ring-glow {
@@ -863,7 +1145,7 @@
             transform: translate(-50%, -50%);
             width: 120%;
             height: 120%;
-            background: radial-gradient(circle, rgba(232, 184, 136, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.15) 0%, transparent 70%);
             pointer-events: none;
             animation: ringPulse 2s ease-in-out infinite;
         }
@@ -886,7 +1168,7 @@
             align-items: center;
             gap: 10px;
             padding: 16px 48px;
-            background: linear-gradient(135deg, #E8B888, #D4A070);
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
             font-family: 'Prompt', sans-serif;
             font-size: 1.15rem;
@@ -895,23 +1177,23 @@
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(232, 184, 136, 0.4);
+            box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.4);
             animation: acceptPulse 2s ease-in-out infinite;
         }
 
         .ring-accept-btn:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 14px 40px rgba(232, 184, 136, 0.55);
+            box-shadow: 0 14px 40px rgba(var(--accent-rgb), 0.55);
         }
 
         @keyframes goldGlow {
-            0% { text-shadow: 0 0 10px rgba(232,184,136,0.6), 0 0 20px rgba(232,184,136,0.4), 0 0 40px rgba(232,184,136,0.2), 0 2px 12px rgba(0,0,0,0.4); }
-            100% { text-shadow: 0 0 15px rgba(232,184,136,0.8), 0 0 30px rgba(232,184,136,0.6), 0 0 60px rgba(232,184,136,0.3), 0 2px 12px rgba(0,0,0,0.4); }
+            0% { text-shadow: 0 0 10px rgba(var(--accent-rgb),0.6), 0 0 20px rgba(var(--accent-rgb),0.4), 0 0 40px rgba(var(--accent-rgb),0.2), 0 2px 12px rgba(0,0,0,0.4); }
+            100% { text-shadow: 0 0 15px rgba(var(--accent-rgb),0.8), 0 0 30px rgba(var(--accent-rgb),0.6), 0 0 60px rgba(var(--accent-rgb),0.3), 0 2px 12px rgba(0,0,0,0.4); }
         }
 
         @keyframes acceptPulse {
-            0%, 100% { box-shadow: 0 8px 30px rgba(212, 87, 122, 0.4); }
-            50% { box-shadow: 0 8px 40px rgba(212, 87, 122, 0.6), 0 0 0 8px rgba(212, 87, 122, 0.15); }
+            0%, 100% { box-shadow: 0 8px 30px rgba(var(--pink-rgb), 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(var(--pink-rgb), 0.6), 0 0 0 8px rgba(var(--pink-rgb), 0.15); }
         }
 
         .phone-input-box {
@@ -928,10 +1210,10 @@
             width: 100%;
             max-width: 280px;
             padding: 14px 20px;
-            background: rgba(58, 123, 200, 0.06);
-            border: 2px solid rgba(232, 184, 136, 0.3);
+            background: rgba(var(--primary-rgb), 0.06);
+            border: 2px solid rgba(var(--accent-rgb), 0.3);
             border-radius: 50px;
-            color: #2D2420;
+            color: var(--text-primary);
             font-family: 'Sarabun', sans-serif;
             font-size: 1.2rem;
             text-align: center;
@@ -941,8 +1223,8 @@
             margin-bottom: 20px;
         }
         .phone-input:focus {
-            border-color: #E8B888;
-            box-shadow: 0 0 15px rgba(232, 184, 136, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
         }
         .phone-input::placeholder {
             color: rgba(60, 50, 45, 0.3);
@@ -962,14 +1244,14 @@
             text-align: center;
             margin-top: 50px;
             padding-top: 40px;
-            border-top: 1px solid rgba(58, 123, 200, 0.15);
+            border-top: 1px solid rgba(var(--primary-rgb), 0.15);
             animation: fadeIn 1s ease;
         }
         .ring-accepted.show { display: block; }
         .ring-accepted-icon { font-size: 3rem; margin-bottom: 15px; }
         .ring-accepted-text {
             font-family: 'Prompt', sans-serif;
-            color: #E8B888;
+            color: var(--accent);
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 8px;
@@ -1032,7 +1314,7 @@
             width: 90%;
         }
         .admin-modal-title {
-            color: #3A7BC8;
+            color: var(--primary);
             font-family: 'Prompt', sans-serif;
             font-weight: 600;
             margin-bottom: 15px;
@@ -1043,13 +1325,13 @@
             background: rgba(58,123,200,0.06);
             border: 1px solid rgba(58,123,200,0.25);
             border-radius: 8px;
-            color: #2D2420;
+            color: var(--text-primary);
             font-family: 'Sarabun', sans-serif;
             font-size: 1rem;
             text-align: center;
             outline: none;
         }
-        .admin-input:focus { border-color: #3A7BC8; }
+        .admin-input:focus { border-color: var(--primary); }
         .admin-modal-btn {
             padding: 10px 24px;
             border: none;
@@ -1057,7 +1339,7 @@
             font-family: 'Prompt', sans-serif;
             font-size: 0.9rem;
             cursor: pointer;
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
         }
         .admin-cancel {
@@ -1070,7 +1352,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: #FFF8F0;
+            background: var(--bg);
             z-index: 10000;
             overflow-y: auto;
         }
@@ -1084,7 +1366,7 @@
         }
         .admin-header h2 {
             font-family: 'Prompt', sans-serif;
-            color: #3A7BC8;
+            color: var(--primary);
             font-size: 1.3rem;
         }
         .admin-close {
@@ -1117,7 +1399,7 @@
             transition: all 0.5s ease;
         }
         .chain-step.active {
-            border-color: #3A7BC8;
+            border-color: var(--primary);
             background: rgba(58,123,200,0.1);
         }
         .chain-step.done {
@@ -1139,7 +1421,7 @@
             font-family: 'Prompt', sans-serif;
             font-size: 1rem;
             font-weight: 600;
-            color: #2D2420;
+            color: var(--text-primary);
             margin-bottom: 2px;
         }
         .chain-status {
@@ -1150,7 +1432,7 @@
         .chain-status.fail { color: #E88080; font-weight: 600; }
         .chain-phone-number.success {
             font-size: 1.3rem;
-            color: #3A7BC8;
+            color: var(--primary);
             font-family: 'Prompt', sans-serif;
             font-weight: 700;
             letter-spacing: 1px;
@@ -1177,9 +1459,9 @@
         }
         .admin-tab {
             flex: 1;
-            padding: 12px;
+            padding: 10px 6px;
             font-family: 'Prompt', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.82rem;
             font-weight: 600;
             background: none;
             border: none;
@@ -1190,8 +1472,8 @@
             margin-bottom: -2px;
         }
         .admin-tab.active {
-            color: #3A7BC8;
-            border-bottom-color: #3A7BC8;
+            color: var(--primary);
+            border-bottom-color: var(--primary);
         }
         .admin-tab-content { display: none; }
         .admin-tab-content.active { display: block; }
@@ -1208,7 +1490,7 @@
             font-family: 'Prompt', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
-            color: #3A7BC8;
+            color: var(--primary);
             margin-bottom: 14px;
         }
         .edit-group {
@@ -1226,21 +1508,21 @@
             background: rgba(58,123,200,0.06);
             border: 1px solid rgba(58,123,200,0.2);
             border-radius: 10px;
-            color: #2D2420;
+            color: var(--text-primary);
             font-family: 'Sarabun', sans-serif;
             font-size: 0.95rem;
             outline: none;
             transition: border-color 0.3s ease;
         }
         .edit-input:focus {
-            border-color: #3A7BC8;
+            border-color: var(--primary);
         }
         .edit-save {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 8px 20px;
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
             font-family: 'Prompt', sans-serif;
             font-size: 0.85rem;
@@ -1265,6 +1547,216 @@
             margin-top: 8px;
             clear: both;
             text-align: right;
+        }
+
+        /* Admin Playlist Item */
+        .admin-song-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(var(--primary-rgb), 0.04);
+            border: 1px solid rgba(var(--primary-rgb), 0.1);
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+        .admin-song-num {
+            font-size: 0.75rem;
+            color: rgba(var(--primary-rgb), 0.4);
+            min-width: 20px;
+        }
+        .admin-song-cover {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: rgba(var(--primary-rgb), 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .admin-song-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .admin-song-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .admin-song-info .song-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .admin-song-info .song-file {
+            font-size: 0.7rem;
+            color: rgba(var(--primary-rgb), 0.4);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .admin-song-del {
+            background: none;
+            border: none;
+            color: #E07070;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .admin-song-del:hover {
+            background: rgba(224,112,112,0.1);
+        }
+
+        /* File picker input group */
+        .file-input-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .file-input-group input {
+            flex: 1;
+            min-width: 0;
+        }
+        .file-btn {
+            padding: 6px 8px;
+            border: 1px solid rgba(var(--primary-rgb),0.2);
+            border-radius: 8px;
+            background: rgba(var(--primary-rgb),0.06);
+            color: var(--primary);
+            font-size: 0.72rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .file-btn:hover {
+            background: rgba(var(--primary-rgb),0.12);
+            border-color: var(--primary);
+        }
+        .file-upload-progress {
+            height: 3px;
+            background: rgba(var(--primary-rgb),0.1);
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .file-upload-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.2s linear;
+            border-radius: 2px;
+        }
+
+        /* File picker modal */
+        .file-picker-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .file-picker-box {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            max-height: 70vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        }
+        .file-picker-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-picker-header h3 {
+            margin: 0;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .file-picker-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: rgba(0,0,0,0.4);
+            padding: 4px 8px;
+        }
+        .file-picker-body {
+            overflow-y: auto;
+            padding: 12px;
+            flex: 1;
+        }
+        .file-picker-loading {
+            text-align: center;
+            padding: 30px;
+            color: rgba(0,0,0,0.3);
+            font-size: 0.85rem;
+        }
+        .file-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .file-picker-item {
+            border: 2px solid transparent;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(var(--primary-rgb),0.04);
+        }
+        .file-picker-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.03);
+        }
+        .file-picker-item img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+        .file-picker-item .fp-name {
+            font-size: 0.65rem;
+            padding: 4px 6px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+        /* Audio file list style */
+        .file-picker-list .file-picker-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        .file-picker-list .file-picker-item .fp-icon {
+            font-size: 1.1rem;
+        }
+        .file-picker-list .file-picker-item .fp-name {
+            flex: 1;
+            text-align: left;
+            font-size: 0.8rem;
+            padding: 0;
         }
 
         /* Hidden content (revealed after password) */
@@ -1296,8 +1788,8 @@
             margin-bottom: 3px;
             display: block;
         }
-        .chat-msg.ben .chat-sender { color: #3A7BC8; }
-        .chat-msg.admin .chat-sender { color: #E8B888; }
+        .chat-msg.ben .chat-sender { color: var(--primary); }
+        .chat-msg.admin .chat-sender { color: var(--accent); }
         .chat-msg .chat-time {
             font-size: 0.7rem;
             color: rgba(80,65,58,0.4);
@@ -1314,14 +1806,14 @@
             text-align: left;
         }
         .chat-bubble.ben {
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
             border-bottom-right-radius: 4px;
         }
         .chat-bubble.admin {
             background: rgba(58,123,200,0.08);
             border: 1px solid rgba(58,123,200,0.15);
-            color: #2D2420;
+            color: var(--text-primary);
             border-bottom-left-radius: 4px;
         }
         .chat-input-area {
@@ -1336,7 +1828,7 @@
             background: rgba(58,123,200,0.06);
             border: 1px solid rgba(58,123,200,0.2);
             border-radius: 20px;
-            color: #2D2420;
+            color: var(--text-primary);
             font-family: 'Sarabun', sans-serif;
             font-size: 0.95rem;
             outline: none;
@@ -1347,13 +1839,13 @@
             transition: border-color 0.3s ease;
         }
         .chat-input::placeholder { color: rgba(60,50,45,0.3); }
-        .chat-input:focus { border-color: #3A7BC8; box-shadow: 0 0 15px rgba(46,106,181,0.1); }
+        .chat-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(var(--primary-dark-rgb),0.1); }
         .chat-send-btn {
             width: 44px;
             height: 44px;
             border-radius: 50%;
             border: none;
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
             font-size: 1.2rem;
             cursor: pointer;
@@ -1362,9 +1854,9 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(46,106,181,0.25);
+            box-shadow: 0 4px 15px rgba(var(--primary-dark-rgb),0.25);
         }
-        .chat-send-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46,106,181,0.35); }
+        .chat-send-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--primary-dark-rgb),0.35); }
         .chat-send-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
 
         /* Floating Action Button (Chat) */
@@ -1377,21 +1869,21 @@
             height: 60px;
             border-radius: 50%;
             border: none;
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
             font-size: 1.6rem;
             cursor: pointer;
             z-index: 8000;
-            box-shadow: 0 6px 25px rgba(46,106,181,0.4);
+            box-shadow: 0 6px 25px rgba(var(--primary-dark-rgb),0.4);
             transition: all 0.3s ease;
             animation: fabPulse 2s ease-in-out infinite;
             overflow: visible;
         }
-        .chat-fab:hover { transform: scale(1.1); box-shadow: 0 8px 35px rgba(46,106,181,0.5); }
+        .chat-fab:hover { transform: scale(1.1); box-shadow: 0 8px 35px rgba(var(--primary-dark-rgb),0.5); }
         .chat-fab.show { display: flex; align-items: center; justify-content: center; }
         @keyframes fabPulse {
-            0%, 100% { box-shadow: 0 6px 25px rgba(46,106,181,0.4); }
-            50% { box-shadow: 0 6px 35px rgba(46,106,181,0.6), 0 0 0 8px rgba(46,106,181,0.1); }
+            0%, 100% { box-shadow: 0 6px 25px rgba(var(--primary-dark-rgb),0.4); }
+            50% { box-shadow: 0 6px 35px rgba(var(--primary-dark-rgb),0.6), 0 0 0 8px rgba(var(--primary-dark-rgb),0.1); }
         }
         .fab-badge {
             position: absolute;
@@ -1408,7 +1900,7 @@
             align-items: center;
             justify-content: center;
             color: white;
-            border: 2px solid #FFF8F0;
+            border: 2px solid var(--bg);
             z-index: 10002;
             pointer-events: none;
         }
@@ -1417,13 +1909,13 @@
             bottom: 30px;
             right: 30px;
             z-index: 10001;
-            background: linear-gradient(135deg, #E8B888, #D4A070);
-            box-shadow: 0 6px 25px rgba(232,184,136,0.4);
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            box-shadow: 0 6px 25px rgba(var(--accent-rgb),0.4);
         }
-        .admin-chat-fab:hover { box-shadow: 0 8px 35px rgba(232,184,136,0.5); }
+        .admin-chat-fab:hover { box-shadow: 0 8px 35px rgba(var(--accent-rgb),0.5); }
         @keyframes adminFabPulse {
-            0%, 100% { box-shadow: 0 6px 25px rgba(232,184,136,0.4); }
-            50% { box-shadow: 0 6px 35px rgba(232,184,136,0.6), 0 0 0 8px rgba(232,184,136,0.1); }
+            0%, 100% { box-shadow: 0 6px 25px rgba(var(--accent-rgb),0.4); }
+            50% { box-shadow: 0 6px 35px rgba(var(--accent-rgb),0.6), 0 0 0 8px rgba(var(--accent-rgb),0.1); }
         }
         .admin-chat-fab { animation: adminFabPulse 2s ease-in-out infinite; }
         #adminFullChatOverlay { z-index: 10002; }
@@ -1433,7 +1925,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: #FFF8F0;
+            background: var(--bg);
             z-index: 9000;
             flex-direction: column;
         }
@@ -1449,7 +1941,7 @@
         .fullchat-back {
             background: none;
             border: 1px solid rgba(60,50,45,0.2);
-            color: #3A7BC8;
+            color: var(--primary);
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -1460,11 +1952,11 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
-        .fullchat-back:hover { background: rgba(46,106,181,0.15); }
+        .fullchat-back:hover { background: rgba(var(--primary-dark-rgb),0.15); }
         .fullchat-title {
             font-family: 'Prompt', sans-serif;
             font-size: 1.1rem;
-            color: #E8B888;
+            color: var(--accent);
             font-weight: 600;
         }
         .fullchat-messages {
@@ -1502,20 +1994,20 @@
 
         /* Admin fullscreen chat - swap sides (admin = right, ben = left) */
         .admin-chat-messages .chat-msg.admin { align-self: flex-end; text-align: right; }
-        .admin-chat-messages .chat-msg.admin .chat-sender { color: #3A7BC8; }
+        .admin-chat-messages .chat-msg.admin .chat-sender { color: var(--primary); }
         .admin-chat-messages .chat-msg.ben { align-self: flex-start; text-align: left; }
-        .admin-chat-messages .chat-msg.ben .chat-sender { color: #E8B888; }
+        .admin-chat-messages .chat-msg.ben .chat-sender { color: var(--accent); }
         .admin-chat-messages .chat-bubble.admin {
-            background: linear-gradient(135deg, #2E6AB5, #3A7BC8);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
             border-bottom-right-radius: 4px;
             border-bottom-left-radius: 16px;
             border: none;
         }
         .admin-chat-messages .chat-bubble.ben {
-            background: rgba(232,184,136,0.1);
-            border: 1px solid rgba(232,184,136,0.2);
-            color: #2D2420;
+            background: rgba(var(--accent-rgb),0.1);
+            border: 1px solid rgba(var(--accent-rgb),0.2);
+            color: var(--text-primary);
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 16px;
         }
@@ -1547,10 +2039,13 @@
         <p class="hero-subtitle footer-secret" id="heroSecret">จดหมายจากใจ...ถึงคนที่รักที่สุด</p>
 
         <div class="sorry-text" style="margin-top: 40px;">
-            <p style="font-family:'Great Vibes',cursive; font-size:clamp(1.8rem,5vw,2.5rem); font-weight:700; color:#3A7BC8; margin:0; line-height:1.3;">I'm so Sorry</p>
-            <p style="font-family:'Great Vibes',cursive; font-size:clamp(1.6rem,4.5vw,2.2rem); font-weight:600; color:#D4577A; margin:8px 0 0; letter-spacing:2px;">pleasesssssssss...</p>
+            <p style="font-family:'Great Vibes',cursive; font-size:clamp(1.8rem,5vw,2.5rem); font-weight:700; color:var(--primary); margin:0; line-height:1.3;">I'm so Sorry</p>
+            <p style="font-family:'Great Vibes',cursive; font-size:clamp(1.6rem,4.5vw,2.2rem); font-weight:600; color:var(--pink); margin:8px 0 0; letter-spacing:2px;">pleasesssssssss...</p>
         </div>
         <p class="gate-subtitle" style="margin-top: 30px;">โปรด <span style="color:#B22222;font-weight:700;">"เลือก"</span> คำตอบเดียวในใจ</p>
+        <!-- Bennie Song menu button (shown in minimal template) -->
+        <button id="btnBennieSong" class="bennie-song-btn" style="display:none;" onclick="openBennieSong()">Bennie Song</button>
+
         <div class="choice-buttons">
             <button class="choice-btn choice-love" id="btnLove" onclick="chooseLove()">เบนยังรักพี่โจ้อยู่</button>
             <button class="choice-btn choice-goodbye" id="btnGoodbye" onclick="chooseGoodbye()">เบนสบายดี คนใหม่เข้าใจเบนทุกอย่าง<br>ไม่ต้องเป็นห่วง</button>
@@ -1580,7 +2075,7 @@
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
                 <div class="slide-content" style="position:relative;z-index:1;">
                     <p class="letter-date">วันที่ 9 มีนาคม 2569</p>
-                    <p style="font-family:'Prompt',sans-serif; font-size:1.2rem; color:#3A7BC8; font-weight:600;">จดหมายฉบับสุดท้าย<br>ถึงคนที่ผมรักที่สุด</p>
+                    <p style="font-family:'Prompt',sans-serif; font-size:1.2rem; color:var(--primary); font-weight:600;">จดหมายฉบับสุดท้าย<br>ถึงคนที่ผมรักที่สุด</p>
                     <p>From the Beast to Beauty ที่รัก 🤍</p>
                     <p>จดหมายฉบับนี้ พี่เขียนขึ้นมา<br>เพื่อ <span class="emphasis">"ขอโทษ"</span> ในทุกสิ่งที่พี่ได้ทำไป<br>และเพื่อ <span class="emphasis">"ขอโอกาสเริ่มต้นใหม่"</span> อีกครั้ง</p>
                 </div>
@@ -1661,7 +2156,7 @@
                     <p>ถ้ามีโอกาสอีกครั้ง<br>พี่จะไม่ปล่อยเบนหลุดมืออีก</p>
                     <p style="color:#D4577A;font-weight:600;">พี่อาจจะไม่ใช่คนที่ดีที่สุด<br>แต่พี่พร้อมแก้ไขทุกสิ่งที่ทำพลาด</p>
                     <p><span style="color:#5BA3D9;font-size:1.5em;font-weight:700;">"พี่อยากได้เบนคืนมา<br>เป็นของพี่คนเดียว"</span></p>
-                    <p style="font-size: 1.2rem;">รักเบนที่สุด 🤍<br><span style="color: #3A7BC8; font-family: 'Prompt', sans-serif; font-weight: 600;">พี่โจ้</span></p>
+                    <p style="font-size: 1.2rem;">รักเบนที่สุด 🤍<br><span style="color: var(--primary); font-family: 'Prompt', sans-serif; font-weight: 600;">พี่โจ้</span></p>
                 </div>
             </div>
 
@@ -1669,16 +2164,16 @@
             <div class="slide" style="background:url('Please Mary Me.png') center/cover no-repeat; border-radius:18px; position:relative;">
                 <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);border-radius:18px;"></div>
                 <div class="flower-fall" id="flowerFall"></div>
-                <div class="ring-title" id="ringTitle" style="color:#E8B888;text-shadow:0 0 10px rgba(232,184,136,0.6),0 0 20px rgba(232,184,136,0.4),0 0 40px rgba(232,184,136,0.2),0 2px 12px rgba(0,0,0,0.4);font-size:2.75rem;font-weight:300;font-family:'Great Vibes',cursive;font-style:normal;letter-spacing:2px;position:absolute;top:62px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:3;animation:goldGlow 2s ease-in-out infinite alternate;">Perfectly Imperfect</div>
+                <div class="ring-title" id="ringTitle" style="color:var(--accent);text-shadow:0 0 10px rgba(var(--accent-rgb),0.6),0 0 20px rgba(var(--accent-rgb),0.4),0 0 40px rgba(var(--accent-rgb),0.2),0 2px 12px rgba(0,0,0,0.4);font-size:2.75rem;font-weight:300;font-family:'Great Vibes',cursive;font-style:normal;letter-spacing:2px;position:absolute;top:62px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:3;animation:goldGlow 2s ease-in-out infinite alternate;">Perfectly Imperfect</div>
                 <div class="slide-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:calc(35% + 100px);">
                     <div class="ring-proposal" id="ringProposal" style="margin-top:0;padding-top:0;border-top:none;">
                         <p class="ring-subtitle" id="ringSubtitle" style="color:#fff;font-size:clamp(1.5rem,6.25vw,2.5rem);font-weight:600;text-shadow:0 3px 15px rgba(0,0,0,0.5);">"แต่งงานกับพี่<u>อีกครั้ง</u>นะ"</p>
-                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showRingPhone()" style="background:rgba(0,0,0,0.7);border:2px solid #E8B888;color:#E8B888;box-shadow:0 8px 30px rgba(232,184,136,0.3);">
+                        <button class="ring-accept-btn" id="ringAcceptBtn" onclick="showRingPhone()" style="background:rgba(0,0,0,0.7);border:2px solid var(--accent);color:var(--accent);box-shadow:0 8px 30px rgba(var(--accent-rgb),0.3);">
                             💍 แต่งค่ะ
                         </button>
                         <div id="ringPhoneBox" style="display:none;margin-top:18px;animation:fadeIn 0.5s ease;">
                             <p style="color:rgba(255,255,255,0.8);font-family:'Prompt',sans-serif;font-size:0.95rem;margin-bottom:12px;">ใส่เบอร์โทรของเบน เพื่อยืนยัน</p>
-                            <input type="tel" id="ringPhoneInput" placeholder="0xx-xxx-xxxx" maxlength="12" style="width:100%;max-width:250px;padding:12px 18px;background:rgba(255,255,255,0.15);border:2px solid rgba(232,184,136,0.5);border-radius:50px;color:#fff;font-size:1.1rem;text-align:center;letter-spacing:2px;outline:none;">
+                            <input type="tel" id="ringPhoneInput" placeholder="0xx-xxx-xxxx" maxlength="12" style="width:100%;max-width:250px;padding:12px 18px;background:rgba(255,255,255,0.15);border:2px solid rgba(var(--accent-rgb),0.5);border-radius:50px;color:#fff;font-size:1.1rem;text-align:center;letter-spacing:2px;outline:none;">
                             <br><button class="ring-accept-btn" onclick="acceptRing()" style="margin-top:12px;animation:none;font-size:1rem;padding:12px 36px;">✅ ยืนยัน</button>
                             <p id="ringPhoneStatus" style="color:#ff8888;font-size:0.85rem;margin-top:8px;"></p>
                         </div>
@@ -1783,6 +2278,7 @@
             <div class="admin-tabs">
                 <button class="admin-tab active" onclick="switchTab('status')">📊 สถานะ</button>
                 <button class="admin-tab" onclick="switchTab('edit')">✏️ แก้ไข</button>
+                <button class="admin-tab" onclick="switchTab('song')">🎵 Bennie Song</button>
             </div>
 
             <!-- Tab 1: Status (Decision Chain) -->
@@ -1826,6 +2322,19 @@
 
             <!-- Tab 2: Edit Content -->
             <div class="admin-tab-content" id="tabEdit">
+                <!-- Template Selector -->
+                <div class="edit-section" style="border:2px solid var(--accent);background:rgba(var(--accent-rgb),0.05);">
+                    <div class="edit-section-title">🎨 Template</div>
+                    <div class="edit-group">
+                        <label class="edit-label">เลือก Template</label>
+                        <select class="edit-input" id="templateSelect" onchange="previewTemplate(this.value)" style="cursor:pointer;">
+                            <option value="love-letter">Love Letter (ฟ้า-ทอง)</option>
+                            <option value="you-are-my-vibe">You Are My Vibe (ม่วง-เขียว)</option>
+                        </select>
+                    </div>
+                    <button class="edit-save" onclick="saveTemplate()">💾 บันทึก Template</button>
+                    <div class="edit-status" id="statusTemplate"></div>
+                </div>
                 <!-- Hero -->
                 <div class="edit-section">
                     <div class="edit-section-title">🏠 หน้าแรก (Hero)</div>
@@ -1877,12 +2386,32 @@
                     <div class="edit-status" id="statusFooter"></div>
                 </div>
             </div>
+
+            <!-- Tab 3: Bennie Song -->
+            <div class="admin-tab-content" id="tabSong">
+                <div class="edit-section" style="border:2px solid var(--accent);background:rgba(var(--accent-rgb),0.05);">
+                    <div class="edit-section-title">🎵 Playlist (You Are My Vibe)</div>
+                    <div id="adminPlaylist" style="margin-bottom:12px;"></div>
+                    <div style="border-top:1px solid rgba(var(--primary-rgb),0.1);padding-top:12px;margin-top:8px;">
+                        <p style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:8px;">+ เพิ่มเพลงใหม่</p>
+                        <div class="edit-group"><label class="edit-label">ชื่อเพลง</label><input class="edit-input" id="newSongTitle" placeholder="เช่น Last Message"></div>
+                        <div class="edit-group"><label class="edit-label">ไฟล์เพลง</label><div class="file-input-group"><input class="edit-input" id="newSongFile" style="font-size:0.8rem;padding:6px 10px;" placeholder="songs/ชื่อไฟล์.mp3"><button type="button" class="file-btn" onclick="browseStorageFiles('songs','newSongFile')">📁</button><button type="button" class="file-btn" onclick="triggerUpload('songs','newSongFile','audio/*')">📤</button></div><div class="file-upload-progress" id="progress_newSongFile" style="display:none;"><div class="file-upload-progress-fill"></div></div></div>
+                        <div class="edit-group"><label class="edit-label">Cover</label><div class="file-input-group"><input class="edit-input" id="newSongCover" style="font-size:0.8rem;padding:6px 10px;" placeholder="songs/covers/cover.jpg"><button type="button" class="file-btn" onclick="browseStorageFiles('songs/covers','newSongCover')">📁</button><button type="button" class="file-btn" onclick="triggerUpload('songs/covers','newSongCover','image/*')">📤</button></div><div class="file-upload-progress" id="progress_newSongCover" style="display:none;"><div class="file-upload-progress-fill"></div></div></div>
+                        <div class="edit-group"><label class="edit-label">พื้นหลัง Vibe BG</label><div class="file-input-group"><input class="edit-input" id="newSongBg" style="font-size:0.8rem;padding:6px 10px;" placeholder="songs/covers/bg-mood.jpg"><button type="button" class="file-btn" onclick="browseStorageFiles('songs/covers','newSongBg')">📁</button><button type="button" class="file-btn" onclick="triggerUpload('songs/covers','newSongBg','image/*')">📤</button></div><div class="file-upload-progress" id="progress_newSongBg" style="display:none;"><div class="file-upload-progress-fill"></div></div></div>
+                        <div class="edit-group"><label class="edit-label">เนื้อเพลง (ว่างได้)</label><textarea class="edit-input" id="newSongLyrics" rows="3" placeholder="เนื้อเพลงบรรทัดต่อบรรทัด..." style="resize:vertical;min-height:50px;"></textarea></div>
+                        <button class="edit-save" onclick="addSongToPlaylist()">➕ เพิ่มเพลง</button>
+                    </div>
+                    <button class="edit-save" onclick="savePlaylist()" style="margin-top:10px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));">💾 บันทึก Playlist</button>
+                    <div class="edit-status" id="statusPlaylist"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 
     <script>
         // Firebase init
@@ -1895,6 +2424,262 @@
             appId: "1:346346370244:web:668e1890bb93d2f702c591"
         });
         const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // ===== TEMPLATE SYSTEM =====
+        var TEMPLATES = {
+            'love-letter': {
+                name: 'Love Letter',
+                css: {
+                    '--bg': '#FFF8F0',
+                    '--primary': '#3A7BC8',
+                    '--primary-dark': '#2E6AB5',
+                    '--primary-light': '#5B9BD5',
+                    '--primary-rgb': '58, 123, 200',
+                    '--primary-dark-rgb': '46, 106, 181',
+                    '--accent': '#E8B888',
+                    '--accent-dark': '#D4A070',
+                    '--accent-rgb': '232, 184, 136',
+                    '--pink': '#D4577A',
+                    '--pink-rgb': '212, 87, 122',
+                    '--error': '#E07070',
+                    '--text-primary': '#2D2420',
+                    '--text-secondary': '#3D3230'
+                },
+                hero: {
+                    image: 'Header Picture5.png',
+                    title: 'From the Beast to Beauty<br>ที่รัก',
+                    titleFont: "'Great Vibes',cursive",
+                    sorryLine1: "I'm so Sorry",
+                    sorryLine2: 'pleasesssssssss...',
+                    subtitle: 'จดหมายจากใจ...ถึงคนที่รักที่สุด'
+                },
+                sparkleColors: ['#E8B888', '#FFD700'],
+                balloonColors: ['#F4B8D4','#B8D4F4','#D4F4B8','#F4D4B8','#D4B8F4','#F4F4B8','#B8F4E8','#F4B8B8','#C8E0F8','#E8C8F8']
+            },
+            'you-are-my-vibe': {
+                name: 'You Are My Vibe',
+                minimal: true,
+                css: {
+                    '--bg': '#FFFFFF',
+                    '--primary': '#2D2420',
+                    '--primary-dark': '#1a1512',
+                    '--primary-light': '#4A3F38',
+                    '--primary-rgb': '45, 36, 32',
+                    '--primary-dark-rgb': '26, 21, 18',
+                    '--accent': '#2D2420',
+                    '--accent-dark': '#1a1512',
+                    '--accent-rgb': '45, 36, 32',
+                    '--pink': '#2D2420',
+                    '--pink-rgb': '45, 36, 32',
+                    '--error': '#E07070',
+                    '--text-primary': '#2D2420',
+                    '--text-secondary': '#3D3230'
+                },
+                hero: {
+                    title: '<span style="font-size:2em">B</span>ennie, you are my <span style="font-size:2em">V</span>ibe.........',
+                    loveBtn: "P' Joe, I love you too"
+                },
+                sparkleColors: [],
+                balloonColors: []
+            }
+        };
+
+        // ===== Vibe Playlist Data (must be before applyTemplate) =====
+        var vibeSongsDefault = [
+            { title: 'Last Message', file: 'songs/Last Message.mp3', cover: '', lyrics: '', bg: '' },
+            { title: 'Bennie and the Beast', file: 'songs/Bennie and the Beast.mp3', cover: '', lyrics: '', bg: '' },
+            { title: 'เงาะป่าใจร้าย', file: 'songs/เงาะป่าใจร้าย.mp3', cover: '', lyrics: '', bg: '' },
+        ];
+        var vibeSongs = vibeSongsDefault.slice();
+        var vibeCurrentIndex = 0;
+
+        var currentTemplateId = 'love-letter';
+
+        // Apply cached template immediately (no flash)
+        (function() {
+            var cached = localStorage.getItem('templateId');
+            if (cached && TEMPLATES[cached]) {
+                currentTemplateId = cached;
+            }
+        })();
+
+        function applyTemplate(id) {
+            var tpl = TEMPLATES[id];
+            if (!tpl) return;
+            currentTemplateId = id;
+            localStorage.setItem('templateId', id);
+
+            // 1. Set CSS variables on :root
+            var root = document.documentElement;
+            Object.keys(tpl.css).forEach(function(key) {
+                root.style.setProperty(key, tpl.css[key]);
+            });
+
+            // 2. Update meta theme-color
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', tpl.css['--bg']);
+
+            // 3. Elements
+            var heroIcon = document.getElementById('heroIcon');
+            var heroTitle = document.getElementById('heroTitle');
+            var heroSecret = document.getElementById('heroSecret');
+            var sorryText = document.querySelector('.sorry-text');
+            var gateSubtitle = document.querySelector('.gate-subtitle');
+            var btnLove = document.getElementById('btnLove');
+            var btnGoodbye = document.getElementById('btnGoodbye');
+            var heartsContainer = document.getElementById('heartsContainer');
+            var heroSection = document.getElementById('hero');
+            var musicBtn = document.getElementById('musicBtn');
+
+            if (tpl.minimal) {
+                // ===== MINIMAL MODE (You Are My Vibe) =====
+                // Hide: image, subtitle, sorry text, gate text, goodbye button, balloons, sparkles, music btn, background
+                if (heroIcon) heroIcon.style.display = 'none';
+                if (heroSecret) heroSecret.style.display = 'none';
+                if (sorryText) sorryText.style.display = 'none';
+                if (gateSubtitle) gateSubtitle.style.display = 'none';
+                if (btnGoodbye) btnGoodbye.style.display = 'none';
+                if (heartsContainer) heartsContainer.style.display = 'none';
+                if (musicBtn) musicBtn.style.display = 'none';
+                // Background image
+                if (heroSection) {
+                    heroSection.style.background = "url('URmyvitbeconver.jpg') center top/cover no-repeat";
+                    heroSection.style.justifyContent = 'flex-start';
+                    heroSection.style.paddingTop = 'calc(12px + env(safe-area-inset-top))';
+                }
+                document.body.style.background = '#000';
+                document.querySelector('body')?.classList.add('minimal-template');
+
+                // Title: jazz night style
+                if (heroTitle) {
+                    heroTitle.innerHTML = tpl.hero.title;
+                    heroTitle.style.fontFamily = "'Playfair Display', serif";
+                    heroTitle.style.fontSize = 'clamp(1.4rem, 5vw, 2.2rem)';
+                    heroTitle.style.fontWeight = '400';
+                    heroTitle.style.fontStyle = 'italic';
+                    heroTitle.style.background = 'none';
+                    heroTitle.style.webkitBackgroundClip = 'unset';
+                    heroTitle.style.webkitTextFillColor = 'rgba(255,255,255,0.92)';
+                    heroTitle.style.color = 'rgba(255,255,255,0.92)';
+                    heroTitle.style.letterSpacing = '3px';
+                    heroTitle.style.textShadow = '0 0 30px rgba(232,180,120,0.3), 0 2px 15px rgba(0,0,0,0.6)';
+                }
+
+                // Love button: glass style on dark bg
+                if (btnLove) {
+                    btnLove.textContent = tpl.hero.loveBtn;
+                    btnLove.style.background = 'rgba(0,0,0,0.35)';
+                    btnLove.style.border = '1px solid rgba(232,180,120,0.4)';
+                    btnLove.style.color = 'rgba(255,255,255,0.9)';
+                    btnLove.style.fontWeight = '400';
+                    btnLove.style.fontSize = '0.95rem';
+                    btnLove.style.fontFamily = "'Playfair Display', serif";
+                    btnLove.style.fontStyle = 'italic';
+                    btnLove.style.letterSpacing = '1.5px';
+                    btnLove.style.padding = '14px 44px';
+                    btnLove.style.borderRadius = '50px';
+                    btnLove.style.boxShadow = '0 4px 20px rgba(0,0,0,0.2)';
+                    btnLove.style.marginTop = '40px';
+                    btnLove.style.backdropFilter = 'blur(8px)';
+                    btnLove.style.webkitBackdropFilter = 'blur(8px)';
+                }
+
+                // Show Bennie Song menu button
+                var btnSong = document.getElementById('btnBennieSong');
+                if (btnSong) btnSong.style.display = '';
+
+                // Stop sparkles
+                window._sparkleColors = [];
+                window._stopSparkles = true;
+            } else {
+                // ===== FULL MODE (Love Letter) — restore everything =====
+                // Close song overlay & hide menu button
+                closeBennieSong();
+                var btnSong = document.getElementById('btnBennieSong');
+                if (btnSong) btnSong.style.display = 'none';
+
+                if (heroIcon) heroIcon.style.display = '';
+                if (heroSecret) heroSecret.style.display = '';
+                if (sorryText) sorryText.style.display = '';
+                if (gateSubtitle) gateSubtitle.style.display = '';
+                if (btnGoodbye) btnGoodbye.style.display = '';
+                if (heartsContainer) heartsContainer.style.display = '';
+                if (musicBtn) musicBtn.style.display = '';
+                if (heroSection) {
+                    heroSection.style.background = '';
+                    heroSection.style.justifyContent = '';
+                    heroSection.style.paddingTop = '';
+                }
+                document.body.style.background = '';
+                document.querySelector('body')?.classList.remove('minimal-template');
+
+                // Restore hero image
+                if (heroIcon) {
+                    var img = heroIcon.querySelector('img');
+                    if (img) img.src = tpl.hero.image;
+                }
+
+                // Restore title
+                if (heroTitle) {
+                    heroTitle.innerHTML = tpl.hero.title;
+                    heroTitle.style.fontFamily = tpl.hero.titleFont;
+                    heroTitle.style.fontSize = '';
+                    heroTitle.style.fontWeight = '';
+                    heroTitle.style.fontStyle = '';
+                    heroTitle.style.background = '';
+                    heroTitle.style.webkitBackgroundClip = '';
+                    heroTitle.style.webkitTextFillColor = '';
+                    heroTitle.style.color = '';
+                    heroTitle.style.letterSpacing = '';
+                    heroTitle.style.textShadow = '';
+                }
+
+                if (heroSecret) heroSecret.textContent = tpl.hero.subtitle;
+
+                // Restore sorry text
+                if (sorryText) {
+                    var ps = sorryText.querySelectorAll('p');
+                    if (ps[0]) {
+                        ps[0].textContent = tpl.hero.sorryLine1;
+                        ps[0].style.fontFamily = tpl.hero.titleFont;
+                    }
+                    if (ps[1]) {
+                        ps[1].textContent = tpl.hero.sorryLine2;
+                        ps[1].style.fontFamily = tpl.hero.titleFont;
+                    }
+                }
+
+                // Restore love button
+                if (btnLove) {
+                    btnLove.textContent = 'เบนยังรักพี่โจ้อยู่';
+                    btnLove.style.background = '';
+                    btnLove.style.border = '';
+                    btnLove.style.color = '';
+                    btnLove.style.fontWeight = '';
+                    btnLove.style.fontSize = '';
+                    btnLove.style.fontFamily = '';
+                    btnLove.style.fontStyle = '';
+                    btnLove.style.letterSpacing = '';
+                    btnLove.style.padding = '';
+                    btnLove.style.borderRadius = '';
+                    btnLove.style.boxShadow = '';
+                    btnLove.style.marginTop = '';
+                    btnLove.style.backdropFilter = '';
+                    btnLove.style.webkitBackdropFilter = '';
+                }
+
+                // Restore sparkles & balloons
+                window._sparkleColors = tpl.sparkleColors;
+                window._stopSparkles = false;
+                balloonColors = tpl.balloonColors;
+            }
+        }
+
+        // Apply cached template on page load (instant, no waiting for Firestore)
+        if (currentTemplateId !== 'love-letter') {
+            applyTemplate(currentTemplateId);
+        }
 
         // Track visit
         function trackVisit(choice) {
@@ -1931,9 +2716,50 @@
             }, 800);
         }
 
+        // ===== Bennie Song Overlay =====
+        function openBennieSong() {
+            var overlay = document.getElementById('vibeCard');
+            if (overlay) {
+                renderVibeGallery();
+                overlay.style.display = 'block';
+            }
+        }
+
+        function closeBennieSong() {
+            var overlay = document.getElementById('vibeCard');
+            var audio = document.getElementById('vibeAudio');
+            if (overlay) {
+                overlay.style.display = 'none';
+                overlay.style.backgroundImage = '';
+                overlay.classList.remove('has-bg');
+            }
+            if (audio) { audio.pause(); audio.currentTime = 0; }
+            document.querySelectorAll('.vibe-song-card.playing').forEach(function(c) { c.classList.remove('playing'); });
+            document.querySelectorAll('.vibe-card-progress').forEach(function(p) { p.style.display = 'none'; });
+            document.querySelectorAll('.vibe-card-play-btn').forEach(function(b) { b.innerHTML = '&#9654;'; });
+        }
+
         function chooseLove() {
+            closeBennieSong();
             sessionStorage.setItem('choice', 'love');
             trackVisit('love');
+
+            // Restore Love Letter style for slides (all templates share same slide design)
+            var loveTpl = TEMPLATES['love-letter'];
+            var root = document.documentElement;
+            Object.keys(loveTpl.css).forEach(function(key) {
+                root.style.setProperty(key, loveTpl.css[key]);
+            });
+            document.body.style.background = '';
+            document.body.classList.remove('minimal-template');
+            window._stopSparkles = false;
+            window._sparkleColors = loveTpl.sparkleColors;
+            balloonColors = loveTpl.balloonColors;
+
+            // Restore balloons & sparkles visibility
+            var heartsContainer = document.getElementById('heartsContainer');
+            if (heartsContainer) heartsContainer.style.display = '';
+
             hideHero(() => {
                 const content = document.getElementById('lockedContent');
                 content.classList.add('unlocked');
@@ -2002,6 +2828,7 @@
         var sorryWords = ['ขอโทษ','Sorry','对不起','ごめんなさい','미안합니다','Lo siento','Désolé','Entschuldigung','Извините','ຂໍໂທດ'];
         var balloonColors = ['#F4B8D4','#B8D4F4','#D4F4B8','#F4D4B8','#D4B8F4','#F4F4B8','#B8F4E8','#F4B8B8','#C8E0F8','#E8C8F8'];
         function createHeart() {
+            if (window._stopSparkles) return;
             const container = document.getElementById('heartsContainer');
             const heart = document.createElement('div');
             heart.className = 'heart';
@@ -2040,13 +2867,15 @@
         // Create golden star sparkles
         var starChars = ['✦', '✧', '⭐', '✨', '·'];
         function createSparkle() {
+            if (window._stopSparkles) return;
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
             sparkle.textContent = starChars[Math.floor(Math.random() * starChars.length)];
             sparkle.style.left = Math.random() * 100 + '%';
             sparkle.style.top = Math.random() * 100 + '%';
             sparkle.style.fontSize = (6 + Math.random() * 10) + 'px';
-            sparkle.style.color = Math.random() > 0.3 ? '#E8B888' : '#FFD700';
+            var sc = window._sparkleColors || ['#E8B888', '#FFD700'];
+            sparkle.style.color = sc[Math.floor(Math.random() * sc.length)];
             sparkle.style.animationDuration = (0.8 + Math.random() * 1.5) + 's';
             sparkle.style.animationDelay = Math.random() * 0.5 + 's';
             document.body.appendChild(sparkle);
@@ -2176,6 +3005,176 @@
                     else prevSlide();
                 }
             }, { passive: true });
+        })();
+
+        // ===== Vibe Playlist Player =====
+        // Load playlist from Firestore
+        function loadVibePlaylist() {
+            db.collection('siteConfig').doc('playlist').get().then(function(doc) {
+                if (!doc.exists) return;
+                var d = doc.data();
+                if (d.songs && d.songs.length > 0) {
+                    vibeSongs = d.songs;
+                    if (vibeCurrentIndex >= vibeSongs.length) vibeCurrentIndex = 0;
+                    renderVibeGallery();
+                    renderAdminPlaylist();
+                }
+            }).catch(function(){});
+        }
+        loadVibePlaylist();
+
+        // ===== Gallery Rendering =====
+        function renderVibeGallery() {
+            var container = document.getElementById('vibeGalleryScroll');
+            if (!container) return;
+            var html = '';
+            vibeSongs.forEach(function(song, i) {
+                var coverStyle = song.cover ? "background-image:url('" + song.cover + "')" : '';
+                var placeholder = song.cover ? '' : '<span class="vibe-song-cover-placeholder">&#9835;</span>';
+                var lyricsHtml = song.lyrics ? song.lyrics.replace(/</g, '&lt;').replace(/\n/g, '<br>') : '<em style="opacity:0.4">ยังไม่มีเนื้อเพลง</em>';
+                html += '<div class="vibe-song-card" id="vibeCard' + i + '" data-index="' + i + '">'
+                    + '<div class="vibe-song-cover" style="' + coverStyle + '">'
+                    + placeholder
+                    + '<button class="vibe-card-play-btn" id="vibePlayBtn' + i + '" onclick="playFromCard(' + i + ')">&#9654;</button>'
+                    + '</div>'
+                    + '<div class="vibe-song-body">'
+                    + '<h3 class="vibe-song-name">' + song.title + '</h3>'
+                    + '<p class="vibe-song-by">by P\' Joe</p>'
+                    + '<button class="vibe-lyrics-toggle" onclick="toggleLyrics(' + i + ')">'
+                    + (song.lyrics ? 'เนื้อเพลง &#9662;' : '') + '</button>'
+                    + '<div class="vibe-lyrics" id="vibeLyrics' + i + '">'
+                    + '<p>' + lyricsHtml + '</p>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="vibe-card-progress" id="vibeCardProgress' + i + '" style="display:none" onclick="seekVibeFromCard(event,' + i + ')">'
+                    + '<span class="vibe-card-time" id="vibeCardTime' + i + '">0:00 / 0:00</span>'
+                    + '<div class="vibe-card-progress-fill" id="vibeCardFill' + i + '"></div>'
+                    + '</div>'
+                    + '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        // ===== Play from a specific card =====
+        function playFromCard(index) {
+            var audio = document.getElementById('vibeAudio');
+            if (!audio || !vibeSongs[index]) return;
+
+            if (vibeCurrentIndex === index && !audio.paused) {
+                // Pause if clicking same song that's playing
+                audio.pause();
+                updateCardPlayState(index, false);
+                return;
+            }
+
+            // Remove playing state from previous card
+            var prevCard = document.getElementById('vibeCard' + vibeCurrentIndex);
+            if (prevCard) {
+                prevCard.classList.remove('playing');
+                var prevProgress = document.getElementById('vibeCardProgress' + vibeCurrentIndex);
+                if (prevProgress) prevProgress.style.display = 'none';
+                updateCardPlayState(vibeCurrentIndex, false);
+            }
+
+            vibeCurrentIndex = index;
+            audio.src = vibeSongs[index].file;
+            audio.load();
+
+            // Change overlay background to match song vibe
+            updateVibeBg(vibeSongs[index]);
+
+            audio.play().then(function() {
+                updateCardPlayState(index, true);
+            }).catch(function(){});
+        }
+
+        function updateCardPlayState(index, isPlaying) {
+            var card = document.getElementById('vibeCard' + index);
+            var btn = document.getElementById('vibePlayBtn' + index);
+            var progress = document.getElementById('vibeCardProgress' + index);
+            if (card) card.classList.toggle('playing', isPlaying);
+            if (btn) btn.innerHTML = isPlaying ? '&#10074;&#10074;' : '&#9654;';
+            if (progress) progress.style.display = isPlaying ? '' : 'none';
+        }
+
+        // ===== Update overlay background to match song vibe =====
+        function updateVibeBg(song) {
+            var overlay = document.getElementById('vibeCard');
+            if (!overlay) return;
+            if (song && song.bg) {
+                overlay.style.backgroundImage = "url('" + song.bg + "')";
+                overlay.classList.add('has-bg');
+            } else {
+                overlay.style.backgroundImage = '';
+                overlay.classList.remove('has-bg');
+            }
+        }
+
+        // ===== Toggle Lyrics =====
+        function toggleLyrics(index) {
+            var el = document.getElementById('vibeLyrics' + index);
+            if (!el) return;
+            el.classList.toggle('open');
+        }
+
+        // ===== Seek from card progress bar =====
+        function seekVibeFromCard(e, index) {
+            var audio = document.getElementById('vibeAudio');
+            if (!audio || !audio.duration || vibeCurrentIndex !== index) return;
+            var bar = document.getElementById('vibeCardProgress' + index);
+            if (!bar) return;
+            var rect = bar.getBoundingClientRect();
+            var pct = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = pct * audio.duration;
+        }
+
+        function nextVibeSong() {
+            var next = (vibeCurrentIndex + 1) % vibeSongs.length;
+            playFromCard(next);
+        }
+
+        function prevVibeSong() {
+            var prev = (vibeCurrentIndex - 1 + vibeSongs.length) % vibeSongs.length;
+            playFromCard(prev);
+        }
+
+        function toggleVibeAudio() {
+            var audio = document.getElementById('vibeAudio');
+            if (!audio) return;
+            if (audio.paused) {
+                audio.play().then(function() {
+                    updateCardPlayState(vibeCurrentIndex, true);
+                }).catch(function(){});
+            } else {
+                audio.pause();
+                updateCardPlayState(vibeCurrentIndex, false);
+            }
+        }
+
+        function formatTime(sec) {
+            if (isNaN(sec)) return '0:00';
+            var m = Math.floor(sec / 60);
+            var s = Math.floor(sec % 60);
+            return m + ':' + (s < 10 ? '0' : '') + s;
+        }
+
+        (function initVibePlayer() {
+            var audio = document.getElementById('vibeAudio');
+            if (!audio) return;
+            audio.addEventListener('timeupdate', function() {
+                if (!audio.duration) return;
+                var pct = (audio.currentTime / audio.duration) * 100;
+                var fill = document.getElementById('vibeCardFill' + vibeCurrentIndex);
+                var timeEl = document.getElementById('vibeCardTime' + vibeCurrentIndex);
+                if (fill) fill.style.width = pct + '%';
+                if (timeEl) timeEl.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+            });
+            audio.addEventListener('ended', function() {
+                // Auto-play next song
+                updateCardPlayState(vibeCurrentIndex, false);
+                nextVibeSong();
+            });
+
         })();
 
         function toggleMusic() {
@@ -2686,18 +3685,27 @@
         function switchTab(tab) {
             document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
             document.querySelectorAll('.admin-tab-content').forEach(function(t) { t.classList.remove('active'); });
+            var tabs = document.querySelectorAll('.admin-tab');
             if (tab === 'status') {
-                document.querySelectorAll('.admin-tab')[0].classList.add('active');
+                tabs[0].classList.add('active');
                 document.getElementById('tabStatus').classList.add('active');
-            } else {
-                document.querySelectorAll('.admin-tab')[1].classList.add('active');
+            } else if (tab === 'edit') {
+                tabs[1].classList.add('active');
                 document.getElementById('tabEdit').classList.add('active');
                 loadEditForms();
+            } else if (tab === 'song') {
+                tabs[2].classList.add('active');
+                document.getElementById('tabSong').classList.add('active');
+                renderAdminPlaylist();
             }
         }
 
         // ===== Load edit forms with current values =====
         function loadEditForms() {
+            // Sync template dropdown
+            var tplSelect = document.getElementById('templateSelect');
+            if (tplSelect) tplSelect.value = currentTemplateId;
+
             document.getElementById('editHeroIcon').value = document.getElementById('heroIcon').textContent;
             document.getElementById('editHeroTitle').value = document.getElementById('heroTitle').textContent;
             document.getElementById('editHeroSubtitle').value = document.getElementById('heroSecret').textContent;
@@ -2712,6 +3720,281 @@
             document.getElementById('editGoodbyeSub').value = document.getElementById('goodbyeSub').textContent;
             document.getElementById('editGoodbyeLinkText').value = document.getElementById('goodbyeLink').textContent;
             document.getElementById('editFooterText').value = document.getElementById('footerSecret').textContent;
+        }
+
+        // ===== Template functions =====
+        function previewTemplate(id) {
+            applyTemplate(id);
+        }
+
+        function saveTemplate() {
+            var id = document.getElementById('templateSelect').value;
+            var statusEl = document.getElementById('statusTemplate');
+            statusEl.textContent = 'กำลังบันทึก...';
+            statusEl.style.color = 'var(--primary)';
+            db.collection('siteConfig').doc('content').set({ templateId: id }, { merge: true }).then(function() {
+                statusEl.textContent = 'บันทึกแล้ว!';
+                statusEl.style.color = 'green';
+                setTimeout(function() { statusEl.textContent = ''; }, 2000);
+            }).catch(function(err) {
+                statusEl.textContent = 'Error: ' + err.message;
+                statusEl.style.color = 'red';
+            });
+        }
+
+        // ===== File Upload & Browse (Firebase Storage) =====
+        function uploadFileToStorage(folder, file, targetInputId) {
+            var ref = storage.ref(folder + '/' + file.name);
+            var task = ref.put(file);
+            // Show progress
+            var progressEl = document.getElementById('progress_' + targetInputId);
+            if (progressEl) { progressEl.style.display = ''; progressEl.querySelector('.file-upload-progress-fill').style.width = '0%'; }
+            task.on('state_changed', function(snapshot) {
+                var pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                if (progressEl) progressEl.querySelector('.file-upload-progress-fill').style.width = pct + '%';
+            }, function(err) {
+                var msg = err.message || '';
+                if (msg.indexOf('CORS') !== -1 || msg.indexOf('network') !== -1 || msg.indexOf('ERR_FAILED') !== -1) {
+                    alert('Upload ไม่ได้ (CORS)\n\nวิธีแก้: วางไฟล์ใน folder songs/ แล้วพิมพ์ path เอง\nเช่น songs/covers/ชื่อไฟล์.jpg');
+                } else {
+                    alert('Upload error: ' + msg);
+                }
+                if (progressEl) progressEl.style.display = 'none';
+            }, function() {
+                task.snapshot.ref.getDownloadURL().then(function(url) {
+                    var input = document.getElementById(targetInputId);
+                    if (input) input.value = url;
+                    if (progressEl) setTimeout(function() { progressEl.style.display = 'none'; }, 500);
+                });
+            });
+        }
+
+        function triggerUpload(folder, targetInputId, accept) {
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.accept = accept || '*/*';
+            inp.onchange = function() {
+                if (inp.files[0]) uploadFileToStorage(folder, inp.files[0], targetInputId);
+            };
+            inp.click();
+        }
+
+        function browseStorageFiles(folder, targetInputId) {
+            // Create modal
+            var modal = document.createElement('div');
+            modal.className = 'file-picker-modal';
+            modal.innerHTML = '<div class="file-picker-box">'
+                + '<div class="file-picker-header"><h3>เลือกไฟล์จาก ' + folder + '</h3><button class="file-picker-close" onclick="this.closest(\'.file-picker-modal\').remove()">&times;</button></div>'
+                + '<div class="file-picker-body"><div class="file-picker-loading">กำลังโหลด...</div></div>'
+                + '</div>';
+            document.body.appendChild(modal);
+            modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+
+            var isAudio = (folder === 'songs');
+            var seen = {};
+            var knownFiles = [];
+
+            // Collect known files from vibeSongs playlist
+            vibeSongs.forEach(function(song) {
+                var paths = [];
+                if (isAudio) {
+                    if (song.file) paths.push(song.file);
+                } else {
+                    if (song.cover) paths.push(song.cover);
+                    if (song.bg) paths.push(song.bg);
+                }
+                paths.forEach(function(p) {
+                    if (p && !seen[p]) {
+                        seen[p] = true;
+                        knownFiles.push({ name: p.split('/').pop(), url: p });
+                    }
+                });
+            });
+
+            // Render known files immediately
+            renderPickerBody(modal, knownFiles, isAudio, targetInputId);
+
+            // Also try Storage listAll (works if CORS is configured)
+            try {
+                storage.ref(folder).listAll().then(function(result) {
+                    if (result.items.length === 0) return;
+                    var promises = result.items.map(function(item) {
+                        return item.getDownloadURL().then(function(url) {
+                            return { name: item.name, url: url };
+                        });
+                    });
+                    Promise.all(promises).then(function(storageFiles) {
+                        storageFiles.forEach(function(f) {
+                            if (!seen[f.url] && !seen[f.name]) {
+                                seen[f.url] = true;
+                                knownFiles.push(f);
+                            }
+                        });
+                        renderPickerBody(modal, knownFiles, isAudio, targetInputId);
+                    });
+                }).catch(function() { /* CORS not configured — use known files only */ });
+            } catch(e) {}
+        }
+
+        function renderPickerBody(modal, files, isAudio, targetInputId) {
+            var body = modal.querySelector('.file-picker-body');
+            if (!body) return;
+            if (files.length === 0) {
+                body.innerHTML = '<div class="file-picker-loading">ยังไม่มีไฟล์</div>';
+                return;
+            }
+            var html = isAudio ? '<div class="file-picker-list">' : '<div class="file-picker-grid">';
+            files.forEach(function(f) {
+                var safeUrl = f.url.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                if (isAudio) {
+                    html += '<div class="file-picker-item" onclick="selectPickerFile(\'' + targetInputId + '\',\'' + safeUrl + '\',this)">'
+                        + '<span class="fp-icon">🎵</span>'
+                        + '<span class="fp-name">' + f.name + '</span>'
+                        + '</div>';
+                } else {
+                    html += '<div class="file-picker-item" onclick="selectPickerFile(\'' + targetInputId + '\',\'' + safeUrl + '\',this)">'
+                        + '<img src="' + f.url + '" loading="lazy">'
+                        + '<div class="fp-name">' + f.name + '</div>'
+                        + '</div>';
+                }
+            });
+            html += '</div>';
+            body.innerHTML = html;
+        }
+
+        function selectPickerFile(targetInputId, url, el) {
+            var input = document.getElementById(targetInputId);
+            if (input) input.value = url;
+            var modal = el.closest('.file-picker-modal');
+            if (modal) modal.remove();
+        }
+
+        // Helper: generate file input group HTML
+        function fileInputHtml(id, value, placeholder, folder, accept) {
+            return '<div class="file-input-group">'
+                + '<input id="' + id + '" class="edit-input" style="font-size:0.8rem;padding:6px 10px;" value="' + (value || '') + '" placeholder="' + placeholder + '">'
+                + '<button type="button" class="file-btn" onclick="browseStorageFiles(\'' + folder + '\',\'' + id + '\')" title="เลือกจาก Storage">📁</button>'
+                + '<button type="button" class="file-btn" onclick="triggerUpload(\'' + folder + '\',\'' + id + '\',\'' + (accept || '*/*') + '\')" title="Upload ไฟล์ใหม่">📤</button>'
+                + '</div>'
+                + '<div class="file-upload-progress" id="progress_' + id + '" style="display:none;"><div class="file-upload-progress-fill"></div></div>';
+        }
+
+        // ===== Playlist Admin =====
+        function renderAdminPlaylist() {
+            var container = document.getElementById('adminPlaylist');
+            if (!container) return;
+            if (vibeSongs.length === 0) {
+                container.innerHTML = '<p style="color:rgba(var(--primary-rgb),0.4);font-size:0.85rem;text-align:center;">ยังไม่มีเพลง</p>';
+                return;
+            }
+            var html = '';
+            vibeSongs.forEach(function(song, i) {
+                var coverHtml = song.cover
+                    ? '<img src="' + song.cover + '">'
+                    : '&#9835;';
+                var badges = '';
+                if (song.cover) badges += '<span style="background:rgba(var(--primary-rgb),0.1);color:var(--primary);padding:1px 6px;border-radius:8px;font-size:0.6rem;">ปก</span> ';
+                if (song.bg) badges += '<span style="background:rgba(var(--accent-rgb),0.15);color:var(--accent-dark);padding:1px 6px;border-radius:8px;font-size:0.6rem;">BG</span> ';
+                if (song.lyrics) badges += '<span style="background:rgba(var(--pink-rgb),0.1);color:var(--pink);padding:1px 6px;border-radius:8px;font-size:0.6rem;">เนื้อเพลง</span>';
+                html += '<div class="admin-song-item">'
+                    + '<span class="admin-song-num">' + (i + 1) + '</span>'
+                    + '<div class="admin-song-cover">' + coverHtml + '</div>'
+                    + '<div class="admin-song-info">'
+                    + '<div class="song-name">' + song.title + '</div>'
+                    + '<div style="margin-top:2px;">' + (badges || '<span style="font-size:0.6rem;color:rgba(var(--primary-rgb),0.3);">ยังไม่มีข้อมูลเพิ่ม</span>') + '</div>'
+                    + '</div>'
+                    + '<button style="background:none;border:none;color:var(--primary);font-size:0.75rem;cursor:pointer;padding:4px 8px;" onclick="toggleSongEdit(' + i + ')">แก้ไข</button>'
+                    + '<button class="admin-song-del" onclick="removeSongFromPlaylist(' + i + ')" title="ลบ">&#10005;</button>'
+                    + '</div>'
+                    + '<div class="admin-song-expand" id="songExpand' + i + '" style="display:none;padding:8px 12px 12px 46px;background:rgba(var(--primary-rgb),0.03);border-bottom:1px solid rgba(var(--primary-rgb),0.08);">'
+                    + '<div class="edit-group" style="margin-bottom:6px;"><label class="edit-label" style="font-size:0.7rem;">ไฟล์เพลง</label>'
+                    + fileInputHtml('adminFile' + i, song.file, 'songs/ชื่อไฟล์.mp3', 'songs', 'audio/*') + '</div>'
+                    + '<div class="edit-group" style="margin-bottom:6px;"><label class="edit-label" style="font-size:0.7rem;">รูปปก</label>'
+                    + fileInputHtml('adminCover' + i, song.cover, 'songs/covers/cover.jpg', 'songs/covers', 'image/*') + '</div>'
+                    + '<div class="edit-group" style="margin-bottom:6px;"><label class="edit-label" style="font-size:0.7rem;">รูปพื้นหลัง (Vibe BG)</label>'
+                    + fileInputHtml('adminBg' + i, song.bg, 'songs/covers/bg-mood.jpg', 'songs/covers', 'image/*') + '</div>'
+                    + '<div class="edit-group" style="margin-bottom:6px;"><label class="edit-label" style="font-size:0.7rem;">เนื้อเพลง</label>'
+                    + '<textarea id="adminLyrics' + i + '" rows="3" class="edit-input" style="font-size:0.8rem;padding:6px 10px;resize:vertical;min-height:36px;" placeholder="เนื้อเพลง...">' + (song.lyrics || '') + '</textarea></div>'
+                    + '<button class="edit-save" style="font-size:0.72rem;padding:4px 12px;" onclick="updateSongDetails(' + i + ')">💾 บันทึก</button>'
+                    + '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleSongEdit(index) {
+            var el = document.getElementById('songExpand' + index);
+            if (!el) return;
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateSongDetails(index) {
+            if (!vibeSongs[index]) return;
+            var fileInput = document.getElementById('adminFile' + index);
+            var coverInput = document.getElementById('adminCover' + index);
+            var bgInput = document.getElementById('adminBg' + index);
+            var lyricsInput = document.getElementById('adminLyrics' + index);
+            if (fileInput) vibeSongs[index].file = fileInput.value.trim();
+            if (coverInput) vibeSongs[index].cover = coverInput.value.trim();
+            if (bgInput) vibeSongs[index].bg = bgInput.value.trim();
+            if (lyricsInput) vibeSongs[index].lyrics = lyricsInput.value;
+            // Save to Firestore immediately
+            var data = vibeSongs.map(function(s) {
+                return { title: s.title, file: s.file, cover: s.cover || '', lyrics: s.lyrics || '', bg: s.bg || '' };
+            });
+            db.collection('siteConfig').doc('playlist').set({ songs: data }).then(function() {
+                renderVibeGallery();
+                renderAdminPlaylist();
+                var statusEl = document.getElementById('statusPlaylist');
+                if (statusEl) { statusEl.textContent = 'บันทึกแล้ว!'; statusEl.style.color = 'green'; setTimeout(function() { statusEl.textContent = ''; }, 2000); }
+            }).catch(function(err) {
+                alert('บันทึกไม่ได้: ' + err.message);
+            });
+        }
+
+        function addSongToPlaylist() {
+            var title = document.getElementById('newSongTitle').value.trim();
+            var file = document.getElementById('newSongFile').value.trim();
+            var cover = document.getElementById('newSongCover').value.trim();
+            var bg = document.getElementById('newSongBg').value.trim();
+            var lyrics = document.getElementById('newSongLyrics').value.trim();
+            if (!title || !file) {
+                alert('กรุณาใส่ชื่อเพลงและไฟล์');
+                return;
+            }
+            vibeSongs.push({ title: title, file: file, cover: cover || '', lyrics: lyrics || '', bg: bg || '' });
+            document.getElementById('newSongTitle').value = '';
+            document.getElementById('newSongFile').value = '';
+            document.getElementById('newSongCover').value = '';
+            document.getElementById('newSongBg').value = '';
+            document.getElementById('newSongLyrics').value = '';
+            renderAdminPlaylist();
+            renderVibeGallery();
+        }
+
+        function removeSongFromPlaylist(index) {
+            if (!confirm('ลบเพลง "' + vibeSongs[index].title + '" ?')) return;
+            vibeSongs.splice(index, 1);
+            if (vibeCurrentIndex >= vibeSongs.length) vibeCurrentIndex = 0;
+            renderAdminPlaylist();
+            renderVibeGallery();
+        }
+
+        function savePlaylist() {
+            var statusEl = document.getElementById('statusPlaylist');
+            statusEl.textContent = 'กำลังบันทึก...';
+            statusEl.style.color = 'var(--primary)';
+            var data = vibeSongs.map(function(s) {
+                return { title: s.title, file: s.file, cover: s.cover || '', lyrics: s.lyrics || '', bg: s.bg || '' };
+            });
+            db.collection('siteConfig').doc('playlist').set({ songs: data }).then(function() {
+                statusEl.textContent = 'บันทึกแล้ว! (' + data.length + ' เพลง)';
+                statusEl.style.color = 'green';
+                renderVibeGallery();
+                setTimeout(function() { statusEl.textContent = ''; }, 2000);
+            }).catch(function(err) {
+                statusEl.textContent = 'Error: ' + err.message;
+                statusEl.style.color = 'red';
+            });
         }
 
         // ===== Save section to Firestore =====
@@ -2776,6 +4059,10 @@
             db.collection('siteConfig').doc('content').get().then(function(doc) {
                 if (!doc.exists) return;
                 var d = doc.data();
+                // Apply template first (before content overrides)
+                if (d.templateId && TEMPLATES[d.templateId]) {
+                    applyTemplate(d.templateId);
+                }
                 if (d.hero) applySiteContent('hero', d.hero);
                 if (d.choice) applySiteContent('choice', d.choice);
                 if (d.music) applySiteContent('music', d.music);
@@ -2854,5 +4141,16 @@
             });
         }
     </script>
+
+    <!-- Bennie Song Overlay (full-screen) -->
+    <div id="vibeCard" class="vibe-gallery" style="display:none;">
+        <audio id="vibeAudio" preload="auto"></audio>
+        <button class="vibe-close-btn" onclick="closeBennieSong()">&times;</button>
+        <h2 class="vibe-gallery-title">Bennie Song</h2>
+        <div class="vibe-gallery-scroll" id="vibeGalleryScroll">
+            <!-- JS renders song cards here -->
+        </div>
+        <p class="vibe-hint">เพลงใหม่ทุกวัน...เพราะทุกวันฉันคิดถึงเธอ</p>
+    </div>
 </body>
 </html>
