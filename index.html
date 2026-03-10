@@ -3738,26 +3738,8 @@
             }
         }
 
-        // Auto-play music - play on first user interaction
-        var musicStarted = false;
-        function startMusic() {
-            if (musicStarted || sessionStorage.getItem('adminAuth') === 'true') return;
-            var audio = document.getElementById('bgMusic');
-            audio.play().then(function() {
-                musicStarted = true;
-                document.getElementById('musicIcon').innerHTML = '&#10074;&#10074;';
-                document.getElementById('musicLabel').textContent = 'กำลังเล่น...';
-                document.getElementById('musicBtn').classList.add('playing');
-                document.removeEventListener('click', startMusic);
-                document.removeEventListener('touchstart', startMusic);
-                document.removeEventListener('scroll', startMusic);
-            }).catch(function(){});
-        }
-        if (sessionStorage.getItem('adminAuth') !== 'true') {
-            document.addEventListener('click', startMusic);
-            document.addEventListener('touchstart', startMusic);
-            document.addEventListener('scroll', startMusic);
-        }
+        // bgMusic auto-play removed — hero player handles music now
+        var musicStarted = true;
 
         // Chat functions
         function formatChatTime(timestamp) {
