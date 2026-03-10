@@ -985,10 +985,11 @@
 
         .slide-container {
             position: relative;
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            max-height: 92dvh;
-            max-height: 92vh;
+            width: 90%;
+            margin: 0 auto;
+            aspect-ratio: 3 / 4.3;
+            max-height: 95dvh;
+            max-height: 95vh;
             border: none;
             border-radius: 18px;
             background: transparent;
@@ -1034,6 +1035,17 @@
             box-sizing: border-box;
             overflow-y: auto;
             font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100%;
+            opacity: 0;
+            filter: blur(8px);
+            transition: opacity 2s ease, filter 2s ease;
+        }
+        .slide.active .slide-content.text-visible {
+            opacity: 1;
+            filter: blur(0);
         }
         .slide-content p {
             margin: 0 0 10px;
@@ -2299,6 +2311,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            background: url('Chat-bacckground.png') center/cover no-repeat fixed;
         }
         .fullchat-empty {
             color: rgba(60,50,45,0.3);
@@ -2535,7 +2548,7 @@
 
             <!-- หน้า 9: Ring Proposal -->
             <div class="slide" style="background:url('Please Mary Me.png') center/cover no-repeat; border-radius:18px; position:relative;">
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,248,240,0.88);border-radius:18px;"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.25);border-radius:18px;"></div>
                 <div class="flower-fall" id="flowerFall"></div>
                 <div class="ring-title" id="ringTitle" style="color:var(--accent);text-shadow:0 0 10px rgba(var(--accent-rgb),0.6),0 0 20px rgba(var(--accent-rgb),0.4),0 0 40px rgba(var(--accent-rgb),0.2),0 2px 12px rgba(0,0,0,0.4);font-size:2.75rem;font-weight:300;font-family:'Great Vibes',cursive;font-style:normal;letter-spacing:2px;position:absolute;top:62px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:3;animation:goldGlow 2s ease-in-out infinite alternate;">Perfectly Imperfect</div>
                 <div class="slide-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:calc(35% + 100px);">
@@ -3460,7 +3473,10 @@
             var track = document.getElementById('slideTrack');
             var slides = track.querySelectorAll('.slide');
             slides[saved].classList.add('active');
+            setTimeout(function() { var c = slides[saved].querySelector('.slide-content'); if (c) c.classList.add('text-visible'); }, 500);
             recalcSlideHeight();
+            // Preload all slide background images
+            ['Miniheart.png','slide-02.jpg','slide-03.jpg','slide-04.jpg','slide-05.jpg','slide-06.jpg','slide-07.jpg','slide-08.jpg','Please Mary Me.png','URmyvitbeconver.jpg','Chat-bacckground.png'].forEach(function(src) { var img = new Image(); img.src = src; });
             // ดอกไม้จะร่วงเฉพาะหลังกดรับแหวนเท่านั้น
             // Resize handler
             window.addEventListener('resize', recalcSlideHeight);
@@ -3482,10 +3498,14 @@
             document.getElementById('slidePrev').disabled = n === 0;
             document.getElementById('slideNext').disabled = n === totalSlides - 1;
             if (n !== totalSlides - 1) { stopFlowers(); }
+            // ลบ text-visible จากหน้าเก่า
+            var currText = curr.querySelector('.slide-content'); if (currText) currText.classList.remove('text-visible');
             setTimeout(function() {
                 curr.className = 'slide';
                 next.className = 'slide active';
                 isFlipping = false;
+                // รูปขึ้นก่อน แล้วตัวหนังสือค่อย fade in
+                setTimeout(function() { var t = next.querySelector('.slide-content'); if (t) t.classList.add('text-visible'); }, 400);
             }, 700);
         }
         function nextSlide() { goToSlide(currentSlide + 1); }
