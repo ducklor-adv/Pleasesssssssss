@@ -3297,11 +3297,7 @@
             });
             document.body.classList.remove('minimal-template');
 
-            // Stop hero player audio
-            var heroAudio = document.getElementById('heroVibeAudio');
-            if (heroAudio) { heroAudio.pause(); heroAudio.currentTime = 0; }
-            heroPlaying = false;
-            stopLyricsScroll();
+            // Keep hero music playing in background
 
             hideHero(() => {
                 const content = document.getElementById('lockedContent');
