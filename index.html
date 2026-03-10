@@ -793,24 +793,34 @@
         .letter-section {
             position: relative;
             z-index: 1;
-            padding: 80px 20px;
+            padding: 0;
             display: flex;
             justify-content: center;
+            align-items: center;
             background: url('URmyvitbeconver.jpg') center/cover no-repeat fixed;
+            height: 100dvh;
+            height: 100vh;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .letter {
             max-width: 700px;
             width: 100%;
+            max-height: 100dvh;
+            max-height: 100vh;
             background: linear-gradient(135deg, #FFFFFF, #FFF5F0, #FFFFFF);
             border: 1px solid rgba(var(--primary-rgb), 0.15);
             border-radius: 20px;
-            padding: clamp(30px, 6vw, 60px);
+            padding: 12px 16px;
             position: relative;
             box-shadow: 0 30px 80px rgba(var(--primary-dark-rgb), 0.15), inset 0 1px 0 rgba(var(--primary-rgb), 0.1);
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
+            overflow: hidden;
+            box-sizing: border-box;
+            margin: 10px;
         }
 
         .letter.visible {
@@ -976,20 +986,26 @@
         .slide-container {
             position: relative;
             width: 100%;
+            height: 100%;
             border: 1.5px solid rgba(var(--primary-rgb), 0.15);
             border-radius: 20px;
             background: rgba(255, 248, 240, 0.65);
             backdrop-filter: blur(8px);
-            padding-bottom: 55px;
+            padding-bottom: 50px;
             box-shadow: 0 4px 24px rgba(var(--primary-rgb), 0.08);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
         .slide-track {
             position: relative;
             overflow: hidden;
+            flex: 1;
+            min-height: 0;
         }
         .slide {
-            padding: 15px 18px 0;
+            padding: 10px 16px 0;
             box-sizing: border-box;
             display: none;
         }
@@ -1012,9 +1028,11 @@
         .slide-content {
             text-align: center;
             padding: 0 8px 10px;
-            line-height: 2;
+            line-height: 1.8;
             width: 100%;
             box-sizing: border-box;
+            overflow-y: auto;
+            font-size: 0.85rem;
         }
         .slide-content p {
             margin: 0 0 10px;
@@ -1543,61 +1561,72 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 9999;
             align-items: center;
             justify-content: center;
         }
         .admin-overlay.show { display: flex; }
         .admin-modal {
-            background: #FFFFFF;
-            border: 1px solid rgba(58,123,200,0.2);
-            border-radius: 16px;
+            background: rgba(18,14,30,0.95);
+            border: 1px solid rgba(232,180,120,0.2);
+            border-radius: 20px;
             padding: 30px;
             text-align: center;
             max-width: 320px;
             width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(232,180,120,0.08);
         }
         .admin-modal-title {
-            color: var(--primary);
-            font-family: 'Prompt', sans-serif;
-            font-weight: 600;
+            color: #E8B878;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
             margin-bottom: 15px;
         }
         .admin-input {
             width: 100%;
             padding: 12px 16px;
-            background: rgba(58,123,200,0.06);
-            border: 1px solid rgba(58,123,200,0.25);
-            border-radius: 8px;
-            color: var(--text-primary);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(232,180,120,0.2);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.9);
             font-family: 'Sarabun', sans-serif;
             font-size: 1rem;
             text-align: center;
             outline: none;
+            transition: border-color 0.3s;
         }
-        .admin-input:focus { border-color: var(--primary); }
+        .admin-input:focus { border-color: #E8B878; box-shadow: 0 0 12px rgba(232,180,120,0.15); }
         .admin-modal-btn {
             padding: 10px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 50px;
             font-family: 'Prompt', sans-serif;
             font-size: 0.9rem;
             cursor: pointer;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: white;
+            background: linear-gradient(135deg, #D4A060, #E8B878);
+            color: #1a1218;
+            font-weight: 600;
+            transition: all 0.3s;
         }
+        .admin-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(232,180,120,0.3); }
         .admin-cancel {
-            background: rgba(58,123,200,0.1);
-            color: rgba(60,50,45,0.6);
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.5);
         }
+        .admin-cancel:hover { background: rgba(255,255,255,0.12); box-shadow: none; transform: none; }
 
         /* Admin Panel */
         .admin-panel {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg);
+            background: linear-gradient(180deg, rgba(12,10,22,0.97), rgba(8,6,16,0.99));
             z-index: 10000;
             overflow-y: auto;
         }
@@ -1606,24 +1635,35 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 25px;
-            border-bottom: 1px solid rgba(58,123,200,0.15);
+            padding: 18px 25px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(232,180,120,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
         .admin-header h2 {
-            font-family: 'Prompt', sans-serif;
-            color: var(--primary);
-            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #E8B878;
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 1px;
         }
         .admin-close {
-            background: none;
-            border: 1px solid rgba(60,50,45,0.2);
-            color: rgba(60,50,45,0.6);
-            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.5);
+            width: 34px; height: 34px;
             border-radius: 50%;
             font-size: 1.1rem;
             cursor: pointer;
+            transition: all 0.3s;
         }
-        .admin-body { padding: 25px; }
+        .admin-close:hover { background: rgba(255,255,255,0.1); color: #E8B878; border-color: rgba(232,180,120,0.3); }
+        .admin-body { padding: 20px; color: rgba(255,255,255,0.85); }
 
         /* Decision Chain */
         .chain-container {
@@ -1638,22 +1678,25 @@
             gap: 15px;
             width: 100%;
             padding: 16px 20px;
-            background: rgba(58,123,200,0.05);
-            border: 2px solid rgba(58,123,200,0.12);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 14px;
             transition: all 0.5s ease;
         }
         .chain-step.active {
-            border-color: var(--primary);
-            background: rgba(58,123,200,0.1);
+            border-color: rgba(232,180,120,0.4);
+            background: rgba(232,180,120,0.06);
+            box-shadow: 0 0 20px rgba(232,180,120,0.08);
         }
         .chain-step.done {
-            border-color: #88C8A0;
-            background: rgba(136,200,160,0.08);
+            border-color: rgba(100,200,140,0.4);
+            background: rgba(100,200,140,0.06);
+            box-shadow: 0 0 15px rgba(100,200,140,0.06);
         }
         .chain-step.fail {
-            border-color: #E88080;
-            background: rgba(232,128,128,0.06);
+            border-color: rgba(232,100,100,0.4);
+            background: rgba(232,100,100,0.05);
+            box-shadow: 0 0 15px rgba(232,100,100,0.06);
         }
         .chain-icon {
             font-size: 1.8rem;
@@ -1666,33 +1709,33 @@
             font-family: 'Prompt', sans-serif;
             font-size: 1rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: rgba(255,255,255,0.85);
             margin-bottom: 2px;
         }
         .chain-status {
             font-size: 0.85rem;
-            color: rgba(60,50,45,0.4);
+            color: rgba(255,255,255,0.35);
         }
-        .chain-status.success { color: #5DA87A; font-weight: 600; }
+        .chain-status.success { color: #6DC89A; font-weight: 600; }
         .chain-status.fail { color: #E88080; font-weight: 600; }
         .chain-phone-number.success {
             font-size: 1.3rem;
-            color: var(--primary);
+            color: #E8B878;
             font-family: 'Prompt', sans-serif;
             font-weight: 700;
             letter-spacing: 1px;
         }
         .chain-line {
-            width: 3px;
+            width: 2px;
             height: 24px;
-            background: rgba(58,123,200,0.15);
+            background: rgba(255,255,255,0.08);
             transition: background 0.5s ease;
         }
         .chain-line.done {
-            background: #88C8A0;
+            background: rgba(100,200,140,0.5);
         }
         .chain-line.fail {
-            background: #E88080;
+            background: rgba(232,100,100,0.5);
         }
 
         /* Admin Tabs */
@@ -1700,42 +1743,48 @@
             display: flex;
             gap: 0;
             margin-bottom: 20px;
-            border-bottom: 2px solid rgba(58,123,200,0.15);
+            border-bottom: 1px solid rgba(232,180,120,0.12);
+            background: rgba(0,0,0,0.15);
+            border-radius: 12px 12px 0 0;
+            padding: 0 4px;
         }
         .admin-tab {
             flex: 1;
-            padding: 10px 6px;
+            padding: 12px 6px;
             font-family: 'Prompt', sans-serif;
             font-size: 0.82rem;
             font-weight: 600;
             background: none;
             border: none;
-            color: rgba(60,50,45,0.4);
+            color: rgba(255,255,255,0.35);
             cursor: pointer;
             transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
         }
+        .admin-tab:hover { color: rgba(255,255,255,0.6); }
         .admin-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
+            color: #E8B878;
+            border-bottom-color: #E8B878;
         }
         .admin-tab-content { display: none; }
         .admin-tab-content.active { display: block; }
 
         /* Edit Forms */
         .edit-section {
-            background: rgba(58,123,200,0.05);
-            border: 1px solid rgba(58,123,200,0.12);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(232,180,120,0.1);
             border-radius: 14px;
             padding: 18px;
             margin-bottom: 16px;
+            transition: border-color 0.3s;
         }
+        .edit-section:hover { border-color: rgba(232,180,120,0.2); }
         .edit-section-title {
             font-family: 'Prompt', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--primary);
+            color: #E8B878;
             margin-bottom: 14px;
         }
         .edit-group {
@@ -1743,32 +1792,34 @@
         }
         .edit-label {
             font-size: 0.8rem;
-            color: rgba(60,50,45,0.5);
+            color: rgba(255,255,255,0.4);
             margin-bottom: 4px;
             display: block;
         }
         .edit-input {
             width: 100%;
             padding: 10px 14px;
-            background: rgba(58,123,200,0.06);
-            border: 1px solid rgba(58,123,200,0.2);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 10px;
-            color: var(--text-primary);
+            color: rgba(255,255,255,0.9);
             font-family: 'Sarabun', sans-serif;
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
         .edit-input:focus {
-            border-color: var(--primary);
+            border-color: rgba(232,180,120,0.5);
+            background: rgba(255,255,255,0.07);
+            box-shadow: 0 0 12px rgba(232,180,120,0.08);
         }
         .edit-save {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 8px 20px;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: white;
+            background: linear-gradient(135deg, #D4A060, #E8B878);
+            color: #1a1218;
             font-family: 'Prompt', sans-serif;
             font-size: 0.85rem;
             font-weight: 600;
@@ -1780,15 +1831,17 @@
         }
         .edit-save:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(232,180,120,0.3);
         }
         .edit-save:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: default;
             transform: none;
+            box-shadow: none;
         }
         .edit-status {
             font-size: 0.8rem;
-            color: #5DA87A;
+            color: #6DC89A;
             margin-top: 8px;
             clear: both;
             text-align: right;
@@ -1800,21 +1853,23 @@
             align-items: center;
             gap: 10px;
             padding: 10px 12px;
-            background: rgba(var(--primary-rgb), 0.04);
-            border: 1px solid rgba(var(--primary-rgb), 0.1);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 10px;
             margin-bottom: 6px;
+            transition: all 0.3s;
         }
+        .admin-song-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(232,180,120,0.15); }
         .admin-song-num {
             font-size: 0.75rem;
-            color: rgba(var(--primary-rgb), 0.4);
+            color: rgba(255,255,255,0.3);
             min-width: 20px;
         }
         .admin-song-cover {
             width: 36px;
             height: 36px;
             border-radius: 6px;
-            background: rgba(var(--primary-rgb), 0.08);
+            background: rgba(255,255,255,0.06);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1834,14 +1889,14 @@
         .admin-song-info .song-name {
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: rgba(255,255,255,0.85);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .admin-song-info .song-file {
             font-size: 0.7rem;
-            color: rgba(var(--primary-rgb), 0.4);
+            color: rgba(255,255,255,0.3);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1854,10 +1909,11 @@
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 6px;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         .admin-song-del:hover {
-            background: rgba(224,112,112,0.1);
+            background: rgba(224,112,112,0.15);
+            box-shadow: 0 0 10px rgba(224,112,112,0.1);
         }
 
         /* File picker input group */
@@ -1872,29 +1928,29 @@
         }
         .file-btn {
             padding: 6px 8px;
-            border: 1px solid rgba(var(--primary-rgb),0.2);
+            border: 1px solid rgba(232,180,120,0.2);
             border-radius: 8px;
-            background: rgba(var(--primary-rgb),0.06);
-            color: var(--primary);
+            background: rgba(232,180,120,0.06);
+            color: #E8B878;
             font-size: 0.72rem;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
         }
         .file-btn:hover {
-            background: rgba(var(--primary-rgb),0.12);
-            border-color: var(--primary);
+            background: rgba(232,180,120,0.12);
+            border-color: rgba(232,180,120,0.4);
         }
         .file-upload-progress {
             height: 3px;
-            background: rgba(var(--primary-rgb),0.1);
+            background: rgba(255,255,255,0.06);
             border-radius: 2px;
             margin-top: 4px;
             overflow: hidden;
         }
         .file-upload-progress-fill {
             height: 100%;
-            background: var(--primary);
+            background: linear-gradient(90deg, #D4A060, #E8B878);
             width: 0%;
             transition: width 0.2s linear;
             border-radius: 2px;
@@ -1905,14 +1961,17 @@
             position: fixed;
             inset: 0;
             z-index: 10001;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
         .file-picker-box {
-            background: #fff;
+            background: rgba(18,14,30,0.97);
+            border: 1px solid rgba(232,180,120,0.15);
             border-radius: 16px;
             width: 100%;
             max-width: 420px;
@@ -1920,11 +1979,11 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         .file-picker-header {
             padding: 14px 16px;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
+            border-bottom: 1px solid rgba(232,180,120,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1933,16 +1992,17 @@
             margin: 0;
             font-family: 'Prompt', sans-serif;
             font-size: 0.9rem;
-            color: var(--text-primary);
+            color: #E8B878;
         }
         .file-picker-close {
             background: none;
             border: none;
             font-size: 1.2rem;
             cursor: pointer;
-            color: rgba(0,0,0,0.4);
+            color: rgba(255,255,255,0.4);
             padding: 4px 8px;
         }
+        .file-picker-close:hover { color: #E8B878; }
         .file-picker-body {
             overflow-y: auto;
             padding: 12px;
@@ -1951,7 +2011,7 @@
         .file-picker-loading {
             text-align: center;
             padding: 30px;
-            color: rgba(0,0,0,0.3);
+            color: rgba(255,255,255,0.3);
             font-size: 0.85rem;
         }
         .file-picker-grid {
@@ -1965,10 +2025,10 @@
             overflow: hidden;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: rgba(var(--primary-rgb),0.04);
+            background: rgba(255,255,255,0.04);
         }
         .file-picker-item:hover {
-            border-color: var(--primary);
+            border-color: rgba(232,180,120,0.5);
             transform: scale(1.03);
         }
         .file-picker-item img {
@@ -1980,7 +2040,7 @@
         .file-picker-item .fp-name {
             font-size: 0.65rem;
             padding: 4px 6px;
-            color: var(--text-primary);
+            color: rgba(255,255,255,0.6);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -2013,6 +2073,9 @@
         .locked-content.unlocked {
             display: block;
             animation: revealContent 1.5s ease forwards;
+            height: 100dvh;
+            height: 100vh;
+            overflow: hidden;
         }
 
         @keyframes revealContent {
@@ -2154,16 +2217,40 @@
             bottom: 30px;
             right: 30px;
             z-index: 10001;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            box-shadow: 0 6px 25px rgba(var(--accent-rgb),0.4);
+            background: linear-gradient(135deg, #1a1520, #2a2030);
+            border: 1px solid rgba(232,180,120,0.3);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4), 0 0 15px rgba(232,180,120,0.15);
         }
-        .admin-chat-fab:hover { box-shadow: 0 8px 35px rgba(var(--accent-rgb),0.5); }
+        .admin-chat-fab:hover { box-shadow: 0 8px 35px rgba(0,0,0,0.5), 0 0 25px rgba(232,180,120,0.25); }
         @keyframes adminFabPulse {
-            0%, 100% { box-shadow: 0 6px 25px rgba(var(--accent-rgb),0.4); }
-            50% { box-shadow: 0 6px 35px rgba(var(--accent-rgb),0.6), 0 0 0 8px rgba(var(--accent-rgb),0.1); }
+            0%, 100% { box-shadow: 0 6px 25px rgba(0,0,0,0.4), 0 0 15px rgba(232,180,120,0.15); }
+            50% { box-shadow: 0 6px 35px rgba(0,0,0,0.5), 0 0 25px rgba(232,180,120,0.25), 0 0 0 8px rgba(232,180,120,0.06); }
         }
         .admin-chat-fab { animation: adminFabPulse 2s ease-in-out infinite; }
-        #adminFullChatOverlay { z-index: 10002; }
+        #adminFullChatOverlay {
+            z-index: 10002;
+            background: linear-gradient(180deg, rgba(12,10,22,0.99), rgba(8,6,16,1)) !important;
+        }
+        #adminFullChatOverlay .fullchat-header {
+            background: rgba(0,0,0,0.3);
+            border-bottom-color: rgba(232,180,120,0.15);
+        }
+        #adminFullChatOverlay .fullchat-back {
+            border-color: rgba(255,255,255,0.12);
+            color: #E8B878;
+        }
+        #adminFullChatOverlay .fullchat-title { color: #E8B878; }
+        #adminFullChatOverlay .fullchat-empty { color: rgba(255,255,255,0.25); }
+        #adminFullChatOverlay .fullchat-input-area {
+            background: rgba(0,0,0,0.3);
+            border-top-color: rgba(232,180,120,0.1);
+        }
+        #adminFullChatOverlay .chat-input {
+            background: rgba(255,255,255,0.06) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+            color: rgba(255,255,255,0.9) !important;
+        }
+        #adminFullChatOverlay .chat-input:focus { border-color: rgba(232,180,120,0.4) !important; }
 
         /* Fullscreen Chat Overlay */
         .fullchat-overlay {
@@ -2239,20 +2326,20 @@
 
         /* Admin fullscreen chat - swap sides (admin = right, ben = left) */
         .admin-chat-messages .chat-msg.admin { align-self: flex-end; text-align: right; }
-        .admin-chat-messages .chat-msg.admin .chat-sender { color: var(--primary); }
+        .admin-chat-messages .chat-msg.admin .chat-sender { color: #E8B878; }
         .admin-chat-messages .chat-msg.ben { align-self: flex-start; text-align: left; }
-        .admin-chat-messages .chat-msg.ben .chat-sender { color: var(--accent); }
+        .admin-chat-messages .chat-msg.ben .chat-sender { color: rgba(255,255,255,0.5); }
         .admin-chat-messages .chat-bubble.admin {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: white;
+            background: linear-gradient(135deg, #D4A060, #E8B878);
+            color: #1a1218;
             border-bottom-right-radius: 4px;
             border-bottom-left-radius: 16px;
             border: none;
         }
         .admin-chat-messages .chat-bubble.ben {
-            background: rgba(var(--accent-rgb),0.1);
-            border: 1px solid rgba(var(--accent-rgb),0.2);
-            color: var(--text-primary);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.85);
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 16px;
         }
@@ -2606,14 +2693,14 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="clearAllData()" style="margin-top:20px;width:100%;padding:12px;background:#e74c3c;color:#fff;border:none;border-radius:10px;font-family:'Prompt',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;">🗑️ Clear สถานะทั้งหมด</button>
+                <button onclick="clearAllData()" style="margin-top:20px;width:100%;padding:12px;background:rgba(231,76,60,0.15);color:#E88080;border:1px solid rgba(231,76,60,0.3);border-radius:10px;font-family:'Prompt',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.3s;">🗑️ Clear สถานะทั้งหมด</button>
                 <p id="clearStatus" style="text-align:center;font-size:0.85rem;color:#e74c3c;margin-top:8px;"></p>
             </div>
 
             <!-- Tab 2: Edit Content -->
             <div class="admin-tab-content" id="tabEdit">
                 <!-- Template Selector -->
-                <div class="edit-section" style="border:2px solid var(--accent);background:rgba(var(--accent-rgb),0.05);">
+                <div class="edit-section" style="border:1px solid rgba(232,180,120,0.25);">
                     <div class="edit-section-title">🎨 Template</div>
                     <div class="edit-group">
                         <label class="edit-label">เลือก Template</label>
@@ -2679,11 +2766,11 @@
 
             <!-- Tab 3: Bennie Song -->
             <div class="admin-tab-content" id="tabSong">
-                <div class="edit-section" style="border:2px solid var(--accent);background:rgba(var(--accent-rgb),0.05);">
+                <div class="edit-section" style="border:1px solid rgba(232,180,120,0.25);">
                     <div class="edit-section-title">🎵 Playlist (You Are My Vibe)</div>
                     <div id="adminPlaylist" style="margin-bottom:12px;"></div>
-                    <div style="border-top:1px solid rgba(var(--primary-rgb),0.1);padding-top:12px;margin-top:8px;">
-                        <p style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:8px;">+ เพิ่มเพลงใหม่</p>
+                    <div style="border-top:1px solid rgba(232,180,120,0.1);padding-top:12px;margin-top:8px;">
+                        <p style="font-size:0.85rem;font-weight:600;color:#E8B878;margin-bottom:8px;">+ เพิ่มเพลงใหม่</p>
                         <div class="edit-group"><label class="edit-label">ชื่อเพลง</label><input class="edit-input" id="newSongTitle" placeholder="เช่น Last Message"></div>
                         <div class="edit-group"><label class="edit-label">ไฟล์เพลง</label><div class="file-input-group"><input class="edit-input" id="newSongFile" style="font-size:0.8rem;padding:6px 10px;" placeholder="songs/ชื่อไฟล์.mp3"><button type="button" class="file-btn" onclick="browseStorageFiles('songs','newSongFile')">📁</button><button type="button" class="file-btn" onclick="triggerUpload('songs','newSongFile','audio/*')">📤</button></div><div class="file-upload-progress" id="progress_newSongFile" style="display:none;"><div class="file-upload-progress-fill"></div></div></div>
                         <div class="edit-group"><label class="edit-label">Cover</label><div class="file-input-group"><input class="edit-input" id="newSongCover" style="font-size:0.8rem;padding:6px 10px;" placeholder="songs/covers/cover.jpg"><button type="button" class="file-btn" onclick="browseStorageFiles('songs/covers','newSongCover')">📁</button><button type="button" class="file-btn" onclick="triggerUpload('songs/covers','newSongCover','image/*')">📤</button></div><div class="file-upload-progress" id="progress_newSongCover" style="display:none;"><div class="file-upload-progress-fill"></div></div></div>
@@ -2691,7 +2778,7 @@
                         <div class="edit-group"><label class="edit-label">เนื้อเพลง (ว่างได้)</label><textarea class="edit-input" id="newSongLyrics" rows="3" placeholder="เนื้อเพลงบรรทัดต่อบรรทัด..." style="resize:vertical;min-height:50px;"></textarea></div>
                         <button class="edit-save" onclick="addSongToPlaylist()">➕ เพิ่มเพลง</button>
                     </div>
-                    <button class="edit-save" onclick="savePlaylist()" style="margin-top:10px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));">💾 บันทึก Playlist</button>
+                    <button class="edit-save" onclick="savePlaylist()" style="margin-top:10px;">💾 บันทึก Playlist</button>
                     <div class="edit-status" id="statusPlaylist"></div>
                 </div>
             </div>
@@ -3230,18 +3317,22 @@
             var heartsContainer = document.getElementById('heartsContainer');
             if (heartsContainer) heartsContainer.style.display = '';
 
+            // Stop hero player audio
+            var heroAudio = document.getElementById('heroVibeAudio');
+            if (heroAudio) { heroAudio.pause(); heroAudio.currentTime = 0; }
+            heroPlaying = false;
+            stopLyricsScroll();
+
             hideHero(() => {
                 const content = document.getElementById('lockedContent');
                 content.classList.add('unlocked');
+                document.body.style.overflow = 'hidden';
+                document.body.style.height = '100dvh';
 
                 checkExistingMessages();
                 setTimeout(recalcSlideHeight, 100);
 
                 window.scrollTo(0, 0);
-                setTimeout(() => {
-                    var letterEl = document.getElementById('letter');
-                    if (letterEl) letterEl.scrollIntoView({ behavior: 'smooth' });
-                }, 300);
             });
         }
 
@@ -3278,21 +3369,9 @@
         }
 
         // Check session on load
-        const savedChoice = sessionStorage.getItem('choice');
-        if (savedChoice === 'love') {
-            document.getElementById('hero').style.display = 'none';
-            const content = document.getElementById('lockedContent');
-            content.style.display = 'block';
-            content.style.opacity = '1';
-            content.classList.add('unlocked');
-            setTimeout(recalcSlideHeight, 50);
-        } else if (savedChoice === 'goodbye') {
-            document.getElementById('hero').style.display = 'none';
-            const goodbye = document.getElementById('goodbyeContent');
-            goodbye.style.display = 'block';
-            goodbye.style.opacity = '1';
-            goodbye.classList.add('show');
-        }
+        // Always start at hero page — clear previous choice
+        sessionStorage.removeItem('choice');
+        window.scrollTo(0, 0);
 
         // Create floating hearts
         var sorryWords = ['ขอโทษ','Sorry','对不起','ごめんなさい','미안합니다','Lo siento','Désolé','Entschuldigung','Извините','ຂໍໂທດ'];
@@ -4368,7 +4447,7 @@
             var container = document.getElementById('adminPlaylist');
             if (!container) return;
             if (vibeSongs.length === 0) {
-                container.innerHTML = '<p style="color:rgba(var(--primary-rgb),0.4);font-size:0.85rem;text-align:center;">ยังไม่มีเพลง</p>';
+                container.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.85rem;text-align:center;">ยังไม่มีเพลง</p>';
                 return;
             }
             var html = '';
@@ -4377,20 +4456,20 @@
                     ? '<img src="' + song.cover + '">'
                     : '&#9835;';
                 var badges = '';
-                if (song.cover) badges += '<span style="background:rgba(var(--primary-rgb),0.1);color:var(--primary);padding:1px 6px;border-radius:8px;font-size:0.6rem;">ปก</span> ';
-                if (song.bg) badges += '<span style="background:rgba(var(--accent-rgb),0.15);color:var(--accent-dark);padding:1px 6px;border-radius:8px;font-size:0.6rem;">BG</span> ';
-                if (song.lyrics) badges += '<span style="background:rgba(var(--pink-rgb),0.1);color:var(--pink);padding:1px 6px;border-radius:8px;font-size:0.6rem;">เนื้อเพลง</span>';
+                if (song.cover) badges += '<span style="background:rgba(232,180,120,0.12);color:#E8B878;padding:1px 6px;border-radius:8px;font-size:0.6rem;">ปก</span> ';
+                if (song.bg) badges += '<span style="background:rgba(100,200,140,0.1);color:#6DC89A;padding:1px 6px;border-radius:8px;font-size:0.6rem;">BG</span> ';
+                if (song.lyrics) badges += '<span style="background:rgba(200,140,200,0.1);color:#C89CC8;padding:1px 6px;border-radius:8px;font-size:0.6rem;">เนื้อเพลง</span>';
                 html += '<div class="admin-song-item">'
                     + '<span class="admin-song-num">' + (i + 1) + '</span>'
                     + '<div class="admin-song-cover">' + coverHtml + '</div>'
                     + '<div class="admin-song-info">'
                     + '<div class="song-name">' + song.title + '</div>'
-                    + '<div style="margin-top:2px;">' + (badges || '<span style="font-size:0.6rem;color:rgba(var(--primary-rgb),0.3);">ยังไม่มีข้อมูลเพิ่ม</span>') + '</div>'
+                    + '<div style="margin-top:2px;">' + (badges || '<span style="font-size:0.6rem;color:rgba(255,255,255,0.25);">ยังไม่มีข้อมูลเพิ่ม</span>') + '</div>'
                     + '</div>'
-                    + '<button style="background:none;border:none;color:var(--primary);font-size:0.75rem;cursor:pointer;padding:4px 8px;" onclick="toggleSongEdit(' + i + ')">แก้ไข</button>'
+                    + '<button style="background:none;border:none;color:#E8B878;font-size:0.75rem;cursor:pointer;padding:4px 8px;" onclick="toggleSongEdit(' + i + ')">แก้ไข</button>'
                     + '<button class="admin-song-del" onclick="removeSongFromPlaylist(' + i + ')" title="ลบ">&#10005;</button>'
                     + '</div>'
-                    + '<div class="admin-song-expand" id="songExpand' + i + '" style="display:none;padding:8px 12px 12px 46px;background:rgba(var(--primary-rgb),0.03);border-bottom:1px solid rgba(var(--primary-rgb),0.08);">'
+                    + '<div class="admin-song-expand" id="songExpand' + i + '" style="display:none;padding:8px 12px 12px 46px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05);">'
                     + '<div class="edit-group" style="margin-bottom:6px;"><label class="edit-label" style="font-size:0.7rem;">ไฟล์เพลง</label>'
                     + fileInputHtml('adminFile' + i, song.file, 'songs/ชื่อไฟล์.mp3', 'songs', 'audio/*') + '</div>'
                     + '<div class="edit-group" style="margin-bottom:6px;"><label class="edit-label" style="font-size:0.7rem;">รูปปก</label>'
