@@ -3644,7 +3644,7 @@
                 var d = doc.data();
                 if (d.songs && d.songs.length > 0) {
                     // Merge: use Firestore data but fill in default covers if empty
-                    vibeSongs = d.songs.map(function(s) {
+                    var merged = d.songs.map(function(s) {
                         var def = vibeSongsDefault.find(function(ds) { return ds.title === s.title; });
                         if (def) {
                             if (!s.cover && def.cover) s.cover = def.cover;
@@ -3652,6 +3652,12 @@
                         }
                         return s;
                     });
+                    // Add default songs not in Firestore
+                    vibeSongsDefault.forEach(function(def) {
+                        var exists = merged.find(function(s) { return s.title === def.title; });
+                        if (!exists) merged.push(def);
+                    });
+                    vibeSongs = merged;
                     if (vibeCurrentIndex >= vibeSongs.length) vibeCurrentIndex = 0;
                     renderVibeGallery();
                     renderAdminPlaylist();
