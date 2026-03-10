@@ -61,9 +61,17 @@
             overflow: hidden !important;
             height: 100dvh;
             height: 100vh;
+            background: #000 !important;
         }
         body.minimal-template .footer { display: none !important; }
         body.minimal-template .hearts-container { display: none !important; }
+        body.minimal-template .sorry-text { display: none !important; }
+        body.minimal-template .gate-subtitle { display: none !important; }
+        body.minimal-template .hero-heart { display: none !important; }
+        body.minimal-template .hero-subtitle { display: none !important; }
+        body.minimal-template .music-toggle-btn { display: none !important; }
+        body.minimal-template #heroMusicPlayer { display: flex !important; }
+        body.minimal-template .hero-forever { display: block !important; }
         body.minimal-template .hero {
             background: url('URmyvitbeconver.jpg') center top/cover no-repeat !important;
             height: 100dvh;
@@ -2241,8 +2249,24 @@
             scroll-behavior: smooth;
         }
     </style>
+    <script>
+        // Apply cached template class BEFORE body renders to prevent flash
+        (function() {
+            var t = localStorage.getItem('templateId');
+            if (t && t !== 'love-letter') {
+                document.documentElement.className = 'minimal-preload';
+            }
+        })();
+    </script>
 </head>
 <body>
+    <script>
+        // Immediately set body class from cache to prevent template flash
+        if (document.documentElement.className === 'minimal-preload') {
+            document.body.classList.add('minimal-template');
+            document.documentElement.className = '';
+        }
+    </script>
 
     <!-- Floating Hearts Background -->
     <div class="hearts-container" id="heartsContainer"></div>
