@@ -90,6 +90,10 @@
             letter-spacing: 2px;
             margin: 8px 0 0;
             flex-shrink: 0;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+            cursor: default;
         }
 
         .hero-highlight {
@@ -4228,34 +4232,29 @@
         // Init: check messages if love was already chosen
         if (sessionStorage.getItem('choice') === 'love') { checkExistingMessages(); }
 
-        // Secret admin access - triple tap/click on footer text or hero title
+        // Secret admin access - triple tap/click on hero title
         let clickCount = 0;
         let clickTimer = null;
-        let usedTouch = false;
         function handleSecretClick(e) {
-            // Prevent double-counting: if touch was used, ignore the follow-up click
-            if (e.type === 'touchend') { usedTouch = true; e.preventDefault(); }
-            if (e.type === 'click' && usedTouch) return;
             clickCount++;
             if (clickTimer) clearTimeout(clickTimer);
             if (clickCount >= 3) {
                 clickCount = 0;
                 if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
-                // Skip password if already authenticated
                 if (sessionStorage.getItem('adminAuth') === 'true') {
                     openAdmin();
                 } else {
                     document.getElementById('adminOverlay').classList.add('show');
                     document.getElementById('adminPassword').focus();
                 }
+                return;
             }
-            clickTimer = setTimeout(() => clickCount = 0, 1000);
+            clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
         }
-        ['click','touchend'].forEach(evt => {
-            document.getElementById('footerSecret').addEventListener(evt, handleSecretClick);
-            document.getElementById('heroSecret').addEventListener(evt, handleSecretClick);
-            document.getElementById('heroTitle').addEventListener(evt, handleSecretClick);
-        });
+        document.getElementById('footerSecret').addEventListener('click', handleSecretClick);
+        document.getElementById('heroSecret').addEventListener('click', handleSecretClick);
+        document.getElementById('heroTitle').addEventListener('click', handleSecretClick);
+        document.getElementById('heroForever').addEventListener('click', handleSecretClick);
 
         // Auto-open admin if session exists
         if (sessionStorage.getItem('adminAuth') === 'true') {
