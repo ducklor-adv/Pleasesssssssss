@@ -697,6 +697,9 @@
             text-shadow: none;
             filter: drop-shadow(0 0 30px rgba(var(--primary-rgb), 0.3));
             margin-bottom: 20px;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         @keyframes gradientShift {
@@ -1620,6 +1623,7 @@
             cursor: default;
             user-select: none;
             -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
         /* Admin overlay */
@@ -3174,6 +3178,12 @@
             hero.style.opacity = '0';
             hero.style.transform = 'translateY(-30px)';
             document.body.classList.add('minimal-template');
+            // Reset body inline styles — minimal-template CSS takes over
+            document.body.style.overflow = '';
+            document.body.style.height = '';
+            // Footer hidden by minimal-template CSS, clear inline override
+            var footer = document.querySelector('.footer');
+            if (footer) footer.style.display = '';
             window.scrollTo(0, 0);
             setTimeout(function() {
                 hero.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
@@ -3395,13 +3405,16 @@
             });
             document.body.classList.remove('minimal-template');
 
-            // Keep hero music playing in background
+            // Hide footer (no longer hidden by minimal-template CSS)
+            var footer = document.querySelector('.footer');
+            if (footer) footer.style.display = 'none';
 
             hideHero(() => {
                 const content = document.getElementById('lockedContent');
+                content.style.display = ''; // Clear inline display:none from goBackToHero
                 content.classList.add('unlocked');
                 document.body.style.overflow = 'hidden';
-                document.body.style.height = '100dvh';
+                document.body.style.height = '100vh';
 
                 checkExistingMessages();
                 setTimeout(recalcSlideHeight, 100);
@@ -4215,14 +4228,19 @@
         // Init: check messages if love was already chosen
         if (sessionStorage.getItem('choice') === 'love') { checkExistingMessages(); }
 
-        // Secret admin access - triple click on footer text or hero subtitle
+        // Secret admin access - triple tap/click on footer text or hero title
         let clickCount = 0;
         let clickTimer = null;
-        function handleSecretClick() {
+        let usedTouch = false;
+        function handleSecretClick(e) {
+            // Prevent double-counting: if touch was used, ignore the follow-up click
+            if (e.type === 'touchend') { usedTouch = true; e.preventDefault(); }
+            if (e.type === 'click' && usedTouch) return;
             clickCount++;
             if (clickTimer) clearTimeout(clickTimer);
             if (clickCount >= 3) {
                 clickCount = 0;
+                if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
                 // Skip password if already authenticated
                 if (sessionStorage.getItem('adminAuth') === 'true') {
                     openAdmin();
@@ -4231,11 +4249,13 @@
                     document.getElementById('adminPassword').focus();
                 }
             }
-            clickTimer = setTimeout(() => clickCount = 0, 600);
+            clickTimer = setTimeout(() => clickCount = 0, 1000);
         }
-        document.getElementById('footerSecret').addEventListener('click', handleSecretClick);
-        document.getElementById('heroSecret').addEventListener('click', handleSecretClick);
-        document.getElementById('heroTitle').addEventListener('click', handleSecretClick);
+        ['click','touchend'].forEach(evt => {
+            document.getElementById('footerSecret').addEventListener(evt, handleSecretClick);
+            document.getElementById('heroSecret').addEventListener(evt, handleSecretClick);
+            document.getElementById('heroTitle').addEventListener(evt, handleSecretClick);
+        });
 
         // Auto-open admin if session exists
         if (sessionStorage.getItem('adminAuth') === 'true') {
@@ -4253,9 +4273,8 @@
                 var audio = document.getElementById('bgMusic');
                 audio.pause();
                 audio.currentTime = 0;
-                document.removeEventListener('click', startMusic);
-                document.removeEventListener('touchstart', startMusic);
-                document.removeEventListener('scroll', startMusic);
+                document.removeEventListener('click', autoPlayHero);
+                document.removeEventListener('touchstart', autoPlayHero);
                 closeAdminModal();
                 showAdminFab();
                 startAdminFullChatListener();
