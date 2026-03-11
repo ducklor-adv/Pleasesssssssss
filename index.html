@@ -3144,14 +3144,10 @@
         var _geoData = null;
         function getGeoData() {
             if (_geoData) return Promise.resolve(_geoData);
-            return fetch('https://ipwho.is/')
+            return fetch('https://get.geojs.io/v1/ip/geo.json')
                 .then(r => r.json())
                 .then(d => {
-                    if (d.success) {
-                        _geoData = { ip: d.ip, city: d.city, region: d.region, country: d.country };
-                    } else {
-                        _geoData = { ip: 'unknown', city: '', region: '', country: '' };
-                    }
+                    _geoData = { ip: d.ip || 'unknown', city: d.city || '', region: d.region || '', country: d.country || '' };
                     return _geoData;
                 })
                 .catch(() => ({ ip: 'unknown', city: '', region: '', country: '' }));
