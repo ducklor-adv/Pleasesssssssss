@@ -2770,6 +2770,12 @@
                 </div>
                 <button onclick="clearAllData()" style="margin-top:20px;width:100%;padding:12px;background:rgba(231,76,60,0.15);color:#E88080;border:1px solid rgba(231,76,60,0.3);border-radius:10px;font-family:'Prompt',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.3s;">🗑️ Clear สถานะทั้งหมด</button>
                 <p id="clearStatus" style="text-align:center;font-size:0.85rem;color:#e74c3c;margin-top:8px;"></p>
+
+                <!-- Visit Log Table -->
+                <div style="margin-top:24px;">
+                    <h3 style="font-family:'Playfair Display',serif;font-style:italic;color:var(--primary);font-size:1rem;margin-bottom:10px;">📋 Visit Log</h3>
+                    <div id="visitLogTable" style="overflow-x:auto;border-radius:10px;border:1px solid rgba(232,180,120,0.2);"></div>
+                </div>
             </div>
 
             <!-- Tab 2: Edit Content -->
@@ -4762,26 +4768,79 @@
         loadSiteConfig();
 
         function loadAdminData() {
+            // Get admin's IP first, then load visits
+            getGeoData().then(function(adminGeo) {
+            var adminIp = adminGeo.ip;
+
             // Step 1: Check visits (opened & choice)
-            db.collection('visits').orderBy('timestamp', 'asc').get().then(function(snap) {
+            db.collection('visits').orderBy('timestamp', 'desc').get().then(function(snap) {
                 var hasOpened = false, choiceMade = null, openTime = '', choiceTime = '';
                 var openLocation = '', choiceLocation = '';
+                var otherRows = [];
                 snap.forEach(function(doc) {
                     var d = doc.data();
                     var t = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }) : '';
                     var loc = '';
                     if (d.city || d.region) loc = (d.city || '') + (d.city && d.region ? ', ' : '') + (d.region || '');
+                    var visitIp = d.ip || '-';
+                    var isMe = (visitIp === adminIp) || visitIp === '-' || visitIp === 'unknown';
+                    var isMobile = (d.userAgent || '').match(/Mobile|Android|iPhone/i);
+                    var device = isMobile ? '📱' : '💻';
+                    var choiceLabel = d.choice === 'opened' ? 'เปิดเว็บ' : d.choice === 'love' ? '❤️ รัก' : d.choice === 'goodbye' ? '👋 ลา' : d.choice;
+
+                    // Only collect visits from OTHER people
+                    if (!isMe) {
+                        otherRows.push({ t: t, choice: choiceLabel, device: device, screen: d.screenSize || '', loc: loc, ip: visitIp });
+                    }
+
+                    // Chain status: use latest from others, fallback to any
                     if (d.choice === 'opened') {
-                        hasOpened = true;
-                        // Always update to latest opened record (may have location)
-                        if (!openTime || loc) { openTime = t; openLocation = loc; }
+                        if (!isMe && !hasOpened) {
+                            hasOpened = true;
+                            openTime = t;
+                            openLocation = loc;
+                        } else if (!hasOpened) {
+                            hasOpened = true;
+                            openTime = t;
+                            openLocation = loc;
+                        }
                     }
                     if (d.choice === 'love' || d.choice === 'goodbye') {
-                        choiceMade = d.choice;
-                        choiceTime = t;
-                        choiceLocation = loc;
+                        if (!isMe && !choiceMade) {
+                            choiceMade = d.choice;
+                            choiceTime = t;
+                            choiceLocation = loc;
+                        } else if (!choiceMade) {
+                            choiceMade = d.choice;
+                            choiceTime = t;
+                            choiceLocation = loc;
+                        }
                     }
                 });
+
+                // Render visit log table (others only)
+                var tableEl = document.getElementById('visitLogTable');
+                if (otherRows.length === 0) {
+                    tableEl.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:16px;font-size:0.85rem;">ยังไม่มีคนอื่นเข้าชม</p>';
+                } else {
+                    var html = '<table style="width:100%;border-collapse:collapse;font-size:0.75rem;font-family:Prompt,sans-serif;">';
+                    html += '<thead><tr style="background:rgba(232,180,120,0.12);">';
+                    html += '<th style="padding:8px 6px;text-align:left;color:var(--primary);border-bottom:1px solid rgba(232,180,120,0.2);">เวลา</th>';
+                    html += '<th style="padding:8px 6px;text-align:center;color:var(--primary);border-bottom:1px solid rgba(232,180,120,0.2);">ทำอะไร</th>';
+                    html += '<th style="padding:8px 6px;text-align:center;color:var(--primary);border-bottom:1px solid rgba(232,180,120,0.2);">อุปกรณ์</th>';
+                    html += '<th style="padding:8px 6px;text-align:left;color:var(--primary);border-bottom:1px solid rgba(232,180,120,0.2);">📍 พิกัด</th>';
+                    html += '</tr></thead><tbody>';
+                    otherRows.forEach(function(r) {
+                        html += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">';
+                        html += '<td style="padding:7px 6px;color:rgba(255,255,255,0.75);white-space:nowrap;">' + r.t + '</td>';
+                        html += '<td style="padding:7px 6px;text-align:center;color:rgba(255,255,255,0.85);">' + r.choice + '</td>';
+                        html += '<td style="padding:7px 6px;text-align:center;">' + r.device + ' ' + r.screen + '</td>';
+                        html += '<td style="padding:7px 6px;color:rgba(255,255,255,0.7);">' + (r.loc || '-') + '</td>';
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    tableEl.innerHTML = html;
+                }
 
                 // Chain Step 1: Opened
                 var stepOpen = document.getElementById('chainOpen');
@@ -4832,6 +4891,8 @@
                     statusPhone.classList.add('success');
                 }
             });
+
+            }); // end getGeoData
         }
     </script>
 
