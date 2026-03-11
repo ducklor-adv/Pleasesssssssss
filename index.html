@@ -3140,26 +3140,55 @@
         applyTemplate(currentTemplateId);
 
         // Track visit
+        // Fetch IP geolocation once and cache
+        var _geoData = null;
+        function getGeoData() {
+            if (_geoData) return Promise.resolve(_geoData);
+            return fetch('https://ipwho.is/')
+                .then(r => r.json())
+                .then(d => {
+                    if (d.success) {
+                        _geoData = { ip: d.ip, city: d.city, region: d.region, country: d.country };
+                    } else {
+                        _geoData = { ip: 'unknown', city: '', region: '', country: '' };
+                    }
+                    return _geoData;
+                })
+                .catch(() => ({ ip: 'unknown', city: '', region: '', country: '' }));
+        }
+
         function trackVisit(choice) {
-            db.collection('visits').add({
-                choice: choice,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                userAgent: navigator.userAgent,
-                screenSize: window.innerWidth + 'x' + window.innerHeight,
-                referrer: document.referrer || 'direct'
-            }).catch(() => {});
+            getGeoData().then(geo => {
+                db.collection('visits').add({
+                    choice: choice,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userAgent: navigator.userAgent,
+                    screenSize: window.innerWidth + 'x' + window.innerHeight,
+                    referrer: document.referrer || 'direct',
+                    ip: geo.ip,
+                    city: geo.city,
+                    region: geo.region,
+                    country: geo.country
+                }).catch(() => {});
+            });
         }
 
         // Track page open (no choice yet)
         if (!sessionStorage.getItem('visited')) {
             sessionStorage.setItem('visited', 'true');
-            db.collection('visits').add({
-                choice: 'opened',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                userAgent: navigator.userAgent,
-                screenSize: window.innerWidth + 'x' + window.innerHeight,
-                referrer: document.referrer || 'direct'
-            }).catch(() => {});
+            getGeoData().then(geo => {
+                db.collection('visits').add({
+                    choice: 'opened',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userAgent: navigator.userAgent,
+                    screenSize: window.innerWidth + 'x' + window.innerHeight,
+                    referrer: document.referrer || 'direct',
+                    ip: geo.ip,
+                    city: geo.city,
+                    region: geo.region,
+                    country: geo.country
+                }).catch(() => {});
+            });
         }
 
         // Choice gate
@@ -4740,16 +4769,21 @@
             // Step 1: Check visits (opened & choice)
             db.collection('visits').orderBy('timestamp', 'asc').get().then(function(snap) {
                 var hasOpened = false, choiceMade = null, openTime = '', choiceTime = '';
+                var openLocation = '', choiceLocation = '';
                 snap.forEach(function(doc) {
                     var d = doc.data();
                     var t = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }) : '';
-                    if (d.choice === 'opened' && !hasOpened) {
+                    var loc = '';
+                    if (d.city || d.region) loc = (d.city || '') + (d.city && d.region ? ', ' : '') + (d.region || '');
+                    if (d.choice === 'opened') {
                         hasOpened = true;
-                        openTime = t;
+                        // Always update to latest opened record (may have location)
+                        if (!openTime || loc) { openTime = t; openLocation = loc; }
                     }
                     if (d.choice === 'love' || d.choice === 'goodbye') {
                         choiceMade = d.choice;
                         choiceTime = t;
+                        choiceLocation = loc;
                     }
                 });
 
@@ -4758,7 +4792,7 @@
                 var statusOpen = document.getElementById('chainOpenStatus');
                 if (hasOpened) {
                     stepOpen.classList.add('done');
-                    statusOpen.textContent = 'เปิดแล้ว ' + openTime;
+                    statusOpen.innerHTML = 'เปิดแล้ว ' + openTime + (openLocation ? '<br>📍 ' + openLocation : '');
                     statusOpen.classList.add('success');
                     document.getElementById('chainLine1').classList.add('done');
                 }
@@ -4768,12 +4802,12 @@
                 var statusChoice = document.getElementById('chainChoiceStatus');
                 if (choiceMade === 'love') {
                     stepChoice.classList.add('done');
-                    statusChoice.textContent = 'เลือก "ยังรักพี่โจ้" ' + choiceTime;
+                    statusChoice.innerHTML = 'เลือก "ยังรักพี่โจ้" ' + choiceTime + (choiceLocation ? '<br>📍 ' + choiceLocation : '');
                     statusChoice.classList.add('success');
                     document.getElementById('chainLine2').classList.add('done');
                 } else if (choiceMade === 'goodbye') {
                     stepChoice.classList.add('fail');
-                    statusChoice.textContent = 'เลือก "ไม่ต้องเป็นห่วง" ' + choiceTime;
+                    statusChoice.innerHTML = 'เลือก "ไม่ต้องเป็นห่วง" ' + choiceTime + (choiceLocation ? '<br>📍 ' + choiceLocation : '');
                     statusChoice.classList.add('fail');
                     document.getElementById('chainLine2').classList.add('fail');
                 } else if (hasOpened) {
